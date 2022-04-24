@@ -18,7 +18,7 @@ import javax.swing.JTextArea;
 import java.awt.Color;
 import java.awt.SystemColor;
 
-public class VentanaEmisor extends JFrame {
+public class VEmisor extends JFrame {
 
 	private JPanel contentPane;
 
@@ -29,7 +29,7 @@ public class VentanaEmisor extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaEmisor frame = new VentanaEmisor();
+					VEmisor frame = new VEmisor();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -41,11 +41,11 @@ public class VentanaEmisor extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaEmisor() {
+	public VEmisor() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 353, 207);
+		setBounds(100, 100, 500, 300);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(new EmptyBorder(2, 2, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
