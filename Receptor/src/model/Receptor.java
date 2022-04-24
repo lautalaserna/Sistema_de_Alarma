@@ -6,7 +6,6 @@ public class Receptor {
 	private static Receptor instance = null;
 	ArrayList<Message> reg;
 	
-	
 	private Receptor() {
 		
 	}

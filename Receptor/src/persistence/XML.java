@@ -6,7 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class PersistenceXML {
+public class XML {
 	private static XMLEncoder xmlEncoder;
 	private static XMLDecoder xmlDecoder;
 	private static FileOutputStream fileoutput;

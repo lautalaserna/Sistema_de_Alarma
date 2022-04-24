@@ -9,6 +9,7 @@ import java.net.Socket;
 import model.Message;
 
 public class Connection {
+	private Filter filter;
 	
 	public void listen(int port) {
 		new Thread() {
@@ -20,6 +21,9 @@ public class Connection {
                         InputStream inputStream = socket.getInputStream();
                         ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
                         Message m = (Message) objectInputStream.readObject();
+                        if(filter.isAccepted(m)) {
+                        	// Lo acepta
+                        }
                         System.out.println("Evento: " + m.getEvent().getEventType());
 					}
 				} catch (Exception e) {					

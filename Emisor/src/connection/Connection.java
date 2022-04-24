@@ -7,7 +7,7 @@ import java.net.Socket;
 import model.Message;
 
 public class Connection {
-
+	
 	public void connect(String id, int port, Message msg) {
 		new Thread() {
 			public void run() {
