@@ -1,3 +1,5 @@
+package view;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -41,7 +43,7 @@ public class VentanaEmisor extends JFrame {
 	 */
 	public VentanaEmisor() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 309, 168);
+		setBounds(100, 100, 353, 207);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
