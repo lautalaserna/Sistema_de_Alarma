@@ -39,7 +39,6 @@ public class VentanaReceptor2 extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaReceptor2() {
-		setLocation(new Point(600, 0));
 		setResizable(false);
 		setTitle("Sistema de Alarma");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
