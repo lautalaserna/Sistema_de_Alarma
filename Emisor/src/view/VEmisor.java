@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.SystemColor;
 
 public class VEmisor extends JFrame {
@@ -43,52 +44,46 @@ public class VEmisor extends JFrame {
 	 */
 	public VEmisor() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 500, 300);
+		setTitle("Sistema de Alarma");
+		setBounds(800, 400, 450, 280);
+		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(2, 2, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JPanel panel = new JPanel();
-		panel.setBounds(5, 5, 283, 29);
-		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEFT);
-		contentPane.add(panel);
-		
-		JLabel lblNewLabel = new JLabel("Indique la asistencia deseada:");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel.setFont(new Font("Univers Else", Font.BOLD, 14));
-		panel.add(lblNewLabel);
-		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(5, 34, 283, 68);
+		panel_1.setBounds(10, 72, 416, 120);
 		contentPane.add(panel_1);
 		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 20));
 		
 		JButton btnNewButton = new JButton("");
-		btnNewButton.setIcon(new ImageIcon("C:\\Users\\mujic\\Downloads\\fuego1.png"));
-		btnNewButton.setSelectedIcon(new ImageIcon("C:\\Users\\mujic\\Downloads\\fuego1.png"));
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btnNewButton.setIcon(new ImageIcon(VEmisor.class.getResource("/img/fuego.png")));
+		btnNewButton.setSelectedIcon(null);
+		btnNewButton.setPreferredSize(new Dimension(80,80));
 		panel_1.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("");
-		btnNewButton_1.setIcon(new ImageIcon("C:\\Users\\mujic\\Downloads\\hospital1.png"));
+		btnNewButton_1.setIcon(new ImageIcon(VEmisor.class.getResource("/img/hospital.png")));
+		btnNewButton_1.setPreferredSize(new Dimension(80,80));
 		panel_1.add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("");
-		btnNewButton_2.setIcon(new ImageIcon("C:\\Users\\mujic\\Downloads\\placa-de-policia1.png"));
+		btnNewButton_2.setIcon(new ImageIcon(VEmisor.class.getResource("/img/policia.png")));
+		btnNewButton_2.setPreferredSize(new Dimension(80,80));
 		panel_1.add(btnNewButton_2);
 		
-		JTextArea txtrEsperandoConfirmacin = new JTextArea();
-		txtrEsperandoConfirmacin.setFont(new Font("Univers Else", Font.BOLD, 13));
-		txtrEsperandoConfirmacin.setText("Esperando confirmaci\u00F3n...");
-		txtrEsperandoConfirmacin.setBackground(SystemColor.menu);
-		txtrEsperandoConfirmacin.setForeground(Color.BLACK);
-		txtrEsperandoConfirmacin.setBounds(69, 96, 155, 22);
-		contentPane.add(txtrEsperandoConfirmacin);
+		JLabel lblNewLabel = new JLabel("Indique su emergencia");
+		lblNewLabel.setBounds(10, 26, 416, 36);
+		contentPane.add(lblNewLabel);
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 16));
+		
+		JLabel lblNewLabel_1 = new JLabel("Esperando Confirmación...");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setFont(new Font("MS Reference Sans Serif", Font.ITALIC, 14));
+		lblNewLabel_1.setBounds(10, 194, 416, 22);
+		contentPane.add(lblNewLabel_1);
 	}
 
 }

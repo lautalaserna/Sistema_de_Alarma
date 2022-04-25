@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -47,6 +48,7 @@ public class VLocation extends JFrame {
 		setTitle("Configurar Ubicación");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(800, 400, 450, 250);
+		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -85,12 +87,13 @@ public class VLocation extends JFrame {
 		gbc_panel_1.gridx = 1;
 		gbc_panel_1.gridy = 0;
 		panel.add(panel_1, gbc_panel_1);
-		panel_1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 10));
+		panel_1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 6));
 		
 		textFieldLocation = new JTextField();
 		textFieldLocation.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		panel_1.add(textFieldLocation);
 		textFieldLocation.setColumns(20);
+		textFieldLocation.setPreferredSize(new Dimension(0,28));
 		
 		JPanel panel_5 = new JPanel();
 		FlowLayout flowLayout_3 = (FlowLayout) panel_5.getLayout();
@@ -111,7 +114,7 @@ public class VLocation extends JFrame {
 		
 		JPanel panel_2 = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel_2.getLayout();
-		flowLayout.setVgap(10);
+		flowLayout.setVgap(6);
 		flowLayout.setAlignment(FlowLayout.LEFT);
 		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
 		gbc_panel_2.fill = GridBagConstraints.BOTH;
@@ -126,6 +129,7 @@ public class VLocation extends JFrame {
 		textFieldIP.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		panel_2.add(textFieldIP);
 		textFieldIP.setColumns(20);
+		textFieldIP.setPreferredSize(new Dimension(0,28));
 		
 		JPanel panel_6 = new JPanel();
 		FlowLayout flowLayout_4 = (FlowLayout) panel_6.getLayout();
@@ -145,7 +149,7 @@ public class VLocation extends JFrame {
 		
 		JPanel panel_3 = new JPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) panel_3.getLayout();
-		flowLayout_1.setVgap(8);
+		flowLayout_1.setVgap(4);
 		flowLayout_1.setAlignment(FlowLayout.LEFT);
 		GridBagConstraints gbc_panel_3 = new GridBagConstraints();
 		gbc_panel_3.insets = new Insets(0, 0, 5, 0);
@@ -158,6 +162,7 @@ public class VLocation extends JFrame {
 		textFieldPort.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		panel_3.add(textFieldPort);
 		textFieldPort.setColumns(20);
+		textFieldPort.setPreferredSize(new Dimension(0,28));
 		
 		JPanel panel_7 = new JPanel();
 		GridBagConstraints gbc_panel_7 = new GridBagConstraints();
@@ -165,11 +170,12 @@ public class VLocation extends JFrame {
 		gbc_panel_7.gridx = 1;
 		gbc_panel_7.gridy = 3;
 		panel.add(panel_7, gbc_panel_7);
-		panel_7.setLayout(new FlowLayout(FlowLayout.RIGHT, 32, 6));
+		panel_7.setLayout(new FlowLayout(FlowLayout.RIGHT, 32, 10));
 		
-		JButton btConfirmar = new JButton("Confirmar");
-		panel_7.add(btConfirmar);
-		btConfirmar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		JButton btnConfirmar = new JButton("Confirmar");
+		panel_7.add(btnConfirmar);
+		btnConfirmar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		btnConfirmar.setPreferredSize(new Dimension(120,30));
 	}
 
 }
