@@ -16,6 +16,8 @@ import javax.swing.DropMode;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import java.awt.Component;
+import java.awt.Dimension;
+
 import javax.swing.JTextField;
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
@@ -27,10 +29,19 @@ import javax.swing.JList;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.SwingConstants;
+import javax.swing.AbstractListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 public class VentanaReceptor extends JFrame {
 
-	private JPanel contentPane;
+	private JPanel PanelPrincipal;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -52,83 +63,56 @@ public class VentanaReceptor extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaReceptor() {
+		setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 12));
+		setTitle("Sistema de Alarma");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 471, 558);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
-		
-		JSplitPane splitPane = new JSplitPane();
-		splitPane.setResizeWeight(0.45);
-		contentPane.add(splitPane, BorderLayout.CENTER);
+		setBounds(100, 100, 713, 488);
+		PanelPrincipal = new JPanel();
+		PanelPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(PanelPrincipal);
+		PanelPrincipal.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel = new JPanel();
-		splitPane.setRightComponent(panel);
-		panel.setLayout(null);
+		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
+		flowLayout.setAlignment(FlowLayout.LEFT);
+		PanelPrincipal.add(panel, BorderLayout.NORTH);
 		
-		JLabel lblNewLabel = new JLabel("Registro de solicitudes:");
-		lblNewLabel.setBounds(10, 0, 119, 25);
-		panel.add(lblNewLabel);
-		
-		JPanel panel_3 = new JPanel();
-		panel_3.setBounds(0, 24, 242, 483);
-		panel.add(panel_3);
-		panel_3.setLayout(null);
-		
-		JList list = new JList();
-		list.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		list.setBounds(10, 21, 222, 439);
-		panel_3.add(list);
-		
-		JPanel panel_1 = new JPanel();
-		splitPane.setLeftComponent(panel_1);
-		panel_1.setLayout(null);
-		
-		JLabel lblNewLabel_1 = new JLabel("Detalle: ");
-		lblNewLabel_1.setBounds(10, 0, 49, 25);
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
-		panel_1.add(lblNewLabel_1);
+		JLabel Cabecera = new JLabel("Registro de eventos");
+		Cabecera.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		panel.add(Cabecera);
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(0, 24, 200, 483);
-		panel_1.add(panel_2);
-		panel_2.setLayout(null);
+		FlowLayout flowLayout_1 = (FlowLayout) panel_2.getLayout();
+		flowLayout_1.setAlignment(FlowLayout.RIGHT);
+		flowLayout_1.setHgap(20);
+		PanelPrincipal.add(panel_2, BorderLayout.SOUTH);
 		
-		JLabel lblNewLabel_2 = new JLabel("Tipo alerta:");
-		lblNewLabel_2.setBounds(11, 56, 63, 14);
-		panel_2.add(lblNewLabel_2);
-		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(84, 51, 101, 22);
-		panel_2.add(textArea);
-		
-		JLabel lblNewLabel_3 = new JLabel("Horario:");
-		lblNewLabel_3.setBounds(11, 131, 63, 14);
-		panel_2.add(lblNewLabel_3);
-		
-		JTextArea textArea_1 = new JTextArea();
-		textArea_1.setBounds(84, 126, 101, 22);
-		panel_2.add(textArea_1);
-		
-		JLabel lblNewLabel_3_1 = new JLabel("Ubicacion: ");
-		lblNewLabel_3_1.setBounds(11, 209, 63, 14);
-		panel_2.add(lblNewLabel_3_1);
-		
-		JTextArea textArea_1_1 = new JTextArea();
-		textArea_1_1.setBounds(84, 204, 101, 22);
-		panel_2.add(textArea_1_1);
-		
-		JLabel lblNewLabel_4 = new JLabel("Estado:");
-		lblNewLabel_4.setBounds(11, 350, 46, 14);
-		panel_2.add(lblNewLabel_4);
-		
-		JTextArea textArea_2 = new JTextArea();
-		textArea_2.setBounds(84, 345, 101, 22);
-		panel_2.add(textArea_2);
-		
-		JButton btnNewButton = new JButton("CONFIRMAR");
-		btnNewButton.setBounds(36, 410, 119, 53);
+		JButton btnNewButton = new JButton("Confirmar");
+		btnNewButton.setPreferredSize(new Dimension(120, 30));
+		btnNewButton.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		panel_2.add(btnNewButton);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		PanelPrincipal.add(scrollPane, BorderLayout.CENTER);
+		
+		table = new JTable();
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 11));
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Ubicaci\u00F3n", "Tipo de Evento", "Hora", "Estado"
+			}
+		));
+		table.getColumnModel().getColumn(0).setPreferredWidth(150);
+		table.getColumnModel().getColumn(1).setPreferredWidth(150);
+		table.getColumnModel().getColumn(2).setPreferredWidth(150);
+		table.getColumnModel().getColumn(3).setPreferredWidth(150);
+		scrollPane.setViewportView(table);
 	}
 }

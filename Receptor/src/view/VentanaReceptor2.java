@@ -11,6 +11,9 @@ import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
+import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.Point;
 
 public class VentanaReceptor2 extends JFrame {
 
@@ -36,6 +39,9 @@ public class VentanaReceptor2 extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaReceptor2() {
+		setLocation(new Point(600, 0));
+		setResizable(false);
+		setTitle("Sistema de Alarma");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 460, 160);
 		contentPane = new JPanel();
@@ -43,7 +49,8 @@ public class VentanaReceptor2 extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		JLabel lblNewLabel = new JLabel("Tipo de alertas a recibir:");
+		JLabel lblNewLabel = new JLabel("Tipos de alertas a recibir");
+		lblNewLabel.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		contentPane.add(lblNewLabel, BorderLayout.NORTH);
 		
@@ -52,12 +59,15 @@ public class VentanaReceptor2 extends JFrame {
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 25));
 		
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("Alerta medica");
+		rdbtnNewRadioButton.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 12));
 		panel.add(rdbtnNewRadioButton);
 		
 		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Alerta seguridad");
+		rdbtnNewRadioButton_1.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 12));
 		panel.add(rdbtnNewRadioButton_1);
 		
 		JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("Alerta incendio");
+		rdbtnNewRadioButton_2.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 12));
 		panel.add(rdbtnNewRadioButton_2);
 		
 		JPanel panel_1 = new JPanel();
@@ -65,6 +75,8 @@ public class VentanaReceptor2 extends JFrame {
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnNewButton = new JButton("Confirmar");
+		btnNewButton.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		btnNewButton.setPreferredSize(new Dimension(120, 30));
 		panel_1.add(btnNewButton, BorderLayout.EAST);
 	}
 
