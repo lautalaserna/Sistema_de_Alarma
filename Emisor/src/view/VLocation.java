@@ -45,7 +45,7 @@ public class VLocation extends JFrame {
 	 * Create the frame.
 	 */
 	public VLocation() {
-		setTitle("Configurar Ubicación");
+		setTitle("Configurar Ubicacion");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(800, 400, 450, 250);
 		setResizable(false);
@@ -75,7 +75,7 @@ public class VLocation extends JFrame {
 		gbc_panel_4.gridy = 0;
 		panel.add(panel_4, gbc_panel_4);
 		
-		JLabel lblNewLabel = new JLabel("Ubicacón");
+		JLabel lblNewLabel = new JLabel("Ubicacon");
 		panel_4.add(lblNewLabel);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));

@@ -38,7 +38,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
-public class VentanaReceptor extends JFrame {
+public class VReceptor extends JFrame {
 
 	private JPanel PanelPrincipal;
 	private JTable table;
@@ -50,19 +50,19 @@ public class VentanaReceptor extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaReceptor frame = new VentanaReceptor();
+					VReceptor frame = new VReceptor();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
+			} 
 		});
 	}
 
 	/**
 	 * Create the frame.
 	 */
-	public VentanaReceptor() {
+	public VReceptor() {
 		setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 12));
 		setTitle("Sistema de Alarma");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

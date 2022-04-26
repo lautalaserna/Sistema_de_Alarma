@@ -16,8 +16,9 @@ import java.awt.Dimension;
 import java.awt.Point;
 import javax.swing.JTextField;
 import javax.swing.DropMode;
+import java.awt.GridLayout;
 
-public class VentanaReceptor2 extends JFrame {
+public class VAccept extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -28,8 +29,8 @@ public class VentanaReceptor2 extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
-					VentanaReceptor2 frame = new VentanaReceptor2();
+				try { 
+					VAccept frame = new VAccept();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -41,17 +42,19 @@ public class VentanaReceptor2 extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaReceptor2() {
+	public VAccept() {
 		setResizable(false);
 		setTitle("Sistema de Alarma");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 460, 160);
+		setBounds(100, 100, 500, 180);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		JLabel lblNewLabel = new JLabel("Tipos de alertas a recibir");
+		JLabel lblNewLabel = new JLabel("  Indique Alertas a recibir:");
+		lblNewLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblNewLabel.setPreferredSize(new Dimension(100,30));
 		lblNewLabel.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		contentPane.add(lblNewLabel, BorderLayout.NORTH);
@@ -61,15 +64,15 @@ public class VentanaReceptor2 extends JFrame {
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 15));
 		
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("Alerta medica");
-		rdbtnNewRadioButton.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 12));
+		rdbtnNewRadioButton.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		panel.add(rdbtnNewRadioButton);
 		
 		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Alerta seguridad");
-		rdbtnNewRadioButton_1.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 12));
+		rdbtnNewRadioButton_1.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		panel.add(rdbtnNewRadioButton_1);
 		
 		JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("Alerta incendio");
-		rdbtnNewRadioButton_2.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 12));
+		rdbtnNewRadioButton_2.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		panel.add(rdbtnNewRadioButton_2);
 		
 		JPanel panel_1 = new JPanel();
@@ -82,20 +85,23 @@ public class VentanaReceptor2 extends JFrame {
 		flowLayout.setAlignment(FlowLayout.LEADING);
 		panel_1.add(panel_2);
 		
-		JLabel lblNewLabel_1 = new JLabel("Puerto:");
-		lblNewLabel_1.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 12));
+		JLabel lblNewLabel_1 = new JLabel("  Puerto:");
+		lblNewLabel_1.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		panel_2.add(lblNewLabel_1);
 		
 		textField = new JTextField();
 		panel_2.add(textField);
 		textField.setColumns(15);
+		textField.setPreferredSize(new Dimension(0,26));
 		
 		JPanel panel_3 = new JPanel();
 		panel_1.add(panel_3, BorderLayout.EAST);
+		panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 5));
 		
 		JButton btnNewButton = new JButton("Confirmar");
-		btnNewButton.setPreferredSize(new Dimension(120, 30));
+		btnNewButton.setPreferredSize(new Dimension(120, 26));
 		btnNewButton.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		btnNewButton.setPreferredSize(new Dimension(120,30));
 		panel_3.add(btnNewButton);
 	}
 

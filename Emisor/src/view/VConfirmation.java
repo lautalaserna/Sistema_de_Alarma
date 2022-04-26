@@ -40,7 +40,7 @@ public class VConfirmation extends JFrame {
 	 * Create the frame.
 	 */
 	public VConfirmation() {
-		setTitle("Confirmación");
+		setTitle("Confirmacion");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(800, 400, 350, 150);

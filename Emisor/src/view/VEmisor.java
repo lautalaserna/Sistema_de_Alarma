@@ -79,7 +79,7 @@ public class VEmisor extends JFrame {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 16));
 		
-		JLabel lblNewLabel_1 = new JLabel("Esperando Confirmación...");
+		JLabel lblNewLabel_1 = new JLabel("Esperando Confirmacion...");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setFont(new Font("MS Reference Sans Serif", Font.ITALIC, 14));
 		lblNewLabel_1.setBounds(10, 194, 416, 22);
