@@ -13,7 +13,6 @@ public class Receptor {
 	public static Receptor getInstance() {
 		if (instance == null) 
 			instance = new Receptor();
-		
 		return instance;
 	}
 	

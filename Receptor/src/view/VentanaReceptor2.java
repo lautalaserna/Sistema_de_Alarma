@@ -14,10 +14,13 @@ import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.Dimension;
 import java.awt.Point;
+import javax.swing.JTextField;
+import javax.swing.DropMode;
 
 public class VentanaReceptor2 extends JFrame {
 
 	private JPanel contentPane;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -55,7 +58,7 @@ public class VentanaReceptor2 extends JFrame {
 		
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.CENTER);
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 25));
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 15));
 		
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("Alerta medica");
 		rdbtnNewRadioButton.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 12));
@@ -73,10 +76,27 @@ public class VentanaReceptor2 extends JFrame {
 		contentPane.add(panel_1, BorderLayout.SOUTH);
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
+		JPanel panel_2 = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel_2.getLayout();
+		flowLayout.setVgap(10);
+		flowLayout.setAlignment(FlowLayout.LEADING);
+		panel_1.add(panel_2);
+		
+		JLabel lblNewLabel_1 = new JLabel("Puerto:");
+		lblNewLabel_1.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 12));
+		panel_2.add(lblNewLabel_1);
+		
+		textField = new JTextField();
+		panel_2.add(textField);
+		textField.setColumns(15);
+		
+		JPanel panel_3 = new JPanel();
+		panel_1.add(panel_3, BorderLayout.EAST);
+		
 		JButton btnNewButton = new JButton("Confirmar");
-		btnNewButton.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		btnNewButton.setPreferredSize(new Dimension(120, 30));
-		panel_1.add(btnNewButton, BorderLayout.EAST);
+		btnNewButton.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		panel_3.add(btnNewButton);
 	}
 
 }
