@@ -7,6 +7,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controller.ControllerLocation;
+
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -17,13 +20,18 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.ActionEvent;
 
-public class VLocation extends JFrame {
+public class VLocation extends JFrame implements ActionListener, KeyListener {
 
 	private JPanel contentPane;
 	private JTextField textFieldLocation;
 	private JTextField textFieldIP;
 	private JTextField textFieldPort;
+	private JButton btnConfirmar;
 
 	/**
 	 * Launch the application.
@@ -94,6 +102,7 @@ public class VLocation extends JFrame {
 		panel_1.add(textFieldLocation);
 		textFieldLocation.setColumns(20);
 		textFieldLocation.setPreferredSize(new Dimension(0,28));
+		textFieldLocation.addKeyListener(this);
 		
 		JPanel panel_5 = new JPanel();
 		FlowLayout flowLayout_3 = (FlowLayout) panel_5.getLayout();
@@ -163,6 +172,7 @@ public class VLocation extends JFrame {
 		panel_3.add(textFieldPort);
 		textFieldPort.setColumns(20);
 		textFieldPort.setPreferredSize(new Dimension(0,28));
+		textFieldPort.addKeyListener(this);
 		
 		JPanel panel_7 = new JPanel();
 		GridBagConstraints gbc_panel_7 = new GridBagConstraints();
@@ -172,10 +182,50 @@ public class VLocation extends JFrame {
 		panel.add(panel_7, gbc_panel_7);
 		panel_7.setLayout(new FlowLayout(FlowLayout.RIGHT, 32, 10));
 		
-		JButton btnConfirmar = new JButton("Confirmar");
+		btnConfirmar = new JButton("Confirmar");
+		btnConfirmar.setEnabled(false);
+		btnConfirmar.addActionListener(this);
+		btnConfirmar.setActionCommand("Confirmar ubicacion");
 		panel_7.add(btnConfirmar);
 		btnConfirmar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		btnConfirmar.setPreferredSize(new Dimension(120,30));
+		
+		checkText();
 	}
 
+	public void addActionListener(ControllerLocation controller) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void actionPerformed(ActionEvent e) {
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) { //Si hay algo en los textFields
+		checkText();
+	}
+	
+	public void checkText() {
+		if (!this.textFieldLocation.getText().isEmpty() && !this.textFieldPort.getText().isEmpty())
+			btnConfirmar.setEnabled(true);
+	}
+	
+	public String getLocationText() {
+		return (this.textFieldLocation.getText());
+	}
+	
+	public String getPortText() {
+		return (this.textFieldPort.getText());
+	}
 }
