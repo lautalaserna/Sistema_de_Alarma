@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import model.*;
 import view.VEmisor;
 
 public class ControllerEmisor implements ActionListener, WindowListener{
@@ -62,15 +63,14 @@ public class ControllerEmisor implements ActionListener, WindowListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ControllerConfirmation controllerConfirmation = new ControllerConfirmation();
 		if(e.getActionCommand().equals("Foco de Incendio")){
-			
+			ControllerConfirmation controllerConfirmation = new ControllerConfirmation(EventFocoIncendio e);
 		}
 		else if (e.getActionCommand().equals("Asistencia Medica")){
-			
+			ControllerConfirmation controllerConfirmation = new ControllerConfirmation(EventAsistenciaMedica event);
 		}
 		else { //Personal de Seguridad.
-			
+			ControllerConfirmation controllerConfirmation = new ControllerConfirmation(EventPersonalSeguridad event);
 		}
 		
 	}
