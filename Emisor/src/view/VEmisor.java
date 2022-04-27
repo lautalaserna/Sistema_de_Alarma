@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controller.ControllerEmisor;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -84,6 +87,11 @@ public class VEmisor extends JFrame {
 		lblNewLabel_1.setFont(new Font("MS Reference Sans Serif", Font.ITALIC, 14));
 		lblNewLabel_1.setBounds(10, 194, 416, 22);
 		contentPane.add(lblNewLabel_1);
+	}
+
+	public void addActionListener(ControllerEmisor controllerEmisor) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

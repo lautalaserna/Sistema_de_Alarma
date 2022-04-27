@@ -4,21 +4,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.IOException;
 
-import model.Emisor;
-import model.Location;
+import view.VConfirmation;
 import view.VLocation;
 
-public class ControllerLocation implements ActionListener, WindowListener{
+public class ControllerConfirmation implements ActionListener, WindowListener{
 	
-	private VLocation viewLocation = null;
+private VConfirmation viewConfirmation = null;
 	
-	public ControllerLocation()
+	public ControllerConfirmation()
 	{
-		this.viewLocation = new VLocation();
-		this.viewLocation.addActionListener(this);
-		this.viewLocation.addWindowListener(this);
+		this.viewConfirmation = new VConfirmation();
+		this.viewConfirmation.addActionListener(this);
+		this.viewConfirmation.addWindowListener(this);
 	}
 
 	@Override
@@ -29,7 +27,7 @@ public class ControllerLocation implements ActionListener, WindowListener{
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		ControllerEmisor controllerEmisor = new ControllerEmisor();
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -65,15 +63,13 @@ public class ControllerLocation implements ActionListener, WindowListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		try {
-			Location loc = new Location(this.viewLocation.getLocationText(), this.viewLocation.getPortText());
-			Emisor.getInstance().setLocation(loc);
-		} catch (IOException e1) {
-			e1.printStackTrace();
+		if (e.getActionCommand().equals("Confirmar solicitud")) {
+			
+		}
+		else { //Presionó Cancelar.
+			
 		}
 		
-		//Falta que se cierre esta ventana.
-		//FALTA LO DEL ARCHIVO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (XML)
 	}
 
 }

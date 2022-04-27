@@ -4,23 +4,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.IOException;
 
-import model.Emisor;
-import model.Location;
+import view.VEmisor;
 import view.VLocation;
 
-public class ControllerLocation implements ActionListener, WindowListener{
-	
-	private VLocation viewLocation = null;
-	
-	public ControllerLocation()
-	{
-		this.viewLocation = new VLocation();
-		this.viewLocation.addActionListener(this);
-		this.viewLocation.addWindowListener(this);
-	}
+public class ControllerEmisor implements ActionListener, WindowListener{
 
+	private VEmisor viewEmisor = null;
+	
+	public ControllerEmisor()
+	{
+		this.viewEmisor = new VEmisor();
+		this.viewEmisor.addActionListener(this);
+		this.viewEmisor.addWindowListener(this);
+	}
+	
 	@Override
 	public void windowOpened(WindowEvent e) {
 		// TODO Auto-generated method stub
@@ -29,7 +27,7 @@ public class ControllerLocation implements ActionListener, WindowListener{
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		ControllerEmisor controllerEmisor = new ControllerEmisor();
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -65,15 +63,8 @@ public class ControllerLocation implements ActionListener, WindowListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		try {
-			Location loc = new Location(this.viewLocation.getLocationText(), this.viewLocation.getPortText());
-			Emisor.getInstance().setLocation(loc);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+		// TODO Auto-generated method stub
 		
-		//Falta que se cierre esta ventana.
-		//FALTA LO DEL ARCHIVO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (XML)
 	}
 
 }

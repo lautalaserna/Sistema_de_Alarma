@@ -7,6 +7,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controller.ControllerConfirmation;
+import controller.ControllerLocation;
+
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -15,10 +19,16 @@ import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class VConfirmation extends JFrame {
+public class VConfirmation extends JFrame implements ActionListener, KeyListener{
 
 	private JPanel contentPane;
+	private JButton btnConfirmar;
+	private JButton btnCancelar;
 
 	/**
 	 * Launch the application.
@@ -74,15 +84,48 @@ public class VConfirmation extends JFrame {
 		gbc_panel.gridy = 1;
 		contentPane.add(panel, gbc_panel);
 		
-		JButton btnConfirmar = new JButton("Confirmar");
+		btnConfirmar = new JButton("Confirmar");
 		btnConfirmar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		panel.add(btnConfirmar);
 		btnConfirmar.setPreferredSize(new Dimension(110,30));
+		btnConfirmar.addActionListener(this);
+		btnConfirmar.setActionCommand("Confirmar solicitud");
 		
-		JButton btnCancelar = new JButton(" Cancelar ");
+		btnCancelar = new JButton(" Cancelar ");
 		btnCancelar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		panel.add(btnCancelar);
 		btnCancelar.setPreferredSize(new Dimension(110,30));
+		btnCancelar.addActionListener(this);
+		btnCancelar.setActionCommand("Cancelar solicitud");
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addActionListener(ControllerConfirmation controller) {
+		this.btnConfirmar.addActionListener(controller);
+		this.btnCancelar.addActionListener(controller);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

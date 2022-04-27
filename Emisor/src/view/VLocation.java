@@ -194,8 +194,7 @@ public class VLocation extends JFrame implements ActionListener, KeyListener {
 	}
 
 	public void addActionListener(ControllerLocation controller) {
-		// TODO Auto-generated method stub
-		
+		this.btnConfirmar.addActionListener(controller);
 	}
 
 	public void actionPerformed(ActionEvent e) {
