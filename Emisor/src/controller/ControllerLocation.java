@@ -29,8 +29,7 @@ public class ControllerLocation implements ActionListener, WindowListener{
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		ControllerEmisor controllerEmisor = new ControllerEmisor();
-		
+		//ControllerEmisor controllerEmisor = new ControllerEmisor();
 	}
 
 	@Override
@@ -72,7 +71,9 @@ public class ControllerLocation implements ActionListener, WindowListener{
 			e1.printStackTrace();
 		}
 		
-		//Falta que se cierre esta ventana.
+		this.viewLocation.setVisible(false);
+		ControllerEmisor controllerEmisor = new ControllerEmisor();
+		
 		//FALTA LO DEL ARCHIVO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (XML)
 	}
 

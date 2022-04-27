@@ -50,6 +50,7 @@ public class VConfirmation extends JFrame implements ActionListener, KeyListener
 	 * Create the frame.
 	 */
 	public VConfirmation() {
+		setAlwaysOnTop(true);
 		setTitle("Confirmación");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -97,6 +98,8 @@ public class VConfirmation extends JFrame implements ActionListener, KeyListener
 		btnCancelar.setPreferredSize(new Dimension(110,30));
 		btnCancelar.addActionListener(this);
 		btnCancelar.setActionCommand("Cancelar solicitud");
+		
+		this.setVisible(true);
 	}
 
 	@Override

@@ -53,6 +53,7 @@ public class VLocation extends JFrame implements ActionListener, KeyListener {
 	 * Create the frame.
 	 */
 	public VLocation() {
+		setAlwaysOnTop(true);
 		setTitle("Configurar Ubicación");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(800, 400, 450, 250);
@@ -190,7 +191,8 @@ public class VLocation extends JFrame implements ActionListener, KeyListener {
 		btnConfirmar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		btnConfirmar.setPreferredSize(new Dimension(120,30));
 		
-		checkText();
+		this.setVisible(true); //Para que cuandos se cree, sea visible.
+		checkText(); //Esto es para saber si al comienzo debe habilitar o no el botón Confirmar.
 	}
 
 	public void addActionListener(ControllerLocation controller) {

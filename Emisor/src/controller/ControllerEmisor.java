@@ -6,7 +6,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import view.VEmisor;
-import view.VLocation;
 
 public class ControllerEmisor implements ActionListener, WindowListener{
 
@@ -63,7 +62,16 @@ public class ControllerEmisor implements ActionListener, WindowListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		ControllerConfirmation controllerConfirmation = new ControllerConfirmation();
+		if(e.getActionCommand().equals("Foco de Incendio")){
+			
+		}
+		else if (e.getActionCommand().equals("Asistencia Medica")){
+			
+		}
+		else { //Personal de Seguridad.
+			
+		}
 		
 	}
 

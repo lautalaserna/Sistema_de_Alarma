@@ -5,15 +5,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import model.Event;
 import view.VConfirmation;
 import view.VLocation;
 
 public class ControllerConfirmation implements ActionListener, WindowListener{
 	
 private VConfirmation viewConfirmation = null;
+private Event event;
 	
-	public ControllerConfirmation()
+	public ControllerConfirmation(Event event)
 	{
+		this.event = event;
 		this.viewConfirmation = new VConfirmation();
 		this.viewConfirmation.addActionListener(this);
 		this.viewConfirmation.addWindowListener(this);
@@ -64,11 +67,10 @@ private VConfirmation viewConfirmation = null;
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Confirmar solicitud")) {
-			
+			//Crea el mensaje con el tipo de evento pasado por parámetro en el constructor.
+			//Realiza la comunicación.
 		}
-		else { //Presionó Cancelar.
-			
-		}
+		this.viewConfirmation.setVisible(false); //Esto lo hace siempre.
 		
 	}
 
