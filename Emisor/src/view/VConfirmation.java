@@ -49,9 +49,8 @@ public class VConfirmation extends JFrame implements ActionListener, KeyListener
 	 * Create the frame.
 	 */
 	public VConfirmation() {
-		setTitle("Confirmacion");
-		setAlwaysOnTop(true);
 		setTitle("Confirmación");
+		setAlwaysOnTop(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(800, 400, 350, 150);

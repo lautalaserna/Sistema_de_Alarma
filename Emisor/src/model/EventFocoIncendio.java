@@ -6,7 +6,7 @@ public class EventFocoIncendio implements Event, Serializable{
 
 	@Override
 	public String getEventType() {
-		return "FI";
+		return "Foco de Incendio";
 	}
 	
 }

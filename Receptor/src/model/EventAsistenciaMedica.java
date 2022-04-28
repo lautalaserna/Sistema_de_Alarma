@@ -6,7 +6,7 @@ public class EventAsistenciaMedica implements Event, Serializable{
 
 	@Override
 	public String getEventType() {
-		return "AM";
+		return "Asistencia Médica";
 	}
 	
 }

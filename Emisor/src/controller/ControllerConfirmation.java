@@ -4,7 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
+import connection.Connection;
 import model.Emisor;
 import model.Event;
 import view.VConfirmation;
@@ -26,7 +29,16 @@ public class ControllerConfirmation implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("ACCEPT")) {
-			// Emisor.getInstance().sendMsg(this.event);
+			System.out.println("Sending");
+			Connection c;
+			try {
+				c = new Connection();
+				c.sendMsg();
+			} catch (SocketException ex) {
+				ex.printStackTrace();
+			} catch (UnknownHostException ex) {
+				ex.printStackTrace();
+			}
 		}
 		this.viewConfirmation.setVisible(false); //Esto lo hace siempre.
 		

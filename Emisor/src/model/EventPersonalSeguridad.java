@@ -6,7 +6,7 @@ public class EventPersonalSeguridad implements Event, Serializable{
 
 	@Override
 	public String getEventType() {
-		return "PS";
+		return "Personal de Seguridad";
 	}
 	
 }

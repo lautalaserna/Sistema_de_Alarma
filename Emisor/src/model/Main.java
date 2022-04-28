@@ -2,7 +2,10 @@ package model;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
+import connection.Connection;
 import controller.ControllerLocation;
 import persistence.Persistence;
 
@@ -27,6 +30,7 @@ public class Main {
 		
 		emisor.setLocation(loc);
 		ControllerLocation cl = new ControllerLocation();
+		
 	}
 
 }

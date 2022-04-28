@@ -53,7 +53,6 @@ public class VLocation extends JFrame implements ActionListener, KeyListener {
 	 * Create the frame.
 	 */
 	public VLocation() {
-		setTitle("Configurar Ubicacion");
 		setAlwaysOnTop(true);
 		setTitle("Configurar Ubicación");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,7 +84,7 @@ public class VLocation extends JFrame implements ActionListener, KeyListener {
 		gbc_panel_4.gridy = 0;
 		panel.add(panel_4, gbc_panel_4);
 		
-		JLabel lblNewLabel = new JLabel("Ubicacon");
+		JLabel lblNewLabel = new JLabel("Ubicación");
 		panel_4.add(lblNewLabel);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));

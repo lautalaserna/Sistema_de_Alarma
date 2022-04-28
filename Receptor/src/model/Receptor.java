@@ -35,9 +35,5 @@ public class Receptor {
 	public void setFilter(Filter filter) {
 		this.filter = filter;
 	}
-
-	public static void setInstance(Receptor instance) {
-		Receptor.instance = instance;
-	}
 	
 }

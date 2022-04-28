@@ -25,7 +25,7 @@ public class Emisor {
 	}
 
 	public void sendMsg(Event e) {
-		Connection.sendMsg(MsgFactory.getMessage(loc, e));
+		// Connection.sendMsg(MsgFactory.getMessage(loc, e));
 	}
 
 }

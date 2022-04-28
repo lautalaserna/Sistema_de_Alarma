@@ -70,7 +70,7 @@ public class VReceptor extends JFrame implements ActionListener{
 		setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 12));
 		setTitle("Sistema de Alarma");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 713, 488);
+		setBounds(650, 350, 720, 480);
 		PanelPrincipal = new JPanel();
 		PanelPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(PanelPrincipal);
@@ -95,7 +95,7 @@ public class VReceptor extends JFrame implements ActionListener{
 		btnConfirmar.setPreferredSize(new Dimension(120, 30));
 		btnConfirmar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		btnConfirmar.addActionListener(this);
-		btnConfirmar.setActionCommand("Confirmar evento");
+		btnConfirmar.setActionCommand("CONFIRM");
 		panel_2.add(btnConfirmar);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -103,12 +103,12 @@ public class VReceptor extends JFrame implements ActionListener{
 		
 		table = new JTable();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 11));
+		table.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
-				"Ubicaci\u00F3n", "Tipo de Evento", "Hora", "Estado"
+				"Ubicación", "Fecha", "Tipo de Emergencia", "Estado"
 			}
 		));
 		table.getColumnModel().getColumn(0).setPreferredWidth(150);
@@ -128,6 +128,14 @@ public class VReceptor extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public JTable getTable() {
+		return table;
+	}
+
+	public void setTable(JTable table) {
+		this.table = table;
 	}
 	
 	public void check() {

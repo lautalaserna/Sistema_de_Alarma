@@ -4,7 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+
+import connection.Connection;
+import model.Message;
+import model.Receptor;
 import view.VReceptor;
 
 public class ControllerReceptor implements ActionListener, WindowListener{
@@ -20,8 +29,23 @@ public class ControllerReceptor implements ActionListener, WindowListener{
 
 	@Override
 	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
+		this.viewReceptor.getTable().clearSelection();
 		
+		ArrayList<Message> msgs = Receptor.getInstance().getReg();
+		
+		for (Message msg : msgs) {
+
+			DefaultTableModel model = (DefaultTableModel) viewReceptor.getTable().getModel();
+		    List<String> list = new ArrayList<String>();
+		    list.add(msg.getLoc().getName());
+		    list.add(msg.getDate().getHour() + ":" + msg.getDate().getMinute());
+		    list.add(msg.getEvent().getEventType());
+			list.add("Pendiente");
+			
+		    model.addRow(list.toArray());
+		    
+		    this.viewReceptor.getTable().setModel(model);
+		}
 	}
 
 	@Override
@@ -62,8 +86,14 @@ public class ControllerReceptor implements ActionListener, WindowListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//Cuando le llegue el "Confirmar evento", Va a hacer que se envíe la confirmación al Emisor.
-		//También va a triggerear el timer para que corte la alarma (¿y actualice el registro?).
-		
+		if (e.getActionCommand().equals("CONFIRM")) {
+			System.out.println("Listening");
+			try {
+				Connection c = new Connection(Receptor.getInstance().getFilter(),8080);
+				c.listen();
+			} catch (SocketException ex) {
+				ex.printStackTrace();
+			}
+		}
 	}
 }
