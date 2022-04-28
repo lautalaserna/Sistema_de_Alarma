@@ -25,6 +25,8 @@ import java.awt.event.KeyListener;
 import javax.swing.JTextField;
 import javax.swing.DropMode;
 import java.awt.GridLayout;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class VAccept extends JFrame implements ActionListener, KeyListener {
 
@@ -123,12 +125,6 @@ public class VAccept extends JFrame implements ActionListener, KeyListener {
 
 	public void addActionListener(ControllerAccept controllerAccept) {
 		this.btnConfirmar.addActionListener(controllerAccept);
-		
-	}
-
-	public void addWindowListener(ControllerAccept controllerAccept) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -155,7 +151,7 @@ public class VAccept extends JFrame implements ActionListener, KeyListener {
 	}
 	
 	public void check() {
-		if (this.textFieldPort.getText().isEmpty() || !(this.radioBtnAI.isEnabled() || this.radioBtnAS.isEnabled() || this.radioBtnAM.isEnabled()))
+		if (this.textFieldPort.getText().isEmpty() || (this.radioBtnAI.isSelected()==false && this.radioBtnAS.isSelected()==false && this.radioBtnAM.isSelected()==false))
 			btnConfirmar.setEnabled(false);
 		else 
 			btnConfirmar.setEnabled(true);

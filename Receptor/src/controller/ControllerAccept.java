@@ -18,7 +18,6 @@ public class ControllerAccept implements ActionListener, WindowListener{
 		this.viewAccept = new VAccept();
 		this.viewAccept.addActionListener(this);
 		this.viewAccept.addWindowListener(this);
-		this.viewAccept.check();
 	}
 
 	@Override
@@ -29,8 +28,7 @@ public class ControllerAccept implements ActionListener, WindowListener{
 
 	@Override
 	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
+		viewAccept.check();
 	}
 
 	@Override

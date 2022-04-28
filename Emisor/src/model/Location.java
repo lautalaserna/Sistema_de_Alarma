@@ -8,7 +8,7 @@ import java.net.UnknownHostException;
 public class Location implements Serializable{
 	private String ip;
 	private int port = 8080;
-	private String name = "Puesto de Trabajo";
+	private String name = "";
 	
 	public Location() throws IOException {
 		this.ip = InetAddress.getLocalHost().getHostAddress();
