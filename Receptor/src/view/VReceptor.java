@@ -33,15 +33,19 @@ import javax.swing.AbstractListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import controller.ControllerReceptor;
+
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
-public class VReceptor extends JFrame {
+public class VReceptor extends JFrame implements ActionListener{
 
 	private JPanel PanelPrincipal;
 	private JTable table;
+	private JButton btnConfirmar;
 
 	/**
 	 * Launch the application.
@@ -87,14 +91,12 @@ public class VReceptor extends JFrame {
 		flowLayout_1.setHgap(20);
 		PanelPrincipal.add(panel_2, BorderLayout.SOUTH);
 		
-		JButton btnNewButton = new JButton("Confirmar");
-		btnNewButton.setPreferredSize(new Dimension(120, 30));
-		btnNewButton.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		panel_2.add(btnNewButton);
+		btnConfirmar = new JButton("Confirmar");
+		btnConfirmar.setPreferredSize(new Dimension(120, 30));
+		btnConfirmar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		btnConfirmar.addActionListener(this);
+		btnConfirmar.setActionCommand("Confirmar evento");
+		panel_2.add(btnConfirmar);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		PanelPrincipal.add(scrollPane, BorderLayout.CENTER);
@@ -114,5 +116,24 @@ public class VReceptor extends JFrame {
 		table.getColumnModel().getColumn(2).setPreferredWidth(150);
 		table.getColumnModel().getColumn(3).setPreferredWidth(150);
 		scrollPane.setViewportView(table);
+		
+		this.setVisible(true); //Para que cuandos se cree, sea visible.
+	}
+
+	public void addActionListener(ControllerReceptor controllerReceptor) {
+		this.btnConfirmar.addActionListener(controllerReceptor);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void check() {
+		//El botón inicia deshabilitado. Una vez clickea una fila, evalúa:
+		//Si el estado de la fila seleccionada (de la tabla) es "Aceptado", debería deshabilitarse.
+		//Si es "Expirado" también deshabilitado.
+		//Si es "Pendiente", debería habilitarse.
 	}
 }
