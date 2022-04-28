@@ -21,16 +21,25 @@ public class ControllerEmisor implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("FI")){
+			this.viewEmisor.setEnabled(false);
 			ControllerConfirmation cc = new ControllerConfirmation(this, new EventFocoIncendio());
 		}
 		else if (e.getActionCommand().equals("AM")){
+			this.viewEmisor.setEnabled(false);
 			ControllerConfirmation cc = new ControllerConfirmation(this, new EventAsistenciaMedica());
 		}
 		else if (e.getActionCommand().equals("PS")){ 
+			this.viewEmisor.setEnabled(false);
 			ControllerConfirmation cc = new ControllerConfirmation(this, new EventPersonalSeguridad());
 		} else if (e.getActionCommand().equals("ACCEPT")){ 
+			this.viewEmisor.setEnabled(true);
 			this.viewEmisor.setLblConfirm("WAIT");
-		} 
+		}  else if(e.getActionCommand().equals("CANCEL")) {
+			this.viewEmisor.setEnabled(true);
+		}
+		
+		
+		
 		
 	}
 

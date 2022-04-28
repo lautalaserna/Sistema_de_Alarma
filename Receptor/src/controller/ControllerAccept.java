@@ -4,8 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.net.SocketException;
 import java.util.ArrayList;
 
+import connection.Connection;
 import connection.Filter;
 import model.Event;
 import model.Receptor;
@@ -31,9 +33,19 @@ public class ControllerAccept implements ActionListener, WindowListener {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-
 		this.viewAccept.setVisible(false);
 		ControllerReceptor cr = new ControllerReceptor();
+		System.out.println("Listening");
+		try {
+			Connection c = new Connection(Receptor.getInstance().getFilter(),8080);
+			new Thread() {
+				public void run() {
+					c.listen();					
+				}
+			}.start();
+		} catch (SocketException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	private int getPort() {

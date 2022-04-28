@@ -16,25 +16,21 @@ public class Connection {
 	}
 
 	public void listen() {
-		new Thread() {
-			public void run() {
-				while (true) {
-					try {
-						DatagramPacket datagramPacket = new DatagramPacket(buffer, buffer.length);
-						datagramSocket.receive(datagramPacket);
-						InetAddress inetAdress = datagramPacket.getAddress();
-						int port = datagramPacket.getPort();
-						String msg = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
-						System.out.println("Msg from Client: " + msg);
-						datagramPacket = new DatagramPacket(buffer, buffer.length, inetAdress, port);
-						datagramSocket.send(datagramPacket);
-					} catch (Exception e) {
-						e.printStackTrace();
-						break;
-					}
-				}
+		while (true) {
+			try {
+				DatagramPacket datagramPacket = new DatagramPacket(buffer, buffer.length);
+				datagramSocket.receive(datagramPacket);
+				InetAddress inetAdress = datagramPacket.getAddress();
+				int port = datagramPacket.getPort();
+				String msg = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
+				System.out.println("Msg from Client: " + msg);
+				datagramPacket = new DatagramPacket(buffer, buffer.length, inetAdress, port);
+				datagramSocket.send(datagramPacket);
+			} catch (Exception e) {
+				e.printStackTrace();
+				break;
 			}
-		}.run();
+		}
 	}
 
 	/*

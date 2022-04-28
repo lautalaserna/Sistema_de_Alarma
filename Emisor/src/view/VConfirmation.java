@@ -96,7 +96,7 @@ public class VConfirmation extends JFrame implements ActionListener, KeyListener
 		panel.add(btnCancelar);
 		btnCancelar.setPreferredSize(new Dimension(110,30));
 		btnCancelar.addActionListener(this);
-		btnCancelar.setActionCommand("Cancelar solicitud");
+		btnCancelar.setActionCommand("CANCEL");
 		
 		this.setVisible(true);
 	}

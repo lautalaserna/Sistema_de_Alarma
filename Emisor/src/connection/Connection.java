@@ -19,7 +19,6 @@ public class Connection {
 	
 	public void sendMsg() {
 		Scanner scanner = new Scanner(System.in);
-		while(true) {
 			try {
 				String msg = "Mensajito de Prueba";
 				buffer = msg.getBytes();
@@ -31,9 +30,7 @@ public class Connection {
 				datagramSocket.close();
 			} catch (Exception e) {
 				e.printStackTrace();
-				break;
 			}
-		}
 	}
 	
 	/*

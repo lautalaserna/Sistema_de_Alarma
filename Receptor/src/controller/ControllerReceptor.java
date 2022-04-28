@@ -86,14 +86,6 @@ public class ControllerReceptor implements ActionListener, WindowListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("CONFIRM")) {
-			System.out.println("Listening");
-			try {
-				Connection c = new Connection(Receptor.getInstance().getFilter(),8080);
-				c.listen();
-			} catch (SocketException ex) {
-				ex.printStackTrace();
-			}
-		}
+		
 	}
 }
