@@ -10,7 +10,7 @@ import model.Event;
 import view.VConfirmation;
 import view.VLocation;
 
-public class ControllerConfirmation implements ActionListener, WindowListener{
+public class ControllerConfirmation implements ActionListener {
 	
 	private VConfirmation viewConfirmation = null;
 	private Event event;
@@ -20,49 +20,7 @@ public class ControllerConfirmation implements ActionListener, WindowListener{
 		this.event = event;
 		this.viewConfirmation = new VConfirmation();
 		this.viewConfirmation.addActionListener(this);
-		this.viewConfirmation.addWindowListener(this);
 		this.viewConfirmation.addActionListener(ce);
-	}
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

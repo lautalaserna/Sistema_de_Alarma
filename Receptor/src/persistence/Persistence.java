@@ -10,41 +10,40 @@ import java.io.Serializable;
 import connection.Filter;
 
 public class Persistence {
-
 	private static FileOutputStream fileoutput;
 	private static FileInputStream fileinput;
 	private static ObjectOutputStream objectoutput;
 	private static ObjectInputStream objectinput;
 
-	public static void abrirInput(String nombre) throws IOException {
-		fileinput = new FileInputStream(nombre);
+	private static void openInput(String name) throws IOException {
+		fileinput = new FileInputStream(name);
 		objectinput = new ObjectInputStream(fileinput);
 
 	}
 
-	public static void abrirOutput(String nombre) throws IOException {
-		fileoutput = new FileOutputStream(nombre);
+	private static void openOutput(String name) throws IOException {
+		fileoutput = new FileOutputStream(name);
 		objectoutput = new ObjectOutputStream(fileoutput);
 
 	}
 
-	public static void cerrarOutput() throws IOException {
+	private static void closeOutput() throws IOException {
 		if (objectoutput != null)
 			objectoutput.close();
 	}
 
-	public static void cerrarInput() throws IOException {
+	private static void closeInput() throws IOException {
 		if (objectinput != null)
 			objectinput.close();
 
 	}
 
-	public static void escribir(Serializable serializable) throws IOException {
+	private static void write(Serializable serializable) throws IOException {
 		if (objectoutput != null)
 			objectoutput.writeObject(serializable);
 	}
 
-	public static Serializable leer() throws IOException, ClassNotFoundException {
+	private static Serializable read() throws IOException, ClassNotFoundException {
 		Serializable serializable = null;
 		if (objectinput != null)
 			serializable = (Serializable) objectinput.readObject();
@@ -52,21 +51,19 @@ public class Persistence {
 	}
 
 	public static Filter getFilterFromBin(String fileName) throws Exception {
-		Filter f = null;		
-		
-		Persistence.abrirInput(fileName);
-		f = (Filter) Persistence.leer();
-		Persistence.cerrarInput();
-		
-		return f;	
+		Filter f = null;
+
+		Persistence.openInput(fileName);
+		f = (Filter) Persistence.read();
+		Persistence.closeInput();
+
+		return f;
 	}
 
 	public static void setFilterToBin(String fileName, Filter f) throws Exception {
-		Persistence.abrirOutput(fileName);
-		Persistence.escribir(f);
-		Persistence.cerrarOutput();
+		Persistence.openOutput(fileName);
+		Persistence.write(f);
+		Persistence.closeOutput();
 	}
-	
-	
 
 }

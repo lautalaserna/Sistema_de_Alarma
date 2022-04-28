@@ -8,7 +8,7 @@ import java.awt.event.WindowListener;
 import model.*;
 import view.VEmisor;
 
-public class ControllerEmisor implements ActionListener, WindowListener{
+public class ControllerEmisor implements ActionListener {
 
 	private VEmisor viewEmisor = null;
 	
@@ -16,49 +16,6 @@ public class ControllerEmisor implements ActionListener, WindowListener{
 	{
 		this.viewEmisor = new VEmisor();
 		this.viewEmisor.addActionListener(this);
-		this.viewEmisor.addWindowListener(this);
-	}
-	
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
