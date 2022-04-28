@@ -6,7 +6,9 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
+import connection.Filter;
 import model.Event;
+import model.Receptor;
 import view.VAccept;
 
 public class ControllerAccept implements ActionListener, WindowListener{
@@ -28,7 +30,10 @@ public class ControllerAccept implements ActionListener, WindowListener{
 
 	@Override
 	public void windowOpened(WindowEvent e) {
-		viewAccept.check();
+		Filter f = Receptor.getInstance().getFilter();
+		
+		//if(f.getAccept().contains())
+		//viewAccept.check();
 	}
 
 	@Override
