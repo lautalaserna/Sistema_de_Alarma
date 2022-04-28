@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controller.ControllerAccept;
+
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
@@ -14,14 +17,23 @@ import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JTextField;
 import javax.swing.DropMode;
 import java.awt.GridLayout;
 
-public class VAccept extends JFrame {
+public class VAccept extends JFrame implements ActionListener, KeyListener {
 
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField textFieldPort;
+	private JButton btnConfirmar;
+	private JRadioButton radioBtnAI;
+	private JRadioButton radioBtnAM;
+	private JRadioButton radioBtnAS;
 
 	/**
 	 * Launch the application.
@@ -63,17 +75,17 @@ public class VAccept extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 15));
 		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Alerta medica");
-		rdbtnNewRadioButton.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		panel.add(rdbtnNewRadioButton);
+		radioBtnAM = new JRadioButton("Alerta medica");
+		radioBtnAM.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		panel.add(radioBtnAM);
 		
-		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Alerta seguridad");
-		rdbtnNewRadioButton_1.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		panel.add(rdbtnNewRadioButton_1);
+		radioBtnAS = new JRadioButton("Alerta seguridad");
+		radioBtnAS.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		panel.add(radioBtnAS);
 		
-		JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("Alerta incendio");
-		rdbtnNewRadioButton_2.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		panel.add(rdbtnNewRadioButton_2);
+		radioBtnAI = new JRadioButton("Alerta incendio");
+		radioBtnAI.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		panel.add(radioBtnAI);
 		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.SOUTH);
@@ -89,20 +101,64 @@ public class VAccept extends JFrame {
 		lblNewLabel_1.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		panel_2.add(lblNewLabel_1);
 		
-		textField = new JTextField();
-		panel_2.add(textField);
-		textField.setColumns(15);
-		textField.setPreferredSize(new Dimension(0,26));
+		textFieldPort = new JTextField();
+		panel_2.add(textFieldPort);
+		textFieldPort.setColumns(15);
+		textFieldPort.setPreferredSize(new Dimension(0,26));
 		
 		JPanel panel_3 = new JPanel();
 		panel_1.add(panel_3, BorderLayout.EAST);
 		panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 5));
 		
-		JButton btnNewButton = new JButton("Confirmar");
-		btnNewButton.setPreferredSize(new Dimension(120, 26));
-		btnNewButton.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		btnNewButton.setPreferredSize(new Dimension(120,30));
-		panel_3.add(btnNewButton);
+		btnConfirmar = new JButton("Confirmar");
+		btnConfirmar.addActionListener(this);
+		btnConfirmar.setActionCommand("Confirmar tipos");
+		btnConfirmar.setPreferredSize(new Dimension(120, 26));
+		btnConfirmar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		btnConfirmar.setPreferredSize(new Dimension(120,30));
+		panel_3.add(btnConfirmar);
+		
+		this.setVisible(true); //Para que cuandos se cree, sea visible.
+	}
+
+	public void addActionListener(ControllerAccept controllerAccept) {
+		this.btnConfirmar.addActionListener(controllerAccept);
+		
+	}
+
+	public void addWindowListener(ControllerAccept controllerAccept) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) { //Si hay algo en los textFields
+		check();
+	}
+	
+	public void check() {
+		if (this.textFieldPort.getText().isEmpty() || !(this.radioBtnAI.isEnabled() || this.radioBtnAS.isEnabled() || this.radioBtnAM.isEnabled()))
+			btnConfirmar.setEnabled(false);
+		else 
+			btnConfirmar.setEnabled(true);
 	}
 
 }

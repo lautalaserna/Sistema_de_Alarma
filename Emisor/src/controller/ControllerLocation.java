@@ -27,6 +27,7 @@ public class ControllerLocation implements ActionListener, WindowListener{
 		viewLocation.setLocationText(Emisor.getInstance().getLocation().getName());
 		viewLocation.setIPText(Emisor.getInstance().getLocation().getIp());
 		viewLocation.setPortText(Emisor.getInstance().getLocation().getPort());
+		viewLocation.checkText();
 	}
 
 	@Override
