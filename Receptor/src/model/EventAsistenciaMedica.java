@@ -1,10 +1,12 @@
 package model;
 
-public class EventAsistenciaMedica implements Event{
+import java.io.Serializable;
+
+public class EventAsistenciaMedica implements Event, Serializable{
 
 	@Override
 	public String getEventType() {
-		return "A";
+		return "AM";
 	}
 	
 }

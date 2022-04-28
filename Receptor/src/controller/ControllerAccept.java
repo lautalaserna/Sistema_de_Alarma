@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import connection.Filter;
 import model.Event;
 import model.Receptor;
+import persistence.Persistence;
 import view.VAccept;
 
-public class ControllerAccept implements ActionListener, WindowListener{
+public class ControllerAccept implements ActionListener, WindowListener {
 	private VAccept viewAccept = null;
 	private ArrayList<Event> acceptedTypes = new ArrayList<Event>();
-	
-	public ControllerAccept()
-	{
+
+	public ControllerAccept() {
 		this.viewAccept = new VAccept();
 		this.viewAccept.addActionListener(this);
 		this.viewAccept.addWindowListener(this);
@@ -24,52 +24,74 @@ public class ControllerAccept implements ActionListener, WindowListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		Filter f = new Filter(viewAccept.isAMSelected(), viewAccept.isFISelected(), viewAccept.isPSSelected(), getPort());
+		Receptor.getInstance().setFilter(f);
+		try {
+			Persistence.setFilterToBin("filter.bin", f);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+
+		this.viewAccept.setVisible(false);
+		ControllerReceptor cr = new ControllerReceptor();
+	}
+
+	private int getPort() {
+		return this.viewAccept.getPort();
 	}
 
 	@Override
 	public void windowOpened(WindowEvent e) {
 		Filter f = Receptor.getInstance().getFilter();
 		
-		//if(f.getAccept().contains())
-		//viewAccept.check();
+		if(f.isAcceptAM())
+			this.viewAccept.selectAM();
+		
+		if(f.isAcceptFI())
+			this.viewAccept.selectFI();
+		
+		if(f.isAcceptPS())
+			this.viewAccept.selectPS();
+		
+		this.viewAccept.setPort(Receptor.getInstance().getFilter().getPort());
+
+		this.viewAccept.check();
 	}
 
 	@Override
 	public void windowClosing(WindowEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void windowClosed(WindowEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void windowIconified(WindowEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void windowDeiconified(WindowEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void windowActivated(WindowEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void windowDeactivated(WindowEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }

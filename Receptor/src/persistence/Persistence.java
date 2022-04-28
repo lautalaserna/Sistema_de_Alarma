@@ -60,6 +60,12 @@ public class Persistence {
 		
 		return f;	
 	}
+
+	public static void setFilterToBin(String fileName, Filter f) throws Exception {
+		Persistence.abrirOutput(fileName);
+		Persistence.escribir(f);
+		Persistence.cerrarOutput();
+	}
 	
 	
 

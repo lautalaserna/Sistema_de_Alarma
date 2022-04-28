@@ -21,9 +21,9 @@ public class Connection {
                         InputStream inputStream = socket.getInputStream();
                         ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
                         Message m = (Message) objectInputStream.readObject();
-                        if(filter.isAccepted(m)) {
-                        	// Lo acepta
-                        }
+                        
+                        // Chekear filtro
+                        
                         System.out.println("Evento: " + m.getEvent().getEventType());
 					}
 				} catch (Exception e) {					

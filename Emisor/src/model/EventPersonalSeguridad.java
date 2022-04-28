@@ -1,10 +1,12 @@
 package model;
 
-public class EventPersonalSeguridad implements Event{
+import java.io.Serializable;
+
+public class EventPersonalSeguridad implements Event, Serializable{
 
 	@Override
 	public String getEventType() {
-		return "S";
+		return "PS";
 	}
 	
 }

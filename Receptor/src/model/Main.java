@@ -19,7 +19,7 @@ public class Main {
 			File file = new File("location.bin");
 			try {
 				file.createNewFile();
-				filter = new Filter(null);
+				filter = new Filter(false,false,false,8080);
 			} catch (IOException e1) {
 				// O no encontró la IP o hay un problema con el archivo.
 				e.printStackTrace();

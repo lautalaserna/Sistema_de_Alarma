@@ -7,28 +7,48 @@ import model.Event;
 import model.Message;
 
 public class Filter implements Serializable {
-	private ArrayList<Event> accept = null;
+	private boolean acceptAM = false;
+	private boolean acceptFI = false;
+	private boolean acceptPS = false;
 	private int port = 8080;
 	
-	public Filter(ArrayList<Event> accept, int port) {
-		this.accept = accept;
+	public Filter(boolean acceptAM, boolean acceptFI, boolean acceptPS, int port) {
+		this.acceptAM = acceptAM;
+		this.acceptFI = acceptFI;
+		this.acceptPS = acceptPS;
 		this.port = port;
 	}
-	
-	public Filter(ArrayList<Event> accept) {
-		this.accept = accept;
+
+	public boolean isAcceptAM() {
+		return acceptAM;
+	}
+
+	public void setAcceptAM(boolean acceptAM) {
+		this.acceptAM = acceptAM;
+	}
+
+	public boolean isAcceptFI() {
+		return acceptFI;
+	}
+
+	public void setAcceptFI(boolean acceptFI) {
+		this.acceptFI = acceptFI;
+	}
+
+	public boolean isAcceptPS() {
+		return acceptPS;
+	}
+
+	public void setAcceptPS(boolean acceptPS) {
+		this.acceptPS = acceptPS;
+	}
+
+	public int getPort() {
+		return this.port;
 	}
 	
-	public ArrayList<Event> getAccept(){
-		return this.accept;
-	}
-	
-	public void setAccept(ArrayList<Event> accept){
-		this.accept = accept;
-	}
-	
-	public boolean isAccepted(Message m) {
-		return accept.contains(m.getEvent());
+	public void setPort(int port) {
+		this.port = port;
 	}
 	
 }

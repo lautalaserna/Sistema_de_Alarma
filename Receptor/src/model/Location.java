@@ -1,32 +1,46 @@
 package model;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.InetAddress;
 
-public class Location {
+public class Location implements Serializable{
 	private String ip;
-	private String port;
-	private String name;
+	private int port = 8080;
+	private String name = "";
 	
-	public Location(String name, String port) throws IOException {
+	public Location() throws IOException {
+		this.ip = InetAddress.getLocalHost().getHostAddress();
+	}
+	
+	public Location(String name, int port) throws IOException {
 		this.name = name;
 		this.port = port;
 		this.ip = InetAddress.getLocalHost().getHostAddress();
 	}
-	
+
 	public String getIp() {
 		return ip;
 	}
-	public String getPort() {
+
+	public void setIp() throws IOException {
+		this.ip = InetAddress.getLocalHost().getHostAddress();
+	}
+
+	public int getPort() {
 		return port;
 	}
-	public void setPort(String port) {
+
+	public void setPort(int port) {
 		this.port = port;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 }

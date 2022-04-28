@@ -218,7 +218,6 @@ public class VLocation extends JFrame implements ActionListener, KeyListener {
 	}
 	
 	public void checkText() {
-		System.out.println("Holaaaaa");
 		if (this.textFieldLocation.getText().isEmpty() || this.textFieldPort.getText().isEmpty())
 			btnConfirmar.setEnabled(false);
 		else 

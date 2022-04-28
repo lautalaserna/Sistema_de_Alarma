@@ -3,7 +3,6 @@ package model;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 public class Location implements Serializable{
 	private String ip;

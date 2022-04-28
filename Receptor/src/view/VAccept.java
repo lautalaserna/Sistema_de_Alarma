@@ -1,42 +1,37 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import controller.ControllerAccept;
-
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import java.awt.FlowLayout;
-import javax.swing.JRadioButton;
-import javax.swing.JButton;
-import java.awt.Font;
 import java.awt.Dimension;
-import java.awt.Point;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.DropMode;
-import java.awt.GridLayout;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
-public class VAccept extends JFrame implements ActionListener, KeyListener {
+import controller.ControllerAccept;
+
+public class VAccept extends JFrame implements ActionListener, KeyListener, MouseListener {
 
 	private JPanel contentPane;
 	private JTextField textFieldPort;
 	private JButton btnConfirmar;
-	private JRadioButton radioBtnAI;
+	private JRadioButton radioBtnFI;
 	private JRadioButton radioBtnAM;
-	private JRadioButton radioBtnAS;
-
+	private JRadioButton radioBtnPS;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -79,15 +74,18 @@ public class VAccept extends JFrame implements ActionListener, KeyListener {
 		
 		radioBtnAM = new JRadioButton("Alerta medica");
 		radioBtnAM.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		radioBtnAM.addMouseListener(this);
 		panel.add(radioBtnAM);
 		
-		radioBtnAS = new JRadioButton("Alerta seguridad");
-		radioBtnAS.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		panel.add(radioBtnAS);
+		radioBtnPS = new JRadioButton("Alerta seguridad");
+		radioBtnPS.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		radioBtnPS.addMouseListener(this);
+		panel.add(radioBtnPS);
 		
-		radioBtnAI = new JRadioButton("Alerta incendio");
-		radioBtnAI.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		panel.add(radioBtnAI);
+		radioBtnFI = new JRadioButton("Alerta incendio");
+		radioBtnFI.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		radioBtnFI.addMouseListener(this);
+		panel.add(radioBtnFI);
 		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.SOUTH);
@@ -99,14 +97,15 @@ public class VAccept extends JFrame implements ActionListener, KeyListener {
 		flowLayout.setAlignment(FlowLayout.LEADING);
 		panel_1.add(panel_2);
 		
-		JLabel lblNewLabel_1 = new JLabel("  Puerto:");
-		lblNewLabel_1.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		panel_2.add(lblNewLabel_1);
+		JLabel lblPort = new JLabel("  Puerto:");
+		lblPort.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		panel_2.add(lblPort);
 		
 		textFieldPort = new JTextField();
 		panel_2.add(textFieldPort);
 		textFieldPort.setColumns(15);
 		textFieldPort.setPreferredSize(new Dimension(0,26));
+		textFieldPort.addKeyListener(this);
 		
 		JPanel panel_3 = new JPanel();
 		panel_1.add(panel_3, BorderLayout.EAST);
@@ -150,11 +149,72 @@ public class VAccept extends JFrame implements ActionListener, KeyListener {
 		check();
 	}
 	
+	public boolean isPSSelected() {
+		return this.radioBtnPS.isSelected();
+	}
+	
+	public boolean isAMSelected() {
+		return this.radioBtnAM.isSelected();
+	}
+	
+	public boolean isFISelected() {
+		return this.radioBtnFI.isSelected();
+	}
+	
+	public void selectPS() {
+		this.radioBtnPS.setSelected(true);
+	}
+	
+	public void selectAM() {
+		this.radioBtnAM.setSelected(true);
+	}
+	
+	public void selectFI() {
+		this.radioBtnFI.setSelected(true);
+	}
+	
 	public void check() {
-		if (this.textFieldPort.getText().isEmpty() || (this.radioBtnAI.isSelected()==false && this.radioBtnAS.isSelected()==false && this.radioBtnAM.isSelected()==false))
-			btnConfirmar.setEnabled(false);
-		else 
+		if (!this.textFieldPort.getText().isEmpty() && (isFISelected() || isAMSelected() || isPSSelected()))
 			btnConfirmar.setEnabled(true);
+		else 
+			btnConfirmar.setEnabled(false);
+	}
+
+	public void setPort(int port) {
+		this.textFieldPort.setText(Integer.toString(port));
+	}
+	
+	public int getPort() {
+		return Integer.parseInt(this.textFieldPort.getText());
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		check();
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

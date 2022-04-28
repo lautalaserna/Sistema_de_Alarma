@@ -1,10 +1,12 @@
 package model;
 
-public class EventFocoIncendio implements Event{
+import java.io.Serializable;
+
+public class EventFocoIncendio implements Event, Serializable{
 
 	@Override
 	public String getEventType() {
-		return "F";
+		return "FI";
 	}
 	
 }
