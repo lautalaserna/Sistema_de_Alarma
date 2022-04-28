@@ -63,15 +63,17 @@ public class ControllerEmisor implements ActionListener, WindowListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("Foco de Incendio")){
-			ControllerConfirmation controllerConfirmation = new ControllerConfirmation(EventFocoIncendio e);
+		if(e.getActionCommand().equals("FI")){
+			ControllerConfirmation cc = new ControllerConfirmation(this, new EventFocoIncendio());
 		}
-		else if (e.getActionCommand().equals("Asistencia Medica")){
-			ControllerConfirmation controllerConfirmation = new ControllerConfirmation(EventAsistenciaMedica event);
+		else if (e.getActionCommand().equals("AM")){
+			ControllerConfirmation cc = new ControllerConfirmation(this, new EventAsistenciaMedica());
 		}
-		else { //Personal de Seguridad.
-			ControllerConfirmation controllerConfirmation = new ControllerConfirmation(EventPersonalSeguridad event);
-		}
+		else if (e.getActionCommand().equals("PS")){ 
+			ControllerConfirmation cc = new ControllerConfirmation(this, new EventPersonalSeguridad());
+		} else if (e.getActionCommand().equals("ACCEPT")){ 
+			this.viewEmisor.setLblConfirm("WAIT");
+		} 
 		
 	}
 

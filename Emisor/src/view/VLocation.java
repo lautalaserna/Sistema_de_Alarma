@@ -53,12 +53,9 @@ public class VLocation extends JFrame implements ActionListener, KeyListener {
 	 * Create the frame.
 	 */
 	public VLocation() {
-<<<<<<< HEAD
 		setTitle("Configurar Ubicacion");
-=======
 		setAlwaysOnTop(true);
 		setTitle("Configurar Ubicación");
->>>>>>> origin/Seba
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(800, 400, 450, 250);
 		setResizable(false);
@@ -188,15 +185,14 @@ public class VLocation extends JFrame implements ActionListener, KeyListener {
 		panel_7.setLayout(new FlowLayout(FlowLayout.RIGHT, 32, 10));
 		
 		btnConfirmar = new JButton("Confirmar");
-		btnConfirmar.setEnabled(false);
+		btnConfirmar.setEnabled(true);
 		btnConfirmar.addActionListener(this);
-		btnConfirmar.setActionCommand("Confirmar ubicacion");
+		btnConfirmar.setActionCommand("Confirmar ubicación");
 		panel_7.add(btnConfirmar);
 		btnConfirmar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		btnConfirmar.setPreferredSize(new Dimension(120,30));
 		
 		this.setVisible(true); //Para que cuandos se cree, sea visible.
-		checkText(); //Esto es para saber si al comienzo debe habilitar o no el botón Confirmar.
 	}
 
 	public void addActionListener(ControllerLocation controller) {
@@ -222,12 +218,26 @@ public class VLocation extends JFrame implements ActionListener, KeyListener {
 	}
 	
 	public void checkText() {
-		if (!this.textFieldLocation.getText().isEmpty() && !this.textFieldPort.getText().isEmpty())
+		if (this.textFieldLocation.getText().isEmpty() || this.textFieldPort.getText().isEmpty())
+			btnConfirmar.setEnabled(false);
+		else 
 			btnConfirmar.setEnabled(true);
 	}
 	
 	public String getLocationText() {
 		return (this.textFieldLocation.getText());
+	}
+	
+	public void setLocationText(String loc) {
+		this.textFieldLocation.setText(loc);
+	}
+	
+	public void setIPText(String ip) {
+		this.textFieldIP.setText(ip);
+	}
+	
+	public void setPortText(int loc) {
+		this.textFieldPort.setText(Integer.toString(loc));
 	}
 	
 	public String getPortText() {

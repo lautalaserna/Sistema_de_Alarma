@@ -8,17 +8,17 @@ import model.Message;
 
 public class Connection {
 	
-	public void connect(String id, int port, Message msg) {
+	public static void sendMsg(Message msg) {
 		new Thread() {
 			public void run() {
 				try {
-					Socket socket = new Socket(id, port);
+					Socket socket = new Socket(msg.getLoc().getIp(), msg.getLoc().getPort());
 					OutputStream outputStream = socket.getOutputStream();
 					ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-
+					
 					objectOutputStream.writeObject(msg);
 
-					socket.close();
+					// socket.close();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

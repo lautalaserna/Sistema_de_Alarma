@@ -22,13 +22,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.SystemColor;
 
-public class VEmisor extends JFrame implements ActionListener {
+public class VEmisor extends JFrame implements ActionListener{
 
 	private JPanel contentPane;
 	private JButton btnFocoIncendio;
 	private JButton btnAsistenciaMedica;
 	private JButton btnPersonalSeguridad;
-
+	private JLabel lblConfirm;
 	/**
 	 * Launch the application.
 	 */
@@ -70,21 +70,21 @@ public class VEmisor extends JFrame implements ActionListener {
 		btnFocoIncendio.setPreferredSize(new Dimension(80,80));
 		panel_1.add(btnFocoIncendio);
 		btnFocoIncendio.addActionListener(this);
-		btnFocoIncendio.setActionCommand("Foco de Incendio");
+		btnFocoIncendio.setActionCommand("FI");
 		
 		btnAsistenciaMedica = new JButton("");
 		btnAsistenciaMedica.setIcon(new ImageIcon(VEmisor.class.getResource("/img/hospital.png")));
 		btnAsistenciaMedica.setPreferredSize(new Dimension(80,80));
 		panel_1.add(btnAsistenciaMedica);
 		btnAsistenciaMedica.addActionListener(this);
-		btnAsistenciaMedica.setActionCommand("Asistencia Medica");
+		btnAsistenciaMedica.setActionCommand("AM");
 		
 		btnPersonalSeguridad = new JButton("");
 		btnPersonalSeguridad.setIcon(new ImageIcon(VEmisor.class.getResource("/img/policia.png")));
 		btnPersonalSeguridad.setPreferredSize(new Dimension(80,80));
 		panel_1.add(btnPersonalSeguridad);
 		btnPersonalSeguridad.addActionListener(this);
-		btnPersonalSeguridad.setActionCommand("Personal de Seguridad");
+		btnPersonalSeguridad.setActionCommand("PS");
 		
 		JLabel lblNewLabel = new JLabel("Indique su emergencia");
 		lblNewLabel.setBounds(10, 26, 416, 36);
@@ -92,11 +92,11 @@ public class VEmisor extends JFrame implements ActionListener {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 16));
 		
-		JLabel lblNewLabel_1 = new JLabel("Esperando Confirmacion...");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(new Font("MS Reference Sans Serif", Font.ITALIC, 14));
-		lblNewLabel_1.setBounds(10, 194, 416, 22);
-		contentPane.add(lblNewLabel_1);
+		lblConfirm = new JLabel("");
+		lblConfirm.setHorizontalAlignment(SwingConstants.CENTER);
+		lblConfirm.setFont(new Font("MS Reference Sans Serif", Font.ITALIC, 14));
+		lblConfirm.setBounds(10, 194, 416, 22);
+		contentPane.add(lblConfirm);
 		
 		this.setVisible(true);
 	}
@@ -111,6 +111,12 @@ public class VEmisor extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void setLblConfirm(String str) {
+		if("WAIT".equals(str)) {
+			this.lblConfirm.setText("Esperando Confirmación...");
+		}
 	}
 
 }

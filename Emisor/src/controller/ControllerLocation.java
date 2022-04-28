@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import model.Emisor;
 import model.Location;
+import persistence.Persistence;
 import view.VLocation;
 
 public class ControllerLocation implements ActionListener, WindowListener{
@@ -23,8 +24,9 @@ public class ControllerLocation implements ActionListener, WindowListener{
 
 	@Override
 	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
+		viewLocation.setLocationText(Emisor.getInstance().getLocation().getName());
+		viewLocation.setIPText(Emisor.getInstance().getLocation().getIp());
+		viewLocation.setPortText(Emisor.getInstance().getLocation().getPort());
 	}
 
 	@Override
@@ -65,8 +67,9 @@ public class ControllerLocation implements ActionListener, WindowListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
-			Location loc = new Location(this.viewLocation.getLocationText(), this.viewLocation.getPortText());
+			Location loc = new Location(this.viewLocation.getLocationText(), Integer.parseInt(this.viewLocation.getPortText()));
 			Emisor.getInstance().setLocation(loc);
+			Persistence.setLocationToBin("location.bin", loc);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -74,7 +77,6 @@ public class ControllerLocation implements ActionListener, WindowListener{
 		this.viewLocation.setVisible(false);
 		ControllerEmisor controllerEmisor = new ControllerEmisor();
 		
-		//FALTA LO DEL ARCHIVO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (XML)
 	}
 
 }

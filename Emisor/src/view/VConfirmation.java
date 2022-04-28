@@ -25,7 +25,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class VConfirmation extends JFrame implements ActionListener, KeyListener{
-
 	private JPanel contentPane;
 	private JButton btnConfirmar;
 	private JButton btnCancelar;
@@ -50,12 +49,9 @@ public class VConfirmation extends JFrame implements ActionListener, KeyListener
 	 * Create the frame.
 	 */
 	public VConfirmation() {
-<<<<<<< HEAD
 		setTitle("Confirmacion");
-=======
 		setAlwaysOnTop(true);
 		setTitle("Confirmación");
->>>>>>> origin/Seba
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(800, 400, 350, 150);
@@ -94,7 +90,7 @@ public class VConfirmation extends JFrame implements ActionListener, KeyListener
 		panel.add(btnConfirmar);
 		btnConfirmar.setPreferredSize(new Dimension(110,30));
 		btnConfirmar.addActionListener(this);
-		btnConfirmar.setActionCommand("Confirmar solicitud");
+		btnConfirmar.setActionCommand("ACCEPT");
 		
 		btnCancelar = new JButton(" Cancelar ");
 		btnCancelar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
@@ -124,7 +120,7 @@ public class VConfirmation extends JFrame implements ActionListener, KeyListener
 		
 	}
 
-	public void addActionListener(ControllerConfirmation controller) {
+	public void addActionListener(ActionListener controller) {
 		this.btnConfirmar.addActionListener(controller);
 		this.btnCancelar.addActionListener(controller);
 	}
