@@ -1,6 +1,8 @@
 package connection;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
@@ -41,7 +43,13 @@ public class Connection {
 					datagramSocket.send(datagramPacket);
 					System.out.println("Objeto Enviado");
 					datagramSocket.receive(datagramPacket);
-					String response = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
+					
+					ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(datagramPacket.getData()));
+					String response = (String) iStream.readObject();
+					iStream.close();
+					System.out.println("Recibimos una respuesta de:" + response);
+					
+					// String response = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
 					ce.setConfirmation(response);
 					datagramSocket.close();
 				} catch (Exception e) {

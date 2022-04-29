@@ -11,6 +11,7 @@ import java.util.Observer;
 
 import javax.swing.table.DefaultTableModel;
 
+import connection.Connection;
 import model.Message;
 import model.Receptor;
 import view.VReceptor;
@@ -72,7 +73,11 @@ public class ControllerReceptor implements ActionListener, WindowListener, Obser
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+		int index = this.viewReceptor.getTable().getSelectedRow();
+		if(index != -1) {
+			Message msg = Receptor.getInstance().getReg().get(index);
+			Connection.getInstance().response(true, msg.getInetAddress(), msg.getLoc().getPort());
+		}
 	}
 
 	@Override

@@ -37,7 +37,7 @@ public class ControllerAccept implements ActionListener, WindowListener {
 		
 		ControllerReceptor cr = new ControllerReceptor();
 		
-		Connection c = Connection.getInstace(cr, viewAccept.getPort());
+		Connection c = Connection.getInstace(cr, f, viewAccept.getPort());
 		c.listen();
 	}
 
