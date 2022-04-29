@@ -28,15 +28,6 @@ public class Main {
 			}
 		}
 		
-		// Test JList
-		
-		try {
-			receptor.getReg().add(new Message(new Location("Casita 1",8080), new EventAsistenciaMedica()));
-			receptor.getReg().add(new Message(new Location("Casita 2",8080), new EventFocoIncendio()));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
 		receptor.setFilter(filter);
 		ControllerAccept ca = new ControllerAccept();
 		

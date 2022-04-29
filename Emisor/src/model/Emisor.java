@@ -1,7 +1,5 @@
 package model;
 
-import connection.Connection;
-
 public class Emisor {
 	private static Emisor instance = null;
 	Location loc;
@@ -22,10 +20,6 @@ public class Emisor {
 	
 	public Location getLocation() {
 		return this.loc;
-	}
-
-	public void sendMsg(Event e) {
-		// Connection.sendMsg(MsgFactory.getMessage(loc, e));
 	}
 
 }

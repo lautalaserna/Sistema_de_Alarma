@@ -26,7 +26,7 @@ public class ControllerAccept implements ActionListener, WindowListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Filter f = new Filter(viewAccept.isAMSelected(), viewAccept.isFISelected(), viewAccept.isPSSelected(), getPort());
+		Filter f = new Filter(viewAccept.isAMSelected(), viewAccept.isFISelected(), viewAccept.isPSSelected(),getPort());
 		Receptor.getInstance().setFilter(f);
 		try {
 			Persistence.setFilterToBin("filter.bin", f);
@@ -34,18 +34,11 @@ public class ControllerAccept implements ActionListener, WindowListener {
 			e1.printStackTrace();
 		}
 		this.viewAccept.setVisible(false);
+		
 		ControllerReceptor cr = new ControllerReceptor();
-		System.out.println("Listening");
-		try {
-			Connection c = new Connection(Receptor.getInstance().getFilter(),8080);
-			new Thread() {
-				public void run() {
-					c.listen();					
-				}
-			}.start();
-		} catch (SocketException ex) {
-			ex.printStackTrace();
-		}
+		
+		Connection c = Connection.getInstace(cr, viewAccept.getPort());
+		c.listen();
 	}
 
 	private int getPort() {
@@ -55,16 +48,16 @@ public class ControllerAccept implements ActionListener, WindowListener {
 	@Override
 	public void windowOpened(WindowEvent e) {
 		Filter f = Receptor.getInstance().getFilter();
-		
-		if(f.isAcceptAM())
+
+		if (f.isAcceptAM())
 			this.viewAccept.selectAM();
-		
-		if(f.isAcceptFI())
+
+		if (f.isAcceptFI())
 			this.viewAccept.selectFI();
-		
-		if(f.isAcceptPS())
+
+		if (f.isAcceptPS())
 			this.viewAccept.selectPS();
-		
+
 		this.viewAccept.setPort(Receptor.getInstance().getFilter().getPort());
 
 		this.viewAccept.check();

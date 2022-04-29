@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 import connection.Connection;
 import model.Emisor;
 import model.Event;
+import model.MsgFactory;
 import view.VConfirmation;
 import view.VLocation;
 
@@ -17,10 +18,12 @@ public class ControllerConfirmation implements ActionListener {
 	
 	private VConfirmation viewConfirmation = null;
 	private Event event;
+	private ControllerEmisor ce;
 	
-	public ControllerConfirmation(ActionListener ce, Event event)
+	public ControllerConfirmation(ControllerEmisor ce, Event event)
 	{
 		this.event = event;
+		this.ce = ce;
 		this.viewConfirmation = new VConfirmation();
 		this.viewConfirmation.addActionListener(this);
 		this.viewConfirmation.addActionListener(ce);
@@ -28,20 +31,17 @@ public class ControllerConfirmation implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		this.viewConfirmation.setVisible(false);
+		
 		if (e.getActionCommand().equals("ACCEPT")) {
-			System.out.println("Sending");
 			Connection c;
 			try {
-				c = new Connection();
-				c.sendMsg();
-			} catch (SocketException ex) {
-				ex.printStackTrace();
-			} catch (UnknownHostException ex) {
+				c = new Connection(ce);
+				c.connect(MsgFactory.getMessage(Emisor.getInstance().getLocation(), event), Emisor.getInstance().getLocation().getPort());
+			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		}
-		this.viewConfirmation.setVisible(false); //Esto lo hace siempre.
-		
 	}
 
 }

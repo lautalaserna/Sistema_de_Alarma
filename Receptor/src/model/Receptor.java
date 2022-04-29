@@ -1,10 +1,12 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import connection.Filter;
 
-public class Receptor {
+public class Receptor extends Observable {
 	private static Receptor instance = null;
 	ArrayList<Message> reg;
 	Filter filter;
@@ -34,6 +36,13 @@ public class Receptor {
 
 	public void setFilter(Filter filter) {
 		this.filter = filter;
+	}
+	
+	public void addMessage(Message msg) {
+		this.reg.add(msg);
+		setChanged();
+		System.out.println("AGREGAMOS EL MENSAJE: " + msg.toString());
+		notifyObservers(this.reg);
 	}
 	
 }

@@ -1,13 +1,16 @@
 package model;
 
+import java.io.Serializable;
+import java.net.InetAddress;
 import java.time.LocalDateTime;
 
-public class Message {
-	int id;
-	Location loc;
-	Event e;
-	LocalDateTime date;
-	boolean isActive;
+public class Message implements Serializable{
+	private int id;
+	private Location loc;
+	private Event e;
+	private LocalDateTime date;
+	private boolean isActive;
+	private InetAddress inetAddress;
 	
 	public Message(Location loc, Event e) {
 		this.id = 0;
@@ -39,6 +42,19 @@ public class Message {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public InetAddress getInetAddress() {
+		return inetAddress;
+	}
+	
+	public void setInetAddress(InetAddress inetAddress) {
+		this.inetAddress = inetAddress;
+	}
+	
+	@Override
+	public String toString() {
+		return loc.getName() + ";" + date.toString() + ";" + e.getEventType();
 	}
 
 }

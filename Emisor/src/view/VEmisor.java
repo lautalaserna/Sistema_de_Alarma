@@ -116,7 +116,11 @@ public class VEmisor extends JFrame implements ActionListener{
 	public void setLblConfirm(String str) {
 		if("WAIT".equals(str)) {
 			this.lblConfirm.setText("Esperando Confirmación...");
-		}
+		} else if("OK".equals(str)) {
+			this.lblConfirm.setText("Mensaje recibido exitosamente!");
+		} else if("KO".equals(str)) {
+			this.lblConfirm.setText("Mensaje no recibido. Corre");
+		} 
 	}
 
 }

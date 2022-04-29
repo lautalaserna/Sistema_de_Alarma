@@ -37,10 +37,10 @@ public class ControllerEmisor implements ActionListener {
 		}  else if(e.getActionCommand().equals("CANCEL")) {
 			this.viewEmisor.setEnabled(true);
 		}
-		
-		
-		
-		
+	}
+	
+	public void setConfirmation(String str) {
+		this.viewEmisor.setLblConfirm(str);
 	}
 
 }
