@@ -41,7 +41,6 @@ public class Receptor extends Observable {
 	public void addMessage(Message msg) {
 		this.reg.add(msg);
 		setChanged();
-		System.out.println("AGREGAMOS EL MENSAJE: " + msg.toString());
 		notifyObservers(this.reg);
 	}
 	

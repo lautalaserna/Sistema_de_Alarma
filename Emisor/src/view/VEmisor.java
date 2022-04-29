@@ -113,6 +113,18 @@ public class VEmisor extends JFrame implements ActionListener{
 		
 	}
 	
+	public void enableBtns() {
+		this.btnAsistenciaMedica.setEnabled(true);
+		this.btnFocoIncendio.setEnabled(true);
+		this.btnPersonalSeguridad.setEnabled(true);
+	}
+	
+	public void disableBtns() {
+		this.btnAsistenciaMedica.setEnabled(false);
+		this.btnFocoIncendio.setEnabled(false);
+		this.btnPersonalSeguridad.setEnabled(false);
+	}
+	
 	public void setLblConfirm(String str) {
 		if("WAIT".equals(str)) {
 			this.lblConfirm.setText("Esperando Confirmación...");

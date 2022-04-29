@@ -11,32 +11,34 @@ import view.VEmisor;
 public class ControllerEmisor implements ActionListener {
 
 	private VEmisor viewEmisor = null;
-	
-	public ControllerEmisor()
-	{
+
+	public ControllerEmisor() {
 		this.viewEmisor = new VEmisor();
 		this.viewEmisor.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("FI")){
+		if (e.getActionCommand().equals("FI")) {
 			this.viewEmisor.setEnabled(false);
 			ControllerConfirmation cc = new ControllerConfirmation(this, new EventFocoIncendio());
-		}
-		else if (e.getActionCommand().equals("AM")){
+		} else if (e.getActionCommand().equals("AM")) {
 			this.viewEmisor.setEnabled(false);
 			ControllerConfirmation cc = new ControllerConfirmation(this, new EventAsistenciaMedica());
-		}
-		else if (e.getActionCommand().equals("PS")){ 
+		} else if (e.getActionCommand().equals("PS")) {
 			this.viewEmisor.setEnabled(false);
 			ControllerConfirmation cc = new ControllerConfirmation(this, new EventPersonalSeguridad());
-		} else if (e.getActionCommand().equals("ACCEPT")){ 
+		} else if (e.getActionCommand().equals("ACCEPT")) {
 			this.viewEmisor.setEnabled(true);
 			this.viewEmisor.setLblConfirm("WAIT");
-		}  else if(e.getActionCommand().equals("CANCEL")) {
+			this.viewEmisor.disableBtns();
+		} else if (e.getActionCommand().equals("CANCEL")) {
 			this.viewEmisor.setEnabled(true);
 		}
+	}
+	
+	public void enableBtns() {
+		this.viewEmisor.enableBtns();
 	}
 	
 	public void setConfirmation(String str) {

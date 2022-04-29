@@ -2,6 +2,8 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import model.Message;
 import model.Receptor;
 import view.VReceptor;
 
-public class ControllerReceptor implements ActionListener, WindowListener, Observer {
+public class ControllerReceptor implements ActionListener, WindowListener, MouseListener, Observer {
 	private ArrayList<Observable> obs = new ArrayList<Observable>(); 
 	private VReceptor viewReceptor = null;
 	
@@ -25,6 +27,7 @@ public class ControllerReceptor implements ActionListener, WindowListener, Obser
 		this.viewReceptor = new VReceptor();
 		this.viewReceptor.addActionListener(this);
 		this.viewReceptor.addWindowListener(this);
+		this.viewReceptor.getTable().addMouseListener(this);
 		obs.add(Receptor.getInstance());
 		Receptor.getInstance().addObserver(this);
 	}
@@ -76,13 +79,14 @@ public class ControllerReceptor implements ActionListener, WindowListener, Obser
 		int index = this.viewReceptor.getTable().getSelectedRow();
 		if(index != -1) {
 			Message msg = Receptor.getInstance().getReg().get(index);
+			msg.setState("Recibido");
+			refreshList();
 			Connection.getInstance().response(true, msg.getInetAddress(), msg.getLoc().getPort());
 		}
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("UPDATE");
 		refreshList();
 	}
 	
@@ -98,12 +102,49 @@ public class ControllerReceptor implements ActionListener, WindowListener, Obser
 		    list.add(msg.getLoc().getName());
 		    list.add(msg.getDate().getHour() + ":" + msg.getDate().getMinute());
 		    list.add(msg.getEvent().getEventType());
-			list.add("Pendiente");
+		    list.add(msg.getState());
 			
 		    model.addRow(list.toArray());
 		    
 		    this.viewReceptor.getTable().setModel(model);
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		int index = this.viewReceptor.getTable().getSelectedRow();
+		if(index != -1) {
+			Message msg = Receptor.getInstance().getReg().get(index);
+			if(msg.getState().equals("Pendiente")) {
+				this.viewReceptor.enableBtn();
+			} else {
+				this.viewReceptor.disableBtn();
+			}
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

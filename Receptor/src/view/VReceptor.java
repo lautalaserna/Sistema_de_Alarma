@@ -96,6 +96,7 @@ public class VReceptor extends JFrame implements ActionListener{
 		btnConfirmar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		btnConfirmar.addActionListener(this);
 		btnConfirmar.setActionCommand("CONFIRM");
+		btnConfirmar.setEnabled(false);
 		panel_2.add(btnConfirmar);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -143,5 +144,13 @@ public class VReceptor extends JFrame implements ActionListener{
 		//Si el estado de la fila seleccionada (de la tabla) es "Aceptado", debería deshabilitarse.
 		//Si es "Expirado" también deshabilitado.
 		//Si es "Pendiente", debería habilitarse.
+	}
+
+	public void enableBtn() {
+		this.btnConfirmar.setEnabled(true);
+	}
+	
+	public void disableBtn() {
+		this.btnConfirmar.setEnabled(false);
 	}
 }

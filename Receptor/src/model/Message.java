@@ -5,23 +5,17 @@ import java.net.InetAddress;
 import java.time.LocalDateTime;
 
 public class Message implements Serializable{
-	private int id;
 	private Location loc;
 	private Event e;
 	private LocalDateTime date;
-	private boolean isActive;
+	private String state;
 	private InetAddress inetAddress;
 	
 	public Message(Location loc, Event e) {
-		this.id = 0;
 		this.loc = loc;
 		this.e = e;
 		this.date = LocalDateTime.now();
-		this.isActive = false;
-	}
-
-	public int getId() {
-		return id;
+		this.state = "Pendiente";
 	}
 
 	public Location getLoc() {
@@ -36,12 +30,12 @@ public class Message implements Serializable{
 		return date;
 	}
 
-	public boolean isActive() {
-		return isActive;
+	public String getState() {
+		return state;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setState(String state) {
+		this.state = state;
 	}
 	
 	public InetAddress getInetAddress() {

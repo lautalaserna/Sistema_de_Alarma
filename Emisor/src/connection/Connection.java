@@ -15,13 +15,13 @@ import controller.ControllerEmisor;
 import model.Message;
 
 public class Connection {
-	private DatagramSocket datagramSocket;
+	private DatagramSocket socketUDP;
 	private InetAddress inetAdress;
 	private byte[] buffer;
 	ControllerEmisor ce;
 	
 	public Connection(ControllerEmisor ce) throws SocketException, UnknownHostException {
-		this.datagramSocket = new DatagramSocket();
+		this.socketUDP = new DatagramSocket();
 		this.inetAdress = InetAddress.getByName("localhost");
 		this.ce = ce;
 	}
@@ -31,27 +31,29 @@ public class Connection {
 			public void run() {
 				
 				try {
-					// Construye un objeto a steam de caracteres
-					System.out.println("Emisor listorti");
+					System.out.println("Emisor: Enviando Mensaje");
 					ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 					ObjectOutput output = new ObjectOutputStream(bStream); 
 					output.writeObject(msg);
 					output.close();
-					System.out.println("Se escribio el objeto");
-					buffer = bStream.toByteArray();
-					DatagramPacket datagramPacket = new DatagramPacket(buffer, buffer.length, inetAdress, port);
-					datagramSocket.send(datagramPacket);
-					System.out.println("Objeto Enviado");
-					datagramSocket.receive(datagramPacket);
 					
-					ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(datagramPacket.getData()));
+					buffer = bStream.toByteArray();
+					
+					DatagramPacket petition = new DatagramPacket(buffer, buffer.length, inetAdress, port);
+					socketUDP.send(petition);
+					System.out.println("Emisor: Mensaje Enviado");
+					
+					socketUDP.receive(petition);
+					ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
 					String response = (String) iStream.readObject();
 					iStream.close();
-					System.out.println("Recibimos una respuesta de:" + response);
+					System.out.println("Emisor: Respuesta Recibida = " + response);
 					
-					// String response = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
+					// El Controller realiza los cambios
 					ce.setConfirmation(response);
-					datagramSocket.close();
+					ce.enableBtns();
+					
+					socketUDP.close();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
