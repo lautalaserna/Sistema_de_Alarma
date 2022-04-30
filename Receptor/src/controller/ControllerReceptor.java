@@ -23,7 +23,7 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 	private ArrayList<Observable> obs = new ArrayList<Observable>(); 
 	private VReceptor viewReceptor = null;
 	private Connection connection;
-	private Alarm alarm;
+	private Alarm alarm = new Alarm("data/alarm_tone.wav");;
 	
 	public ControllerReceptor(Connection connection)
 	{
@@ -77,8 +77,7 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 		
 		if(isActive()) {
 			try {
-				alarm = new Alarm("data/alarm_tone.wav");
-				alarm.play();
+				alarm.loop();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
