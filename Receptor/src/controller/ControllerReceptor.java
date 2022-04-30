@@ -77,7 +77,7 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 		
 		if(isActive()) {
 			try {
-				alarm = new Alarm("alarm_tone.wav");
+				alarm = new Alarm("data/alarm_tone.wav");
 				alarm.play();
 			} catch (Exception e) {
 				e.printStackTrace();
