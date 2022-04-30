@@ -12,7 +12,6 @@ import persistence.Persistence;
 import view.VLocation;
 
 public class ControllerLocation implements ActionListener, WindowListener{
-	
 	private VLocation viewLocation = null;
 	
 	public ControllerLocation()

@@ -14,7 +14,7 @@ public class TimeOut extends Observable{
 			public void run() {
 				timer = new Timer();
 				timer.scheduleAtFixedRate(new TimerTask() {
-					int i = 5;
+					int i = 30;
 
 					public void run() {
 						System.out.println(i);

@@ -13,6 +13,7 @@ import java.util.Observer;
 
 import javax.swing.table.DefaultTableModel;
 
+import connection.Alarm;
 import connection.Connection;
 import model.Message;
 import model.Receptor;
@@ -22,6 +23,7 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 	private ArrayList<Observable> obs = new ArrayList<Observable>(); 
 	private VReceptor viewReceptor = null;
 	private Connection connection;
+	private Alarm alarm;
 	
 	public ControllerReceptor(Connection connection)
 	{
@@ -38,6 +40,7 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 		
 		this.obs.add(connection);
 		connection.addObserver(this);
+		
 	}
 	
 	@Override
@@ -71,6 +74,27 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 		    
 		    this.viewReceptor.getTable().setModel(model);
 		}
+		
+		if(isActive()) {
+			try {
+				alarm = new Alarm("alarm_tone.wav");
+				alarm.play();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			this.alarm.stop();			
+		}
+	
+	}
+	
+	public boolean isActive() {
+		ArrayList<Message> reg = Receptor.getInstance().getReg();
+		for (Message msg : reg) {
+			if(msg.getState().equals("Pendiente"))
+				return true;
+		}
+		return false;
 	}
 	
 	@Override

@@ -12,7 +12,6 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Observable;
 
-import controller.ControllerEmisor;
 import model.Message;
 
 public class Connection extends Observable{
