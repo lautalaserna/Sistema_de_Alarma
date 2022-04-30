@@ -139,13 +139,6 @@ public class VReceptor extends JFrame implements ActionListener{
 		this.table = table;
 	}
 	
-	public void check() {
-		//El botón inicia deshabilitado. Una vez clickea una fila, evalúa:
-		//Si el estado de la fila seleccionada (de la tabla) es "Aceptado", debería deshabilitarse.
-		//Si es "Expirado" también deshabilitado.
-		//Si es "Pendiente", debería habilitarse.
-	}
-
 	public void enableBtn() {
 		this.btnConfirmar.setEnabled(true);
 	}

@@ -10,45 +10,29 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
-import controller.ControllerReceptor;
 import model.Message;
 import model.Receptor;
 
-public class Connection {
-	private static Connection instance = null;
+public class Connection extends Observable implements Observer{
+	private ArrayList<Observable> obs = new ArrayList<Observable>();
 	private DatagramSocket socketUDP;
 	private byte[] buffer = new byte[2048];
-	private InetAddress adress;
-	private int port;
-	private ControllerReceptor cr;
 	private Filter filter;
+	private ArrayList<TimeOut> timeOuts;
 
-	private Connection() {
-
-	}
-
-	private Connection(ControllerReceptor cr, Filter filter, int port) {
+	public Connection(Filter filter, int port) {
 		try {
 			this.filter = filter;
-			this.cr = cr;
 			this.socketUDP = new DatagramSocket(port);
-			// this.datagramPacket = new DatagramPacket(buffer, buffer.length);
+			this.timeOuts = new ArrayList<TimeOut>();
 
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static Connection getInstace(ControllerReceptor cr, Filter filter, int port) {
-		if (instance == null) {
-			instance = new Connection(cr, filter, port);
-		}
-		return instance;
-	}
-
-	public static Connection getInstance() {
-		return instance;
 	}
 
 	public void listen() {
@@ -60,8 +44,8 @@ public class Connection {
 						buffer = new byte[2048];
 						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
 						socketUDP.receive(petition);
-						adress = petition.getAddress();
-						port = petition.getPort();
+						InetAddress adress = petition.getAddress();
+						int port = petition.getPort();
 
 						ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
 						Message msg = (Message) iStream.readObject();
@@ -73,6 +57,12 @@ public class Connection {
 							System.out.println("Receptort: Mensaje Aceptado");
 							msg.setInetAddress(adress);
 							msg.getLoc().setPort(port);
+							
+							TimeOut t = new TimeOut();
+							addObservable(t);
+							t.starTimerFromMsg(msg);
+							timeOuts.add(t);
+							
 							Receptor.getInstance().addMessage(msg);
 						}
 
@@ -104,5 +94,20 @@ public class Connection {
 			e1.printStackTrace();
 		}
 
+	}
+	
+	public void addObservable(Observable o) {
+		this.obs.add(o);
+		o.addObserver(this);
+	}
+	
+	@Override
+	public void update(Observable o, Object arg) {
+		setChanged();
+		notifyObservers(arg);
+	}
+	
+	public ArrayList<TimeOut> getTimeOuts() {
+		return timeOuts;
 	}
 }

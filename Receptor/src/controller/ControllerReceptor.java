@@ -21,59 +21,25 @@ import view.VReceptor;
 public class ControllerReceptor implements ActionListener, WindowListener, MouseListener, Observer {
 	private ArrayList<Observable> obs = new ArrayList<Observable>(); 
 	private VReceptor viewReceptor = null;
+	private Connection connection;
 	
-	public ControllerReceptor()
+	public ControllerReceptor(Connection connection)
 	{
 		this.viewReceptor = new VReceptor();
 		this.viewReceptor.addActionListener(this);
 		this.viewReceptor.addWindowListener(this);
 		this.viewReceptor.getTable().addMouseListener(this);
-		obs.add(Receptor.getInstance());
+				
+		this.connection = connection;
+		this.connection.listen();
+		
+		this.obs.add(Receptor.getInstance());
 		Receptor.getInstance().addObserver(this);
-	}
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
 		
+		this.obs.add(connection);
+		connection.addObserver(this);
 	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		int index = this.viewReceptor.getTable().getSelectedRow();
@@ -81,13 +47,10 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 			Message msg = Receptor.getInstance().getReg().get(index);
 			msg.setState("Recibido");
 			refreshList();
-			Connection.getInstance().response(true, msg.getInetAddress(), msg.getLoc().getPort());
+			this.viewReceptor.disableBtn();
+			connection.getTimeOuts().get(index).stopTimer();
+			connection.response(true, msg.getInetAddress(), msg.getLoc().getPort());
 		}
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		refreshList();
 	}
 	
 	public void refreshList() {
@@ -100,7 +63,7 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 			DefaultTableModel model = (DefaultTableModel) viewReceptor.getTable().getModel();
 		    List<String> list = new ArrayList<String>();
 		    list.add(msg.getLoc().getName());
-		    list.add(msg.getDate().getHour() + ":" + msg.getDate().getMinute());
+		    list.add(msg.getDate().getHour() + ":" + msg.getDate().getMinute() + ":" + msg.getDate().getSecond());
 		    list.add(msg.getEvent().getEventType());
 		    list.add(msg.getState());
 			
@@ -109,18 +72,45 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 		    this.viewReceptor.getTable().setModel(model);
 		}
 	}
+	
+	@Override
+	public void windowOpened(WindowEvent e) {}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void windowClosing(WindowEvent e) {}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void windowClosed(WindowEvent e) {}
+
+	@Override
+	public void windowIconified(WindowEvent e) {}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {}
+
+	@Override
+	public void windowActivated(WindowEvent e) {}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		System.out.println(o.getClass().getName());
+		if(o.getClass().getName().equalsIgnoreCase("connection.Connection")) {
+			System.out.println("Entro al update por la connection");
+			Message msg = (Message) arg;
+			msg.setState("Expirado");
+			connection.response(false, msg.getInetAddress(), msg.getLoc().getPort());
+		}
+		refreshList();
 	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {}
+
+	@Override
+	public void mousePressed(MouseEvent e) {}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -136,15 +126,9 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent e) {}
 	
 }

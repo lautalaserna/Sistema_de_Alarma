@@ -76,7 +76,7 @@ public class ControllerLocation implements ActionListener, WindowListener{
 		}
 		
 		this.viewLocation.setVisible(false);
-		ControllerEmisor controllerEmisor = new ControllerEmisor();
+		new ControllerEmisor();
 		
 	}
 

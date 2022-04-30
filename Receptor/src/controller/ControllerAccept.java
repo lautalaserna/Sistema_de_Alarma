@@ -4,19 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.net.SocketException;
-import java.util.ArrayList;
 
 import connection.Connection;
 import connection.Filter;
-import model.Event;
 import model.Receptor;
 import persistence.Persistence;
 import view.VAccept;
 
 public class ControllerAccept implements ActionListener, WindowListener {
 	private VAccept viewAccept = null;
-	private ArrayList<Event> acceptedTypes = new ArrayList<Event>();
 
 	public ControllerAccept() {
 		this.viewAccept = new VAccept();
@@ -35,10 +31,8 @@ public class ControllerAccept implements ActionListener, WindowListener {
 		}
 		this.viewAccept.setVisible(false);
 		
-		ControllerReceptor cr = new ControllerReceptor();
-		
-		Connection c = Connection.getInstace(cr, f, viewAccept.getPort());
-		c.listen();
+		Connection c = new Connection(f, viewAccept.getPort());
+		new ControllerReceptor(c);
 	}
 
 	private int getPort() {

@@ -131,8 +131,10 @@ public class VEmisor extends JFrame implements ActionListener{
 		} else if("OK".equals(str)) {
 			this.lblConfirm.setText("Mensaje recibido exitosamente!");
 		} else if("KO".equals(str)) {
-			this.lblConfirm.setText("Mensaje no recibido. Corre");
-		} 
+			this.lblConfirm.setText("Mensaje no recibido.");
+		} else if("IGNORED".equals(str)) {
+			this.lblConfirm.setText("No hay Receptores activos para esta Emergencia.");
+		}
 	}
 
 }

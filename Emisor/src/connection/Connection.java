@@ -10,20 +10,22 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Observable;
 
 import controller.ControllerEmisor;
 import model.Message;
 
-public class Connection {
+public class Connection extends Observable{
+	private TimeOut timeOut;
 	private DatagramSocket socketUDP;
 	private InetAddress inetAdress;
 	private byte[] buffer;
-	ControllerEmisor ce;
 	
-	public Connection(ControllerEmisor ce) throws SocketException, UnknownHostException {
+	public Connection(TimeOut timeOut) throws SocketException, UnknownHostException {
 		this.socketUDP = new DatagramSocket();
 		this.inetAdress = InetAddress.getByName("localhost");
-		this.ce = ce;
+		this.timeOut = timeOut;
+		timeOut.starTimer();
 	}
 
 	public void connect(Message msg, int port) {
@@ -44,14 +46,16 @@ public class Connection {
 					System.out.println("Emisor: Mensaje Enviado");
 					
 					socketUDP.receive(petition);
+					timeOut.stopTimer();
+					
 					ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
 					String response = (String) iStream.readObject();
 					iStream.close();
 					System.out.println("Emisor: Respuesta Recibida = " + response);
 					
 					// El Controller realiza los cambios
-					ce.setConfirmation(response);
-					ce.enableBtns();
+					setChanged();
+					notifyObservers(response);
 					
 					socketUDP.close();
 				} catch (Exception e) {
