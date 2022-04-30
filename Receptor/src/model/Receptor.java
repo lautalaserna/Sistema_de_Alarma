@@ -15,17 +15,6 @@ public class Receptor extends Observable {
 	ArrayList<Message> reg;
 	Filter filter;
 	
-	private Receptor() {
-		this.reg = new ArrayList<Message>();
-	}
-
-	public static Receptor getInstance() {
-		if (instance == null) {
-			instance = new Receptor();
-		}
-		return instance;
-	}
-	
 	public static void main(String[] args) {
 		Receptor receptor = Receptor.getInstance();
 		Filter filter = null;
@@ -46,6 +35,17 @@ public class Receptor extends Observable {
 		receptor.setFilter(filter);
 		new ControllerAccept();
 		
+	}
+	
+	private Receptor() {
+		this.reg = new ArrayList<Message>();
+	}
+
+	public static Receptor getInstance() {
+		if (instance == null) {
+			instance = new Receptor();
+		}
+		return instance;
 	}
 	
 	public ArrayList<Message> getReg() {
@@ -69,5 +69,6 @@ public class Receptor extends Observable {
 		setChanged();
 		notifyObservers(this.reg);
 	}
+	
 	
 }
