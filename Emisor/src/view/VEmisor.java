@@ -4,8 +4,6 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,9 +15,7 @@ import javax.swing.border.EmptyBorder;
 
 import controller.ControllerEmisor;
 
-public class VEmisor extends JFrame implements ActionListener{
-
-	private JPanel contentPane;
+public class VEmisor extends JFrame {
 	private JButton btnFocoIncendio;
 	private JButton btnAsistenciaMedica;
 	private JButton btnPersonalSeguridad;
@@ -49,7 +45,7 @@ public class VEmisor extends JFrame implements ActionListener{
 		setTitle("Sistema de Alarma");
 		setBounds(800, 400, 450, 280);
 		setResizable(false);
-		contentPane = new JPanel();
+		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(2, 2, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -64,21 +60,18 @@ public class VEmisor extends JFrame implements ActionListener{
 		btnFocoIncendio.setSelectedIcon(null);
 		btnFocoIncendio.setPreferredSize(new Dimension(80,80));
 		panel_1.add(btnFocoIncendio);
-		btnFocoIncendio.addActionListener(this);
 		btnFocoIncendio.setActionCommand("FI");
 		
 		btnAsistenciaMedica = new JButton("");
 		btnAsistenciaMedica.setIcon(new ImageIcon(VEmisor.class.getResource("/img/hospital.png")));
 		btnAsistenciaMedica.setPreferredSize(new Dimension(80,80));
 		panel_1.add(btnAsistenciaMedica);
-		btnAsistenciaMedica.addActionListener(this);
 		btnAsistenciaMedica.setActionCommand("AM");
 		
 		btnPersonalSeguridad = new JButton("");
 		btnPersonalSeguridad.setIcon(new ImageIcon(VEmisor.class.getResource("/img/policia.png")));
 		btnPersonalSeguridad.setPreferredSize(new Dimension(80,80));
 		panel_1.add(btnPersonalSeguridad);
-		btnPersonalSeguridad.addActionListener(this);
 		btnPersonalSeguridad.setActionCommand("PS");
 		
 		JLabel lblNewLabel = new JLabel("Indique su emergencia");
@@ -100,12 +93,6 @@ public class VEmisor extends JFrame implements ActionListener{
 		this.btnFocoIncendio.addActionListener(controller);
 		this.btnAsistenciaMedica.addActionListener(controller);
 		this.btnPersonalSeguridad.addActionListener(controller);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public void enableBtns() {

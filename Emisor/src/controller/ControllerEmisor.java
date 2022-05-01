@@ -39,11 +39,11 @@ public class ControllerEmisor implements ActionListener, Observer {
 			this.viewEmisor.setEnabled(true);
 		}
 	}
-	
+
 	public void enableBtns() {
 		this.viewEmisor.enableBtns();
 	}
-	
+
 	public void setConfirmation(String str) {
 		this.viewEmisor.setLblConfirm(str);
 	}
@@ -52,12 +52,12 @@ public class ControllerEmisor implements ActionListener, Observer {
 		this.obs.add(obs);
 		obs.addObserver(this);
 	}
-	
+
 	@Override
 	public void update(Observable o, Object arg) {
-		if(o.getClass().getName().equalsIgnoreCase("connection.Connection")) {
+		if (o.getClass().getName().equalsIgnoreCase("connection.Connection")) {
 			setConfirmation((String) arg);
-			
+
 		} else if (o.getClass().getName().equalsIgnoreCase("connection.TimeOut")) {
 			setConfirmation("IGNORED");
 		}

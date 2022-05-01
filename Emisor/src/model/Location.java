@@ -4,15 +4,17 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
 
-public class Location implements Serializable{
+public class Location implements Serializable {
 	private String ip;
-	private int port = 8080;
-	private String name = "";
-	
+	private int port;
+	private String name;
+
 	public Location() throws IOException {
 		this.ip = InetAddress.getLocalHost().getHostAddress();
+		this.port = 8080;
+		this.name = "";
 	}
-	
+
 	public Location(String name, int port) throws IOException {
 		this.name = name;
 		this.port = port;
@@ -42,5 +44,5 @@ public class Location implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 }
