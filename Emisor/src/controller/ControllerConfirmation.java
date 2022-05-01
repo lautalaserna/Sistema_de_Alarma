@@ -11,7 +11,7 @@ import model.MsgFactory;
 import view.VConfirmation;
 
 public class ControllerConfirmation implements ActionListener {
-	private VConfirmation viewConfirmation = null;
+	private VConfirmation viewConfirmation;
 	private Event event;
 	private ControllerEmisor ce;
 	

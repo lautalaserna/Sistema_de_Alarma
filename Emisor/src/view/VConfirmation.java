@@ -1,31 +1,22 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import controller.ControllerConfirmation;
-import controller.ControllerLocation;
-
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import java.awt.Font;
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
-public class VConfirmation extends JFrame implements ActionListener, KeyListener{
-	private JPanel contentPane;
+public class VConfirmation extends JFrame {
 	private JButton btnConfirmar;
 	private JButton btnCancelar;
 
@@ -54,7 +45,7 @@ public class VConfirmation extends JFrame implements ActionListener, KeyListener
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(800, 400, 350, 150);
-		contentPane = new JPanel();
+		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
@@ -88,46 +79,20 @@ public class VConfirmation extends JFrame implements ActionListener, KeyListener
 		btnConfirmar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		panel.add(btnConfirmar);
 		btnConfirmar.setPreferredSize(new Dimension(110,30));
-		btnConfirmar.addActionListener(this);
 		btnConfirmar.setActionCommand("ACCEPT");
 		
 		btnCancelar = new JButton(" Cancelar ");
 		btnCancelar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		panel.add(btnCancelar);
 		btnCancelar.setPreferredSize(new Dimension(110,30));
-		btnCancelar.addActionListener(this);
 		btnCancelar.setActionCommand("CANCEL");
 		
 		this.setVisible(true);
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void addActionListener(ActionListener controller) {
 		this.btnConfirmar.addActionListener(controller);
 		this.btnCancelar.addActionListener(controller);
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

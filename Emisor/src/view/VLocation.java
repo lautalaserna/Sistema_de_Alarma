@@ -1,33 +1,27 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import controller.ControllerLocation;
 
-import java.awt.FlowLayout;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.ActionEvent;
-
-public class VLocation extends JFrame implements ActionListener, KeyListener {
-
-	private JPanel contentPane;
+public class VLocation extends JFrame implements KeyListener {
 	private JTextField textFieldLocation;
 	private JTextField textFieldIP;
 	private JTextField textFieldPort;
@@ -58,7 +52,7 @@ public class VLocation extends JFrame implements ActionListener, KeyListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(800, 400, 450, 250);
 		setResizable(false);
-		contentPane = new JPanel();
+		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(1, 0, 0, 0));
@@ -185,34 +179,26 @@ public class VLocation extends JFrame implements ActionListener, KeyListener {
 		
 		btnConfirmar = new JButton("Confirmar");
 		btnConfirmar.setEnabled(true);
-		btnConfirmar.addActionListener(this);
 		btnConfirmar.setActionCommand("Confirmar ubicación");
 		panel_7.add(btnConfirmar);
 		btnConfirmar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		btnConfirmar.setPreferredSize(new Dimension(120,30));
 		
-		this.setVisible(true); //Para que cuandos se cree, sea visible.
+		this.setVisible(true);
 	}
 
 	public void addActionListener(ControllerLocation controller) {
 		this.btnConfirmar.addActionListener(controller);
 	}
 
-	public void actionPerformed(ActionEvent e) {
-	}
+	@Override
+	public void keyTyped(KeyEvent e) {}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		
-	}
+	public void keyPressed(KeyEvent e) {}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
-		
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) { //Si hay algo en los textFields
+	public void keyReleased(KeyEvent e) {
 		checkText();
 	}
 	
@@ -224,7 +210,7 @@ public class VLocation extends JFrame implements ActionListener, KeyListener {
 	}
 	
 	public String getLocationText() {
-		return (this.textFieldLocation.getText());
+		return this.textFieldLocation.getText();
 	}
 	
 	public void setLocationText(String loc) {
@@ -240,6 +226,6 @@ public class VLocation extends JFrame implements ActionListener, KeyListener {
 	}
 	
 	public String getPortText() {
-		return (this.textFieldPort.getText());
+		return this.textFieldPort.getText();
 	}
 }
