@@ -69,7 +69,7 @@ public class ControllerLocation implements ActionListener, WindowListener{
 		try {
 			Location loc = new Location(this.viewLocation.getLocationText(), Integer.parseInt(this.viewLocation.getPortText()));
 			Emisor.getInstance().setLocation(loc);
-			Persistence.setLocationToBin("location.bin", loc);
+			Persistence.setLocationToBin(loc);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

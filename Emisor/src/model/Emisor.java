@@ -23,20 +23,7 @@ public class Emisor {
 	public static void main(String[] args) {
 		Emisor emisor = Emisor.getInstance();
 		Location loc = null;
-		
-		try {
-			loc = Persistence.getLocationFromBin("location.bin");
-		} catch (Exception e) {
-			File f = new File("location.bin");
-			try {
-				f.createNewFile();
-				loc = new Location();
-			} catch (IOException e1) {
-				// O no encontró la IP o hay un problema con el archivo.
-				e.printStackTrace();
-			}
-		}
-		
+		loc = Persistence.getLocationFromBin();
 		emisor.setLocation(loc);
 		new ControllerLocation();
 	}

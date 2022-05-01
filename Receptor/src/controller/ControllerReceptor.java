@@ -20,33 +20,33 @@ import model.Receptor;
 import view.VReceptor;
 
 public class ControllerReceptor implements ActionListener, WindowListener, MouseListener, Observer {
-	private ArrayList<Observable> obs = new ArrayList<Observable>(); 
+	private ArrayList<Observable> obs = new ArrayList<Observable>();
 	private VReceptor viewReceptor = null;
 	private Connection connection;
-	private Alarm alarm = new Alarm("data/alarm_tone.wav");;
-	
-	public ControllerReceptor(Connection connection)
-	{
+	private Alarm alarm;
+
+	public ControllerReceptor(Connection connection) {
 		this.viewReceptor = new VReceptor();
 		this.viewReceptor.addActionListener(this);
 		this.viewReceptor.addWindowListener(this);
 		this.viewReceptor.getTable().addMouseListener(this);
-				
+
 		this.connection = connection;
 		this.connection.listen();
-		
+
 		this.obs.add(Receptor.getInstance());
 		Receptor.getInstance().addObserver(this);
-		
+
 		this.obs.add(connection);
 		connection.addObserver(this);
-		
+
+		this.alarm = new Alarm();
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		int index = this.viewReceptor.getTable().getSelectedRow();
-		if(index != -1) {
+		if (index != -1) {
 			Message msg = Receptor.getInstance().getReg().get(index);
 			msg.setState("Recibido");
 			refreshList();
@@ -55,72 +55,81 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 			connection.response(true, msg.getInetAddress(), msg.getLoc().getPort());
 		}
 	}
-	
-	public void refreshList() {
+
+	private void refreshList() {
 		ArrayList<Message> reg = Receptor.getInstance().getReg();
 		DefaultTableModel dm = (DefaultTableModel) viewReceptor.getTable().getModel();
 		dm.getDataVector().removeAllElements();
 		dm.fireTableDataChanged();
-		
+
 		for (Message msg : reg) {
 			DefaultTableModel model = (DefaultTableModel) viewReceptor.getTable().getModel();
-		    List<String> list = new ArrayList<String>();
-		    list.add(msg.getLoc().getName());
-		    list.add(msg.getDate().getHour() + ":" + msg.getDate().getMinute() + ":" + msg.getDate().getSecond());
-		    list.add(msg.getEvent().getEventType());
-		    list.add(msg.getState());
-			
-		    model.addRow(list.toArray());
-		    
-		    this.viewReceptor.getTable().setModel(model);
+			List<String> list = new ArrayList<String>();
+			list.add(msg.getLoc().getName());
+			list.add(msg.getDate().getHour() + ":" + msg.getDate().getMinute() + ":" + msg.getDate().getSecond());
+			list.add(msg.getEvent().getEventType());
+			list.add(msg.getState());
+
+			model.addRow(list.toArray());
+
+			this.viewReceptor.getTable().setModel(model);
 		}
-		
-		if(isActive()) {
+		refreshAlarm();
+	}
+
+	private void refreshAlarm() {
+		if (isActive()) {
 			try {
 				alarm.loop();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else {
-			this.alarm.stop();			
+			this.alarm.stop();
 		}
-	
 	}
-	
-	public boolean isActive() {
+
+	private boolean isActive() {
 		ArrayList<Message> reg = Receptor.getInstance().getReg();
 		for (Message msg : reg) {
-			if(msg.getState().equals("Pendiente"))
+			if (msg.getState().equals("Pendiente"))
 				return true;
 		}
 		return false;
 	}
-	
-	@Override
-	public void windowOpened(WindowEvent e) {}
 
 	@Override
-	public void windowClosing(WindowEvent e) {}
+	public void windowOpened(WindowEvent e) {
+	}
 
 	@Override
-	public void windowClosed(WindowEvent e) {}
+	public void windowClosing(WindowEvent e) {
+	}
 
 	@Override
-	public void windowIconified(WindowEvent e) {}
+	public void windowClosed(WindowEvent e) {
+	}
 
 	@Override
-	public void windowDeiconified(WindowEvent e) {}
+	public void windowIconified(WindowEvent e) {
+	}
 
 	@Override
-	public void windowActivated(WindowEvent e) {}
+	public void windowDeiconified(WindowEvent e) {
+	}
 
 	@Override
-	public void windowDeactivated(WindowEvent e) {}
+	public void windowActivated(WindowEvent e) {
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 		System.out.println(o.getClass().getName());
-		if(o.getClass().getName().equalsIgnoreCase("connection.Connection")) {
+		if (o.getClass().getName().equalsIgnoreCase("connection.Connection")) {
 			System.out.println("Entro al update por la connection");
 			Message msg = (Message) arg;
 			msg.setState("Expirado");
@@ -128,19 +137,21 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 		}
 		refreshList();
 	}
-	
-	@Override
-	public void mouseClicked(MouseEvent e) {}
 
 	@Override
-	public void mousePressed(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		int index = this.viewReceptor.getTable().getSelectedRow();
-		if(index != -1) {
+		if (index != -1) {
 			Message msg = Receptor.getInstance().getReg().get(index);
-			if(msg.getState().equals("Pendiente")) {
+			if (msg.getState().equals("Pendiente")) {
 				this.viewReceptor.enableBtn();
 			} else {
 				this.viewReceptor.disableBtn();
@@ -149,9 +160,11 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {
+	}
 
 	@Override
-	public void mouseExited(MouseEvent e) {}
-	
+	public void mouseExited(MouseEvent e) {
+	}
+
 }

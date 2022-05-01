@@ -17,21 +17,7 @@ public class Receptor extends Observable {
 	
 	public static void main(String[] args) {
 		Receptor receptor = Receptor.getInstance();
-		Filter filter = null;
-		
-		try {
-			filter = Persistence.getFilterFromBin("filter.bin");
-		} catch (Exception e) {
-			File file = new File("filter.bin");
-			try {
-				file.createNewFile();
-				filter = new Filter(false,false,false,8080);
-			} catch (IOException e1) {
-				// O no encontró la IP o hay un problema con el archivo.
-				e.printStackTrace();
-			}
-		}
-		
+		Filter filter = Persistence.getFilterFromBin();
 		receptor.setFilter(filter);
 		new ControllerAccept();
 		

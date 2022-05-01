@@ -25,7 +25,7 @@ public class ControllerAccept implements ActionListener, WindowListener {
 		Filter f = new Filter(viewAccept.isAMSelected(), viewAccept.isFISelected(), viewAccept.isPSSelected(),getPort());
 		Receptor.getInstance().setFilter(f);
 		try {
-			Persistence.setFilterToBin("filter.bin", f);
+			Persistence.setFilterToBin(f);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}

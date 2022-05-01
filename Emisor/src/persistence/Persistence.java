@@ -1,5 +1,6 @@
 package persistence;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,19 +11,20 @@ import java.io.Serializable;
 import model.Location;
 
 public class Persistence {
+	private final static String PATH = "data/location.bin";
 	private static FileOutputStream fileoutput;
 	private static FileInputStream fileinput;
 	private static ObjectOutputStream objectoutput;
 	private static ObjectInputStream objectinput;
 
-	private static void openInput(String name) throws IOException {
-		fileinput = new FileInputStream(name);
+	private static void openInput() throws IOException {
+		fileinput = new FileInputStream(PATH);
 		objectinput = new ObjectInputStream(fileinput);
 
 	}
 
-	private static void openOutput(String name) throws IOException {
-		fileoutput = new FileOutputStream(name);
+	private static void openOutput() throws IOException {
+		fileoutput = new FileOutputStream(PATH);
 		objectoutput = new ObjectOutputStream(fileoutput);
 
 	}
@@ -50,18 +52,28 @@ public class Persistence {
 		return serializable;
 	}
 
-	public static Location getLocationFromBin(String fileName) throws Exception {
+	public static Location getLocationFromBin() {
 		Location loc = null;
 
-		Persistence.openInput(fileName);
-		loc = (Location) Persistence.read();
-		Persistence.closeInput();
+		try {
+			Persistence.openInput();
+			loc = (Location) Persistence.read();
+			Persistence.closeInput();
+		} catch (Exception e) {
+			File f = new File(PATH);
+			try {
+				f.createNewFile();
+				loc = new Location();
+			} catch (IOException e1) {
+				e.printStackTrace();
+			}
+		}
 
 		return loc;
 	}
 
-	public static void setLocationToBin(String fileName, Serializable obj) throws IOException {
-		Persistence.openOutput(fileName);
+	public static void setLocationToBin(Serializable obj) throws IOException {
+		Persistence.openOutput();
 		Persistence.write(obj);
 		Persistence.closeOutput();
 	}
