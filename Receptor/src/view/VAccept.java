@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -23,9 +21,8 @@ import javax.swing.border.EmptyBorder;
 
 import controller.ControllerAccept;
 
-public class VAccept extends JFrame implements ActionListener, KeyListener, MouseListener {
+public class VAccept extends JFrame implements KeyListener, MouseListener {
 
-	private JPanel contentPane;
 	private JTextField textFieldPort;
 	private JButton btnConfirmar;
 	private JRadioButton radioBtnFI;
@@ -56,7 +53,7 @@ public class VAccept extends JFrame implements ActionListener, KeyListener, Mous
 		setTitle("Sistema de Alarma");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(800, 400, 500, 180);
-		contentPane = new JPanel();
+		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
@@ -112,7 +109,6 @@ public class VAccept extends JFrame implements ActionListener, KeyListener, Mous
 		panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 5));
 		
 		btnConfirmar = new JButton("Confirmar");
-		btnConfirmar.addActionListener(this);
 		btnConfirmar.setActionCommand("Confirmar tipos");
 		btnConfirmar.setPreferredSize(new Dimension(120, 26));
 		btnConfirmar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
@@ -127,22 +123,10 @@ public class VAccept extends JFrame implements ActionListener, KeyListener, Mous
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyTyped(KeyEvent e) {}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyPressed(KeyEvent e) {}
 
 	@Override
 	public void keyReleased(KeyEvent e) { //Si hay algo en los textFields
@@ -189,16 +173,10 @@ public class VAccept extends JFrame implements ActionListener, KeyListener, Mous
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseClicked(MouseEvent e) {}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mousePressed(MouseEvent e) {}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -206,15 +184,9 @@ public class VAccept extends JFrame implements ActionListener, KeyListener, Mous
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent e) {}
 
 }

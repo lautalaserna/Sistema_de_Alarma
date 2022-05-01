@@ -41,9 +41,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
-public class VReceptor extends JFrame implements ActionListener{
+public class VReceptor extends JFrame{
 
-	private JPanel PanelPrincipal;
 	private JTable table;
 	private JButton btnConfirmar;
 
@@ -71,7 +70,7 @@ public class VReceptor extends JFrame implements ActionListener{
 		setTitle("Sistema de Alarma");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(650, 350, 720, 480);
-		PanelPrincipal = new JPanel();
+		JPanel PanelPrincipal = new JPanel();
 		PanelPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(PanelPrincipal);
 		PanelPrincipal.setLayout(new BorderLayout(0, 0));
@@ -94,7 +93,6 @@ public class VReceptor extends JFrame implements ActionListener{
 		btnConfirmar = new JButton("Confirmar");
 		btnConfirmar.setPreferredSize(new Dimension(120, 30));
 		btnConfirmar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		btnConfirmar.addActionListener(this);
 		btnConfirmar.setActionCommand("CONFIRM");
 		btnConfirmar.setEnabled(false);
 		panel_2.add(btnConfirmar);
@@ -123,12 +121,6 @@ public class VReceptor extends JFrame implements ActionListener{
 
 	public void addActionListener(ControllerReceptor controllerReceptor) {
 		this.btnConfirmar.addActionListener(controllerReceptor);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public JTable getTable() {

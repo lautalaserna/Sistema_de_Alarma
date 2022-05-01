@@ -9,7 +9,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import connection.Filter;
-import model.Location;
 
 public class Persistence {
 	private final static String PATH = "data/filter.bin";
