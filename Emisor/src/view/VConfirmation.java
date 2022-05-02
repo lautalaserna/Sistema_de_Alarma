@@ -19,7 +19,8 @@ import javax.swing.border.EmptyBorder;
 public class VConfirmation extends JFrame {
 	private JButton btnConfirmar;
 	private JButton btnCancelar;
-
+	private JLabel lblConfirmation;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -44,26 +45,26 @@ public class VConfirmation extends JFrame {
 		setAlwaysOnTop(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(800, 400, 350, 150);
+		setBounds(800, 450, 450, 150);
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{326, 0};
+		gbl_contentPane.columnWidths = new int[] {420, 0};
 		gbl_contentPane.rowHeights = new int[] {55, 50, 0};
 		gbl_contentPane.columnWeights = new double[]{0.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		JLabel lblNewLabel = new JLabel("¿Desea enviar la solicitud?");
-		lblNewLabel.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblConfirmation = new JLabel("¿Desea enviar la solicitud?");
+		lblConfirmation.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		lblConfirmation.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.fill = GridBagConstraints.BOTH;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNewLabel.gridx = 0;
 		gbc_lblNewLabel.gridy = 0;
-		contentPane.add(lblNewLabel, gbc_lblNewLabel);
+		contentPane.add(lblConfirmation, gbc_lblNewLabel);
 		
 		JPanel panel = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
@@ -93,6 +94,10 @@ public class VConfirmation extends JFrame {
 	public void addActionListener(ActionListener controller) {
 		this.btnConfirmar.addActionListener(controller);
 		this.btnCancelar.addActionListener(controller);
+	}
+	
+	public void setLblConfirmation(String str) {
+		this.lblConfirmation.setText("¿Desea enviar una solicitud de " + str + "?");
 	}
 
 }

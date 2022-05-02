@@ -107,12 +107,23 @@ public class VReceptor extends JFrame{
 			new Object[][] {
 			},
 			new String[] {
-				"Ubicación", "Fecha", "Tipo de Emergencia", "Estado"
+				"Ubicaci\u00F3n", "Fecha", "Tipo de Emergencia", "Estado"
 			}
-		));
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table.getColumnModel().getColumn(0).setResizable(false);
 		table.getColumnModel().getColumn(0).setPreferredWidth(150);
+		table.getColumnModel().getColumn(1).setResizable(false);
 		table.getColumnModel().getColumn(1).setPreferredWidth(150);
+		table.getColumnModel().getColumn(2).setResizable(false);
 		table.getColumnModel().getColumn(2).setPreferredWidth(150);
+		table.getColumnModel().getColumn(3).setResizable(false);
 		table.getColumnModel().getColumn(3).setPreferredWidth(150);
 		scrollPane.setViewportView(table);
 		

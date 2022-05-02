@@ -2,6 +2,8 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import connection.Connection;
 import connection.TimeOut;
@@ -10,7 +12,7 @@ import model.Event;
 import model.MsgFactory;
 import view.VConfirmation;
 
-public class ControllerConfirmation implements ActionListener {
+public class ControllerConfirmation implements ActionListener, WindowListener {
 	private VConfirmation viewConfirmation;
 	private Event event;
 	private ControllerEmisor ce;
@@ -20,6 +22,7 @@ public class ControllerConfirmation implements ActionListener {
 		this.event = event;
 		this.ce = ce;
 		this.viewConfirmation = new VConfirmation();
+		this.viewConfirmation.addWindowListener(this);
 		this.viewConfirmation.addActionListener(this);
 		this.viewConfirmation.addActionListener(ce);
 	}
@@ -44,5 +47,28 @@ public class ControllerConfirmation implements ActionListener {
 			}
 		}
 	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		this.viewConfirmation.setLblConfirmation(event.getEventType());
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {}
+
+	@Override
+	public void windowClosed(WindowEvent e) {}
+
+	@Override
+	public void windowIconified(WindowEvent e) {}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {}
+
+	@Override
+	public void windowActivated(WindowEvent e) {}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {}
 
 }
