@@ -137,7 +137,7 @@ public class VLocation extends JFrame implements KeyListener {
 		JPanel panel_6 = new JPanel();
 		FlowLayout flowLayout_4 = (FlowLayout) panel_6.getLayout();
 		flowLayout_4.setVgap(8);
-		flowLayout_4.setHgap(18);
+		flowLayout_4.setHgap(15);
 		flowLayout_4.setAlignment(FlowLayout.LEFT);
 		GridBagConstraints gbc_panel_6 = new GridBagConstraints();
 		gbc_panel_6.fill = GridBagConstraints.BOTH;
