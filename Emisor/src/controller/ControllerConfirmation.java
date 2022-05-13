@@ -40,7 +40,7 @@ public class ControllerConfirmation implements ActionListener, WindowListener {
 				c = new Connection(timeOut);
 				ce.addObservable(c);
 				
-				c.connect(MsgFactory.getMessage(Emisor.getInstance().getLocation(), event), Emisor.getInstance().getLocation().getPort());
+				c.connect(MsgFactory.getMessage(Emisor.getInstance().getLocation().getName(), event), Emisor.getInstance().getLocation().getPort());
 				
 			} catch (Exception ex) {
 				ex.printStackTrace();

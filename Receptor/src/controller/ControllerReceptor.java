@@ -52,7 +52,7 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 			refreshList();
 			this.viewReceptor.disableBtn();
 			connection.getTimeOuts().get(index).stopTimer();
-			connection.response(true, msg.getInetAddress(), msg.getLoc().getPort());
+			connection.response(true, msg.getInetAddress(), msg.getPort());
 		}
 	}
 
@@ -65,7 +65,7 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 		for (Message msg : reg) {
 			DefaultTableModel model = (DefaultTableModel) viewReceptor.getTable().getModel();
 			List<String> list = new ArrayList<String>();
-			list.add(msg.getLoc().getName());
+			list.add(msg.getLocationName());
 			list.add(msg.getDate().getHour() + ":" + msg.getDate().getMinute() + ":" + msg.getDate().getSecond());
 			list.add(msg.getEvent().getEventType());
 			list.add(msg.getState());
@@ -126,7 +126,7 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 			System.out.println("Entro al update por la connection");
 			Message msg = (Message) arg;
 			msg.setState("Expirado");
-			connection.response(false, msg.getInetAddress(), msg.getLoc().getPort());
+			connection.response(false, msg.getInetAddress(), msg.getPort());
 		}
 		refreshList();
 	}

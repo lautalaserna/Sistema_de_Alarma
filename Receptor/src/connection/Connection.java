@@ -56,7 +56,7 @@ public class Connection extends Observable implements Observer{
 						if (filter.isAccepted(msg)) {
 							System.out.println("Receptort: Mensaje Aceptado");
 							msg.setInetAddress(adress);
-							msg.getLoc().setPort(port);
+							msg.setPort(port);
 							
 							TimeOut t = new TimeOut();
 							addObservable(t);

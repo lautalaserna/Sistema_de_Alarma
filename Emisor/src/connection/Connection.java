@@ -12,6 +12,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Observable;
 
+import model.Emisor;
 import model.Message;
 
 public class Connection extends Observable{
@@ -22,7 +23,7 @@ public class Connection extends Observable{
 	
 	public Connection(TimeOut timeOut) throws SocketException, UnknownHostException {
 		this.socketUDP = new DatagramSocket();
-		this.inetAdress = InetAddress.getByName("localhost");
+		this.inetAdress = InetAddress.getByName(Emisor.getInstance().getLocation().getIp()); //Broadcast
 		this.timeOut = timeOut;
 		timeOut.starTimer();
 	}

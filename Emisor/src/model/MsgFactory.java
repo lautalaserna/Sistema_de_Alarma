@@ -2,8 +2,8 @@ package model;
 
 public class MsgFactory {
 
-	public static Message getMessage(Location loc, Event e){
-		return new Message(loc, e);
+	public static Message getMessage(String name, Event e){
+		return new Message(name, e);
 	}
 	
 }
