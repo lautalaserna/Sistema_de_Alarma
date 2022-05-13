@@ -50,7 +50,7 @@ public class VLocation extends JFrame implements KeyListener {
 		setAlwaysOnTop(true);
 		setTitle("Configurar Ubicación");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(800, 400, 450, 250);
+		setBounds(800, 400, 475, 250);
 		setResizable(false);
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -112,7 +112,7 @@ public class VLocation extends JFrame implements KeyListener {
 		gbc_panel_5.gridy = 1;
 		panel.add(panel_5, gbc_panel_5);
 		
-		JLabel lblNewLabel_1 = new JLabel("IP");
+		JLabel lblNewLabel_1 = new JLabel("IP (Servidor)");
 		panel_5.add(lblNewLabel_1);
 		lblNewLabel_1.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		
@@ -128,8 +128,7 @@ public class VLocation extends JFrame implements KeyListener {
 		panel.add(panel_2, gbc_panel_2);
 		
 		textFieldIP = new JTextField();
-		textFieldIP.setEditable(false);
-		textFieldIP.setText("localhost");
+		textFieldIP.setText("127.255.255.255");
 		textFieldIP.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		panel_2.add(textFieldIP);
 		textFieldIP.setColumns(20);
@@ -138,7 +137,7 @@ public class VLocation extends JFrame implements KeyListener {
 		JPanel panel_6 = new JPanel();
 		FlowLayout flowLayout_4 = (FlowLayout) panel_6.getLayout();
 		flowLayout_4.setVgap(8);
-		flowLayout_4.setHgap(15);
+		flowLayout_4.setHgap(18);
 		flowLayout_4.setAlignment(FlowLayout.LEFT);
 		GridBagConstraints gbc_panel_6 = new GridBagConstraints();
 		gbc_panel_6.fill = GridBagConstraints.BOTH;
@@ -147,7 +146,7 @@ public class VLocation extends JFrame implements KeyListener {
 		gbc_panel_6.gridy = 2;
 		panel.add(panel_6, gbc_panel_6);
 		
-		JLabel lblNewLabel_2 = new JLabel("Puerto");
+		JLabel lblNewLabel_2 = new JLabel("Puerto (Servidor)");
 		panel_6.add(lblNewLabel_2);
 		lblNewLabel_2.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		
