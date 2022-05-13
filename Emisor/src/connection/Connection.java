@@ -23,7 +23,7 @@ public class Connection extends Observable{
 	
 	public Connection(TimeOut timeOut) throws SocketException, UnknownHostException {
 		this.socketUDP = new DatagramSocket();
-		this.inetAdress = InetAddress.getByName(Emisor.getInstance().getLocation().getIp()); //Broadcast
+		this.inetAdress = InetAddress.getByName(Emisor.getInstance().getLocation().getIp());
 		this.timeOut = timeOut;
 		timeOut.starTimer();
 	}
