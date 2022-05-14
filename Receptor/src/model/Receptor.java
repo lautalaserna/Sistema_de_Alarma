@@ -2,9 +2,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Observer;
 
-import connection.Filter;
+import connection.ServerData;
 import controller.ControllerAccept;
 import persistence.Persistence;
 
@@ -12,13 +11,18 @@ public class Receptor extends Observable {
 	private static Receptor instance = null;
 	ArrayList<Message> reg;
 	Filter filter;
+	ServerData serverData;
 	
 	public static void main(String[] args) {
 		Receptor receptor = Receptor.getInstance();
-		Filter filter = Persistence.getFilterFromBin();
-		receptor.setFilter(filter);
-		new ControllerAccept();
 		
+		Filter filter = Persistence.getFilterFromBin("data/filter.bin");
+		receptor.setFilter(filter);
+		
+		ServerData svd = Persistence.getServerDataFromBin("data/server.bin");
+		receptor.setServerData(svd);
+		
+		new ControllerAccept();
 	}
 	
 	private Receptor() {
@@ -54,5 +58,11 @@ public class Receptor extends Observable {
 		notifyObservers(this.reg);
 	}
 	
+	public void setServerData(ServerData serverData) {
+		this.serverData = serverData;
+	}
 	
+	public ServerData getServerData() {
+		return serverData;
+	}
 }

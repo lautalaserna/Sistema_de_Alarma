@@ -4,9 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import connection.Connection;
-import connection.Filter;
+import connection.ServerData;
+import model.Filter;
 import model.Receptor;
 import persistence.Persistence;
 import view.VAccept;
@@ -24,14 +27,23 @@ public class ControllerAccept implements ActionListener, WindowListener {
 	public void actionPerformed(ActionEvent e) {
 		Filter f = new Filter(viewAccept.isAMSelected(), viewAccept.isFISelected(), viewAccept.isPSSelected(),getPort());
 		Receptor.getInstance().setFilter(f);
+		
 		try {
-			Persistence.setFilterToBin(f);
+			Persistence.setFilterToBin("data/filter.bin",f);			
+			
+			ServerData svd = new ServerData(InetAddress.getByName(viewAccept.getSvIP()),viewAccept.getSvPort());
+			Persistence.setServerDataToBin("data/server.bin",svd);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		this.viewAccept.setVisible(false);
 		
 		Connection c = new Connection(f, viewAccept.getPort());
+		try {
+			c.suscribe(InetAddress.getByName(viewAccept.getSvIP()), viewAccept.getSvPort());
+		} catch (UnknownHostException e1) {
+			e1.printStackTrace();
+		}
 		new ControllerReceptor(c);
 	}
 
@@ -42,6 +54,7 @@ public class ControllerAccept implements ActionListener, WindowListener {
 	@Override
 	public void windowOpened(WindowEvent e) {
 		Filter f = Receptor.getInstance().getFilter();
+		ServerData svd = Receptor.getInstance().getServerData();
 
 		if (f.isAcceptAM())
 			this.viewAccept.selectAM();
@@ -54,6 +67,10 @@ public class ControllerAccept implements ActionListener, WindowListener {
 
 		this.viewAccept.setPort(Receptor.getInstance().getFilter().getPort());
 
+		this.viewAccept.setSvIP(svd.getAddress().getHostAddress());
+		
+		this.viewAccept.setSvPort(svd.getPort());
+		
 		this.viewAccept.check();
 	}
 

@@ -13,8 +13,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import model.Filter;
 import model.Message;
-import model.ReceptorData;
 
 public class Connection extends Observable {
 	private ArrayList<ReceptorData> receptors = new ArrayList<ReceptorData>();
@@ -62,7 +62,8 @@ public class Connection extends Observable {
 						socketEmisor.send(petition);
 						
 					} catch(Exception e) {
-						System.out.println("Sonaste");
+						System.out.println("Error al conectar con el Emisor");
+						e.printStackTrace();
 					}
 				}
 			}
@@ -87,7 +88,7 @@ public class Connection extends Observable {
 							System.out.println("Servidor: Mensaje Enviado");
 							
 						} catch (IOException e) {
-							System.out.println("Sonaste");
+							System.out.println("Error enviar un mensaje a los Receptores");
 							e.printStackTrace();
 						}
 					}
@@ -110,10 +111,19 @@ public class Connection extends Observable {
 						Filter f = (Filter) iStream.readObject();
 						iStream.close();
 						
-						receptors.add(new ReceptorData(f,petition.getAddress()));
+						ReceptorData rd = new ReceptorData(f,petition.getAddress());
+						System.out.println("Servidor: Receptor suscripto:");
+						System.out.println("- IP: " + rd.getAddress().getHostAddress());
+						System.out.println("- Puerto: " + rd.getFilter().getPort());
+						System.out.println("- AM: " + rd.getFilter().isAcceptAM());
+						System.out.println("- PS: " + rd.getFilter().isAcceptPS());
+						System.out.println("- FI: " + rd.getFilter().isAcceptFI());
+						
+						receptors.add(rd);						
 						
 					} catch(Exception e) {
-						System.out.println("Sonaste");
+						System.out.println("Error al suscribirse un Receptor");
+						e.printStackTrace();
 					}
 				}
 			}

@@ -1,10 +1,9 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -22,12 +21,13 @@ import javax.swing.border.EmptyBorder;
 import controller.ControllerAccept;
 
 public class VAccept extends JFrame implements KeyListener, MouseListener {
-
-	private JTextField textFieldPort;
-	private JButton btnConfirmar;
 	private JRadioButton radioBtnFI;
 	private JRadioButton radioBtnAM;
 	private JRadioButton radioBtnPS;
+	private JButton btnConfirmar;
+	private JTextField textFieldPort;
+	private JTextField textFieldSvIP;
+	private JTextField textFieldSvPort;
 	
 	/**
 	 * Launch the application.
@@ -52,68 +52,97 @@ public class VAccept extends JFrame implements KeyListener, MouseListener {
 		setResizable(false);
 		setTitle("Sistema de Alarma");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(800, 400, 500, 180);
+		setBounds(800, 400, 500, 350);
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		contentPane.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setLayout(null);
+		contentPane.add(panel_1);
 		
 		JLabel lblNewLabel = new JLabel("  Indique Alertas a recibir:");
-		lblNewLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblNewLabel.setBounds(0, 30, 476, 30);
+		panel_1.add(lblNewLabel);
 		lblNewLabel.setPreferredSize(new Dimension(100,30));
 		lblNewLabel.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		contentPane.add(lblNewLabel, BorderLayout.NORTH);
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		JPanel panel = new JPanel();
-		contentPane.add(panel, BorderLayout.CENTER);
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 15));
+		contentPane.add(panel);
 		
 		radioBtnAM = new JRadioButton("Alerta medica");
+		radioBtnAM.setBounds(20, 16, 125, 27);
 		radioBtnAM.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		radioBtnAM.addMouseListener(this);
+		panel.setLayout(null);
 		panel.add(radioBtnAM);
 		
 		radioBtnPS = new JRadioButton("Alerta seguridad");
+		radioBtnPS.setBounds(159, 16, 143, 27);
 		radioBtnPS.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		radioBtnPS.addMouseListener(this);
 		panel.add(radioBtnPS);
 		
 		radioBtnFI = new JRadioButton("Alerta incendio");
+		radioBtnFI.setBounds(322, 16, 133, 27);
 		radioBtnFI.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		radioBtnFI.addMouseListener(this);
 		panel.add(radioBtnFI);
 		
-		JPanel panel_1 = new JPanel();
-		contentPane.add(panel_1, BorderLayout.SOUTH);
-		panel_1.setLayout(new BorderLayout(0, 0));
+		JPanel panel_4 = new JPanel();
+		contentPane.add(panel_4);
+		panel_4.setLayout(null);
 		
-		JPanel panel_2 = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panel_2.getLayout();
-		flowLayout.setVgap(10);
-		flowLayout.setAlignment(FlowLayout.LEADING);
-		panel_1.add(panel_2);
+		JLabel lblIpservidor_2 = new JLabel("  IP (Sv):");
+		lblIpservidor_2.setBounds(20, 10, 121, 50);
+		lblIpservidor_2.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		panel_4.add(lblIpservidor_2);
+		
+		textFieldSvIP = new JTextField();
+		textFieldSvIP.setBounds(145, 25, 304, 26);
+		textFieldSvIP.setPreferredSize(new Dimension(0, 26));
+		textFieldSvIP.setColumns(15);
+		panel_4.add(textFieldSvIP);
+		
+		JPanel panel_5 = new JPanel();
+		contentPane.add(panel_5);
+		panel_5.setLayout(null);
+		
+		JLabel lblIpservidor_1_1 = new JLabel("  Puerto (Sv):");
+		lblIpservidor_1_1.setBounds(20, 10, 142, 41);
+		lblIpservidor_1_1.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		panel_5.add(lblIpservidor_1_1);
+		
+		textFieldSvPort = new JTextField();
+		textFieldSvPort.setBounds(145, 20, 304, 26);
+		textFieldSvPort.setPreferredSize(new Dimension(0, 26));
+		textFieldSvPort.setColumns(15);
+		panel_5.add(textFieldSvPort);
+		
+		JPanel panel_7 = new JPanel();
+		contentPane.add(panel_7);
+		panel_7.setLayout(null);
 		
 		JLabel lblPort = new JLabel("  Puerto:");
+		lblPort.setBounds(20, 10, 115, 27);
 		lblPort.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		panel_2.add(lblPort);
+		panel_7.add(lblPort);
 		
 		textFieldPort = new JTextField();
-		panel_2.add(textFieldPort);
+		textFieldPort.setBounds(145, 12, 141, 27);
+		textFieldPort.setPreferredSize(new Dimension(0, 26));
 		textFieldPort.setColumns(15);
-		textFieldPort.setPreferredSize(new Dimension(0,26));
-		textFieldPort.addKeyListener(this);
-		
-		JPanel panel_3 = new JPanel();
-		panel_1.add(panel_3, BorderLayout.EAST);
-		panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 5));
+		textFieldPort.setPreferredSize(new Dimension(0,28));
+		panel_7.add(textFieldPort);
 		
 		btnConfirmar = new JButton("Confirmar");
-		btnConfirmar.setActionCommand("Confirmar tipos");
 		btnConfirmar.setPreferredSize(new Dimension(120, 26));
 		btnConfirmar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		btnConfirmar.setPreferredSize(new Dimension(120,30));
-		panel_3.add(btnConfirmar);
+		btnConfirmar.setActionCommand("Confirmar tipos");
+		btnConfirmar.setBounds(306, 8, 141, 30);
+		panel_7.add(btnConfirmar);
 		
 		this.setVisible(true); //Para que cuandos se cree, sea visible.
 	}
@@ -129,8 +158,7 @@ public class VAccept extends JFrame implements KeyListener, MouseListener {
 	public void keyPressed(KeyEvent e) {}
 
 	@Override
-	public void keyReleased(KeyEvent e) { //Si hay algo en los textFields
-		check();
+	public void keyReleased(KeyEvent e) {
 	}
 	
 	public boolean isPSSelected() {
@@ -171,7 +199,23 @@ public class VAccept extends JFrame implements KeyListener, MouseListener {
 	public int getPort() {
 		return Integer.parseInt(this.textFieldPort.getText());
 	}
-
+	
+	public void setSvPort(int port) {
+		this.textFieldSvPort.setText(Integer.toString(port));
+	}
+	
+	public int getSvPort() {
+		return Integer.parseInt(this.textFieldSvPort.getText());
+	}
+	
+	public void setSvIP(String ip) {
+		this.textFieldSvIP.setText(ip);
+	}
+	
+	public String getSvIP() {
+		return this.textFieldSvIP.getText();
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {}
 

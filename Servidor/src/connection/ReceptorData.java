@@ -1,8 +1,8 @@
-package model;
+package connection;
 
 import java.net.InetAddress;
 
-import connection.Filter;
+import model.Filter;
 
 public class ReceptorData {
 	private Filter f;

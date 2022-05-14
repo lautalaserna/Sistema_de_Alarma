@@ -1,8 +1,6 @@
-package connection;
+package model;
 
 import java.io.Serializable;
-
-import model.Message;
 
 public class Filter implements Serializable {
 	private boolean acceptAM;
