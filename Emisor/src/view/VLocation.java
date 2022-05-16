@@ -133,6 +133,7 @@ public class VLocation extends JFrame implements KeyListener {
 		panel_2.add(textFieldIP);
 		textFieldIP.setColumns(20);
 		textFieldIP.setPreferredSize(new Dimension(0,28));
+		textFieldIP.addKeyListener(this);
 		
 		JPanel panel_6 = new JPanel();
 		FlowLayout flowLayout_4 = (FlowLayout) panel_6.getLayout();
@@ -202,7 +203,7 @@ public class VLocation extends JFrame implements KeyListener {
 	}
 	
 	public void checkText() {
-		if (this.textFieldLocation.getText().isEmpty() || this.textFieldPort.getText().isEmpty())
+		if (this.textFieldLocation.getText().isEmpty() || this.textFieldPort.getText().isEmpty() || this.textFieldIP.getText().isEmpty())
 			btnConfirmar.setEnabled(false);
 		else 
 			btnConfirmar.setEnabled(true);

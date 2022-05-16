@@ -104,6 +104,7 @@ public class VAccept extends JFrame implements KeyListener, MouseListener {
 		textFieldSvIP.setBounds(145, 25, 304, 26);
 		textFieldSvIP.setPreferredSize(new Dimension(0, 26));
 		textFieldSvIP.setColumns(15);
+		textFieldSvIP.addKeyListener(this);
 		panel_4.add(textFieldSvIP);
 		
 		JPanel panel_5 = new JPanel();
@@ -119,6 +120,7 @@ public class VAccept extends JFrame implements KeyListener, MouseListener {
 		textFieldSvPort.setBounds(145, 20, 304, 26);
 		textFieldSvPort.setPreferredSize(new Dimension(0, 26));
 		textFieldSvPort.setColumns(15);
+		textFieldSvPort.addKeyListener(this);
 		panel_5.add(textFieldSvPort);
 		
 		JPanel panel_7 = new JPanel();
@@ -135,6 +137,7 @@ public class VAccept extends JFrame implements KeyListener, MouseListener {
 		textFieldPort.setPreferredSize(new Dimension(0, 26));
 		textFieldPort.setColumns(15);
 		textFieldPort.setPreferredSize(new Dimension(0,28));
+		textFieldPort.addKeyListener(this);
 		panel_7.add(textFieldPort);
 		
 		btnConfirmar = new JButton("Confirmar");
@@ -159,6 +162,7 @@ public class VAccept extends JFrame implements KeyListener, MouseListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		check();
 	}
 	
 	public boolean isPSSelected() {
@@ -186,7 +190,7 @@ public class VAccept extends JFrame implements KeyListener, MouseListener {
 	}
 	
 	public void check() {
-		if (!this.textFieldPort.getText().isEmpty() && (isFISelected() || isAMSelected() || isPSSelected()))
+		if (!this.textFieldPort.getText().isEmpty() && (isFISelected() || isAMSelected() || isPSSelected()) && !this.textFieldSvIP.getText().isEmpty() && !this.textFieldSvPort.getText().isEmpty())
 			btnConfirmar.setEnabled(true);
 		else 
 			btnConfirmar.setEnabled(false);
