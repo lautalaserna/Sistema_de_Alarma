@@ -57,6 +57,8 @@ public class Message implements Serializable{
 	
 	@Override
 	public String toString() {
-		return locationName + ";" + date.toString() + ";" + e.getEventType();
+		return "Ubicación: " + locationName + 
+			" / Fecha: " + date.getHour() + ":" + date.getMinute() + ":" + date.getSecond() + 
+			" / Evento: " + e.getEventType();
 	}
 }

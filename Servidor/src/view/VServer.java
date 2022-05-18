@@ -47,15 +47,17 @@ public class VServer extends JFrame {
 	public VServer() {
 		setTitle("Servidor");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 900, 400);
+		setBounds(600, 300, 900, 500);
+		
+		setResizable(false);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.contentPane.setSize(900, 600);
 		setContentPane(this.contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{776, 0};
+		gbl_contentPane.columnWidths = new int[] {890};
 		gbl_contentPane.rowHeights = new int[] {40, 410, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_contentPane.columnWeights = new double[]{0.0};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		this.contentPane.setLayout(gbl_contentPane);
 		
@@ -78,7 +80,7 @@ public class VServer extends JFrame {
 		this.contentPane.add(this.scrollPane, gbc_scrollPane);
 		
 		this.list = new JList();
-		this.list.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 12));
+		this.list.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		this.list.setModel(modelEvent);
 		this.scrollPane.setViewportView(this.list);
 		
@@ -86,7 +88,6 @@ public class VServer extends JFrame {
 	}
 	
 	public void addLog(String log) {
-		System.out.println("LLEGÓ AL ADDLOG");
 		this.modelEvent.addElement(log);
 		this.list.repaint();
 	}

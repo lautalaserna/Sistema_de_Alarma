@@ -46,9 +46,10 @@ public class Connection extends Observable {
 						msg.setPort(petition.getPort());
 						
 						System.out.println("Servidor: Mensaje recibido: " + msg);
+						setChanged();
+						notifyObservers(msg);
 						
 						sendMsgToReceptors(msg);
-						
 						socketEmisor.receive(petition);
 						
 						iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
@@ -56,6 +57,12 @@ public class Connection extends Observable {
 						iStream.close();
 						System.out.println("Servidor: Respuesta Recibida = " + response);
 						
+						response = "(De: " + petition.getAddress().getHostAddress() + ":" + petition.getPort() + 
+								") (Para: " + msg.getInetAddress().getHostAddress() + ":" + msg.getPort() + 
+								") Respuesta: " + response;
+						setChanged();
+						notifyObservers(response);
+												
 						bufferEmisor = petition.getData();
 						
 						petition = new DatagramPacket(bufferEmisor, bufferEmisor.length, msg.getInetAddress(), msg.getPort());
@@ -122,7 +129,6 @@ public class Connection extends Observable {
 						System.out.println("- FI: " + rd.getFilter().isAcceptFI());
 						
 						receptors.add(rd);
-						
 						
 					} catch(Exception e) {
 						System.out.println("Error al suscribirse un Receptor");

@@ -1,7 +1,9 @@
 package connection;
 
 import java.net.InetAddress;
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import model.Filter;
 
@@ -17,15 +19,19 @@ public class ReceptorData {
 	@Override
 	public String toString() {
 		String response;
-		response = "Nuevo receptor suscripto: IP = " + this.address + ", Puerto = " + this.f.getPort() + ", Hora = " + LocalDateTime.now() + ".";
+		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		
+		response = "Dir: " + this.address.getHostAddress() + ":" + this.f.getPort() + 
+				" / Fecha: " + dateFormat.format(new Date(Calendar.getInstance().getTimeInMillis())) + 
+				" / Eventos Aceptados:";
 		if(this.f.isAcceptAM()) {
-			response += " Admite Asistencia médica";
+			response += " AM";
 		}
 		if(this.f.isAcceptPS()) {
-			response += ", personal de seguridad";
+			response += " PS";
 		}
 		if(this.f.isAcceptFI()) {
-			response += ", foco de incendio";
+			response += " FI";
 		}
 		return response;
 	}

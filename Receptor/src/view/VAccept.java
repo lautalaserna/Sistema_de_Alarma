@@ -66,7 +66,7 @@ public class VAccept extends JFrame implements KeyListener, MouseListener {
 		lblNewLabel.setBounds(0, 30, 476, 30);
 		panel_1.add(lblNewLabel);
 		lblNewLabel.setPreferredSize(new Dimension(100,30));
-		lblNewLabel.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		lblNewLabel.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 15));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		JPanel panel = new JPanel();
@@ -101,6 +101,7 @@ public class VAccept extends JFrame implements KeyListener, MouseListener {
 		panel_4.add(lblIpservidor_2);
 		
 		textFieldSvIP = new JTextField();
+		textFieldSvIP.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		textFieldSvIP.setBounds(145, 25, 304, 26);
 		textFieldSvIP.setPreferredSize(new Dimension(0, 26));
 		textFieldSvIP.setColumns(15);
@@ -117,6 +118,7 @@ public class VAccept extends JFrame implements KeyListener, MouseListener {
 		panel_5.add(lblIpservidor_1_1);
 		
 		textFieldSvPort = new JTextField();
+		textFieldSvPort.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		textFieldSvPort.setBounds(145, 20, 304, 26);
 		textFieldSvPort.setPreferredSize(new Dimension(0, 26));
 		textFieldSvPort.setColumns(15);
@@ -133,6 +135,7 @@ public class VAccept extends JFrame implements KeyListener, MouseListener {
 		panel_7.add(lblPort);
 		
 		textFieldPort = new JTextField();
+		textFieldPort.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		textFieldPort.setBounds(145, 12, 141, 27);
 		textFieldPort.setPreferredSize(new Dimension(0, 26));
 		textFieldPort.setColumns(15);
