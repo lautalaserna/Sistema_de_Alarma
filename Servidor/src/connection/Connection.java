@@ -112,6 +112,8 @@ public class Connection extends Observable {
 						iStream.close();
 						
 						ReceptorData rd = new ReceptorData(f,petition.getAddress());
+						setChanged();
+						notifyObservers(rd);
 						System.out.println("Servidor: Receptor suscripto:");
 						System.out.println("- IP: " + rd.getAddress().getHostAddress());
 						System.out.println("- Puerto: " + rd.getFilter().getPort());
@@ -119,7 +121,8 @@ public class Connection extends Observable {
 						System.out.println("- PS: " + rd.getFilter().isAcceptPS());
 						System.out.println("- FI: " + rd.getFilter().isAcceptFI());
 						
-						receptors.add(rd);						
+						receptors.add(rd);
+						
 						
 					} catch(Exception e) {
 						System.out.println("Error al suscribirse un Receptor");
