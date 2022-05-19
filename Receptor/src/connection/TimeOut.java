@@ -21,7 +21,6 @@ public class TimeOut extends Observable{
 						i--;
 						if (i < 0) {
 							timer.cancel();
-							// Aca puede que falte algo
 							setChanged();
 							notifyObservers(msg);
 						}

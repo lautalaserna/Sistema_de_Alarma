@@ -23,9 +23,12 @@ public class Connection extends Observable {
 	private byte[] bufferEmisor = new byte[2048];
 	private byte[] bufferReceptor = new byte[2048];
 
-	public Connection(int portEmisor, int portReceptor) throws SocketException, UnknownHostException {
-		this.socketEmisor = new DatagramSocket(portEmisor);
-		this.socketReceptor = new DatagramSocket(portReceptor);
+	public Connection() throws SocketException, UnknownHostException {
+		int ports[] = FileUtil.readPorts(FileUtil.PATH);
+		this.socketEmisor = new DatagramSocket(ports[0]);
+		this.socketReceptor = new DatagramSocket(ports[1]);
+		listenEmisores();
+		listenReceptores();
 	}
 
 	public void listenEmisores() {

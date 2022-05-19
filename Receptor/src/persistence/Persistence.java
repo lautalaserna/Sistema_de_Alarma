@@ -94,7 +94,7 @@ public class Persistence {
 			try {
 				f.createNewFile();
 				System.out.println(InetAddress.getLocalHost().getHostAddress());
-				svd = new ServerData(InetAddress.getByName(InetAddress.getLocalHost().getHostAddress()), 1011);
+				svd = new ServerData();
 			} catch (IOException e1) {
 				e.printStackTrace();
 			}

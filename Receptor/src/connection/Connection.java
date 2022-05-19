@@ -10,7 +10,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -40,9 +39,9 @@ public class Connection extends Observable implements Observer {
 	public void listen() {
 		new Thread() {
 			public void run() {
+				System.out.println("Receptor: Escuchando");
 				while (true) {
 					try {
-						System.out.println("Receptor: Escuchando");
 						buffer = new byte[2048];
 						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
 						socketUDP.receive(petition);

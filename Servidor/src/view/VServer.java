@@ -18,7 +18,6 @@ import javax.swing.border.EmptyBorder;
 
 
 public class VServer extends JFrame {
-
 	private JPanel contentPane;
 	private JLabel lblRegistro;
 	private JScrollPane scrollPane;

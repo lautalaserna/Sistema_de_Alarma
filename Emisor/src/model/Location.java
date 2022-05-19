@@ -11,8 +11,8 @@ public class Location implements Serializable {
 
 	public Location() throws IOException {
 		this.ip = InetAddress.getLocalHost().getHostAddress();
-		this.port = 8080;
-		this.name = "";
+		this.port = 1010;
+		this.name = "Puesto de Trabajo";
 	}
 
 	public Location(String name, int port) throws IOException {
