@@ -26,7 +26,7 @@ public class ControllerServer implements Observer{
 									"(Desde: " + ((Message) arg).getInetAddress().getHostAddress() + ":" + ((Message) arg).getPort() + 
 									") " + arg.toString());
 		} else if (arg.getClass().getName().equals("java.lang.String")) {
-			this.viewServer.addLog("Respuesta del Receptor: " + arg);
+			this.viewServer.addLog(arg.toString());
 		}
 	}
 	
