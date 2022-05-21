@@ -42,7 +42,18 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 
 		this.alarm = new Alarm();
 	}
-
+	
+	@Override
+	public void update(Observable o, Object arg) {
+		System.out.println(o.getClass().getName());
+		if (o.getClass().getName().equalsIgnoreCase("connection.Connection")) {
+			Message msg = (Message) arg;
+			msg.setState("Expirado");
+			connection.response(false, msg.getInetAddress(), msg.getPort());
+		}
+		refreshList();
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		int index = this.viewReceptor.getTable().getSelectedRow();
@@ -118,18 +129,6 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 
 	@Override
 	public void windowDeactivated(WindowEvent e) {}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		System.out.println(o.getClass().getName());
-		if (o.getClass().getName().equalsIgnoreCase("connection.Connection")) {
-			System.out.println("Entro al update por la connection");
-			Message msg = (Message) arg;
-			msg.setState("Expirado");
-			connection.response(false, msg.getInetAddress(), msg.getPort());
-		}
-		refreshList();
-	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {}

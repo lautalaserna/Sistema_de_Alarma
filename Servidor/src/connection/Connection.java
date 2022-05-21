@@ -22,7 +22,6 @@ public class Connection extends Observable {
 	private DatagramSocket socketReceptor;
 	private byte[] bufferEmisor = new byte[2048];
 	private byte[] bufferReceptor = new byte[2048];
-	private boolean existReceptor = false;
 
 	public Connection() throws SocketException, UnknownHostException {
 		int ports[] = FileUtil.readPorts(FileUtil.PATH);
@@ -51,43 +50,38 @@ public class Connection extends Observable {
 						
 						System.out.println("Servidor: Mensaje recibido: " + msg);
 						setChanged();
-						notifyObservers(msg);
+						notifyObservers("Receptor Suscripto: " + msg.toString());
 						
-						sendMsgToReceptors(msg);
 						
 						String response;
-						String log;
-						Thread.sleep(5000); // Espera 5 segundos para verificar si hay algún Receptor para el tipo de Evento.
-						if(existReceptor) {
-							existReceptor = false;
+						if(existReceptor(msg)) {
+							sendMsgToReceptors(msg);
 							socketEmisor.receive(petition);
 							iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
 							response = (String) iStream.readObject();
 							iStream.close();
 							System.out.println("Servidor: Respuesta Recibida = " + response);
 							
-							log = "Respuesta del Receptor: "
+							setChanged();
+							notifyObservers("Respuesta del Receptor: "
 									+ "(De: " + petition.getAddress().getHostAddress() + ":" + petition.getPort() + ") "
 									+ "(Para: " + msg.getInetAddress().getHostAddress() + ":" + msg.getPort() + ") "
-									+ "Respuesta: " + response;
+									+ "Respuesta: " + response);
 							
 							bufferEmisor = petition.getData();
+							
 						} else {
 							response = "KO";
-							log = "No se encuentran Receptores activos para el Evento de " + msg.getEvent().getEventType();
-							System.out.println("Servidor: No se recibió ninguna respuesta. Rta = " + response);
 							
+							System.out.println("Servidor: No se recibió ninguna respuesta. Rta = " + response);
+														
 							ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 							ObjectOutput output = new ObjectOutputStream(bStream);
 							output.writeObject(new String(response));
 							output.close();
 							bufferEmisor = bStream.toByteArray();
 						}
-						
-						
-						setChanged();
-						notifyObservers(log);
-						
+										
 						petition = new DatagramPacket(bufferEmisor, bufferEmisor.length, msg.getInetAddress(), msg.getPort());
 						socketEmisor.send(petition);
 						
@@ -105,7 +99,6 @@ public class Connection extends Observable {
 			public void run() {
 				for (ReceptorData rd : receptors) {
 					if(rd.getFilter().isAccepted(msg)) {
-						existReceptor = true;
 						System.out.println("Servidor: Existe al menos un Receptor");
 						try {
 							ByteArrayOutputStream bStream = new ByteArrayOutputStream();
@@ -117,7 +110,9 @@ public class Connection extends Observable {
 							
 							DatagramPacket petition = new DatagramPacket(bufferEmisor, bufferEmisor.length, rd.getAddress(), rd.getFilter().getPort());
 							socketEmisor.send(petition);
-							System.out.println("Servidor: Mensaje Enviado");
+							
+							setChanged();
+							notifyObservers("Mensaje enviado al Receptor: " + rd.getAddress().getHostAddress() + ":"+ rd.getFilter().getPort());
 							
 						} catch (IOException e) {
 							System.out.println("Error enviar un mensaje a los Receptores");
@@ -127,6 +122,18 @@ public class Connection extends Observable {
 				}
 			}
 		}.start();
+	}
+	
+	
+	public boolean existReceptor(Message msg) {
+		boolean res = false;
+		for (ReceptorData rd : receptors) {
+			if(rd.getFilter().isAccepted(msg)) {
+				res = true;
+				break;
+			}
+		}
+		return res;
 	}
 	
 	public void listenReceptores() {

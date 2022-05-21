@@ -22,7 +22,7 @@ public class VServer extends JFrame {
 	private JLabel lblRegistro;
 	private JScrollPane scrollPane;
 	private JList list;
-	private DefaultListModel modelEvent = new DefaultListModel<String>();
+	private DefaultListModel<String> modelEvent = new DefaultListModel<String>();
 
 	/**
 	 * Launch the application.
@@ -78,7 +78,7 @@ public class VServer extends JFrame {
 		gbc_scrollPane.gridy = 1;
 		this.contentPane.add(this.scrollPane, gbc_scrollPane);
 		
-		this.list = new JList();
+		this.list = new JList<String>();
 		this.list.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		this.list.setModel(modelEvent);
 		this.scrollPane.setViewportView(this.list);
@@ -88,6 +88,5 @@ public class VServer extends JFrame {
 	
 	public void addLog(String log) {
 		this.modelEvent.addElement(log);
-		this.list.repaint();
 	}
 }

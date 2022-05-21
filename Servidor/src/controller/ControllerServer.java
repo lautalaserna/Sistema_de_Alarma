@@ -16,7 +16,7 @@ public class ControllerServer implements Observer{
 		this.viewServer = new VServer();
 		addObservable(connection);
 	}
-
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		if(arg.getClass().getName().equals("connection.ReceptorData")) {
@@ -26,7 +26,7 @@ public class ControllerServer implements Observer{
 									"(Desde: " + ((Message) arg).getInetAddress().getHostAddress() + ":" + ((Message) arg).getPort() + 
 									") " + arg.toString());
 		} else if (arg.getClass().getName().equals("java.lang.String")) {
-			this.viewServer.addLog(arg.toString());
+			this.viewServer.addLog((String) arg);
 		}
 	}
 	
