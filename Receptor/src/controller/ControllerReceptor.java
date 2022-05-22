@@ -45,7 +45,6 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println(o.getClass().getName());
 		if (o.getClass().getName().equalsIgnoreCase("connection.Connection")) {
 			Message msg = (Message) arg;
 			msg.setState("Expirado");

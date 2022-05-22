@@ -1,45 +1,22 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JSplitPane;
-import javax.swing.JToggleButton;
-import javax.swing.JLabel;
-import java.awt.FlowLayout;
-import javax.swing.BoxLayout;
-import javax.swing.JTextPane;
-import javax.swing.DropMode;
-import javax.swing.JSeparator;
-import javax.swing.JTextArea;
-import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
 
-import javax.swing.JTextField;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JList;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
-import javax.swing.SwingConstants;
-import javax.swing.AbstractListModel;
-import javax.swing.ListSelectionModel;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.ControllerReceptor;
-
-import javax.swing.JScrollPane;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.Font;
 
 public class VReceptor extends JFrame{
 

@@ -33,7 +33,6 @@ public class Connection extends Observable{
 			public void run() {
 				
 				try {
-					System.out.println("Emisor: Enviando Mensaje");
 					ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 					ObjectOutput output = new ObjectOutputStream(bStream); 
 					output.writeObject(msg);

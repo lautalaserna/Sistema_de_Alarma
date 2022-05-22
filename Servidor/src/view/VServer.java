@@ -16,12 +16,11 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-
 public class VServer extends JFrame {
 	private JPanel contentPane;
 	private JLabel lblRegistro;
 	private JScrollPane scrollPane;
-	private JList list;
+	private JList<String> list;
 	private DefaultListModel<String> modelEvent = new DefaultListModel<String>();
 
 	/**
