@@ -45,16 +45,15 @@ public class Connection extends Observable implements Observer {
 						buffer = new byte[2048];
 						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
 						socketUDP.receive(petition);
-						InetAddress adress = petition.getAddress();
-						int port = petition.getPort();
-
+						//InetAddress adress = petition.getAddress();
+						//int port = petition.getPort();
+						
 						ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
 						Message msg = (Message) iStream.readObject();
 						iStream.close();
-						msg.setInetAddress(adress);
-						msg.setPort(port);
-						
-						System.out.println("Receptor: Mensaje Recibido = " + msg.toString());
+						msg.setInetAddress(petition.getAddress());
+						msg.setPort(petition.getPort());
+						System.out.println("Receptor: Mensaje Recibido = " + msg.toString() + " (" + msg.getPort() + ")");
 
 						TimeOut t = new TimeOut();
 						addObservable(t);
@@ -84,9 +83,9 @@ public class Connection extends Observable implements Observer {
 				output.writeObject(new String("KO"));
 			output.close();
 			buffer = bStream.toByteArray();
-
 			DatagramPacket petition = new DatagramPacket(buffer, buffer.length, address, port);
 			socketUDP.send(petition);
+			System.out.println("Respuesta enviada al Puerto: " + petition.getPort());
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

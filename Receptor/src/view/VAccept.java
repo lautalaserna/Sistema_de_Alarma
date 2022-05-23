@@ -113,13 +113,13 @@ public class VAccept extends JFrame implements KeyListener, MouseListener {
 		panel_5.setLayout(null);
 		
 		JLabel lblIpservidor_1_1 = new JLabel("  Puerto (Sv):");
-		lblIpservidor_1_1.setBounds(20, 10, 142, 41);
+		lblIpservidor_1_1.setBounds(20, 10, 114, 41);
 		lblIpservidor_1_1.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		panel_5.add(lblIpservidor_1_1);
 		
 		textFieldSvPort = new JTextField();
 		textFieldSvPort.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		textFieldSvPort.setBounds(145, 20, 304, 26);
+		textFieldSvPort.setBounds(145, 20, 300, 26);
 		textFieldSvPort.setPreferredSize(new Dimension(0, 26));
 		textFieldSvPort.setColumns(15);
 		textFieldSvPort.addKeyListener(this);
@@ -136,7 +136,7 @@ public class VAccept extends JFrame implements KeyListener, MouseListener {
 		
 		textFieldPort = new JTextField();
 		textFieldPort.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		textFieldPort.setBounds(145, 12, 141, 27);
+		textFieldPort.setBounds(145, 12, 130, 27);
 		textFieldPort.setPreferredSize(new Dimension(0, 26));
 		textFieldPort.setColumns(15);
 		textFieldPort.setPreferredSize(new Dimension(0,28));
@@ -239,5 +239,4 @@ public class VAccept extends JFrame implements KeyListener, MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {}
-
 }

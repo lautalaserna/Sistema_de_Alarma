@@ -14,7 +14,8 @@ public class FileUtil {
 	       Scanner sc = new Scanner(file);
 	       int portE = sc.nextInt();
 	       int portR = sc.nextInt();
-	       res = new int[]{portE,portR};
+	       int portC = sc.nextInt();
+	       res = new int[]{portE,portR,portC};
 		}
 		catch(Exception e){
 			e.printStackTrace();
