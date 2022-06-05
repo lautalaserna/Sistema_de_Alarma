@@ -13,53 +13,56 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import model.Confirmation;
 import model.Filter;
 import model.Message;
 
 public class Connection extends Observable {
 	private ArrayList<ReceptorData> receptors = new ArrayList<ReceptorData>();
-	private DatagramSocket socketEmisor;
-	private DatagramSocket socketReceptor;
+	// private IConnection con;
+	private DatagramSocket socketMessage;
+	private DatagramSocket socketSuscription;
 	private DatagramSocket socketConfirmation;
-	private byte[] bufferEmisor = new byte[2048];
-	private byte[] bufferReceptor = new byte[2048];
 	private int[] ports;
-	private int activeMsg;
 
 	public Connection() throws SocketException, UnknownHostException {
 		this.ports = FileUtil.readPorts(FileUtil.PATH);
-		this.socketEmisor = new DatagramSocket(ports[0]);
-		this.socketReceptor = new DatagramSocket(ports[1]);
+		this.socketMessage = new DatagramSocket(ports[0]);
+		this.socketSuscription = new DatagramSocket(ports[1]);
+		this.socketConfirmation = new DatagramSocket(ports[2]);
+		//this.activeMsg = 0;
 		
-		this.activeMsg = 0;
+		listenMessages(socketMessage);
+		listenSuscriptions(socketSuscription, receptors);
+		listenConfirmations(socketMessage, socketConfirmation);
 		
-		listenEmisores();
-		listenReceptores();
+		// con.listenMessages(socketMessage);
+		// con.listenSuscriptions(socketSuscription, receptors);
+		// con.listenConfirmations(socketMessage, socketConfirmation);
+		// con.listenServidor();
+		// con.heartbeat();
 	}
 
-	public void listenEmisores() {
+	public void listenMessages(DatagramSocket socket) {
 		new Thread() {
 			public void run() {
 				while (true) {
 					try {
 						System.out.println("Servidor: Escuchando a Emisores");
-						bufferEmisor = new byte[2048];
+						byte[] bufferEmisor = new byte[2048];
 						DatagramPacket petition = new DatagramPacket(bufferEmisor, bufferEmisor.length);
-						socketEmisor.receive(petition);
+						socket.receive(petition);
 						
 						ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
 						Message msg = (Message) iStream.readObject();
 						iStream.close();
+										
+						msg.setInetAddress(petition.getAddress()); // Address del Emisor
+						msg.setPort(petition.getPort()); // Puerto del Emisor
 						
-						System.out.println("Se recibió un mensaje del puerto: " + petition.getPort());
-						System.out.println("El mensaje actualmente tiene el puerto: " + msg.getPort());
-						
-						msg.setInetAddress(petition.getAddress());
-						msg.setPort(petition.getPort());
-						
-						System.out.println("Servidor: Mensaje recibido: " + msg + "(" + msg.getPort() + ")");
+						System.out.println("Servidor: Mensaje recibido: " + msg + " (Puerto: " + msg.getPort() + ")");
 						setChanged();
-						notifyObservers(msg);
+						notifyObservers(msg); // Log
 												
 						if(existReceptor(msg)) {
 							sendMsgToReceptors(msg);	
@@ -74,7 +77,7 @@ public class Connection extends Observable {
 							output.close();
 							bufferEmisor = bStream.toByteArray();
 							petition = new DatagramPacket(bufferEmisor, bufferEmisor.length, msg.getInetAddress(), msg.getPort());
-							socketEmisor.send(petition);
+							socket.send(petition);
 						}
 						
 					} catch(Exception e) {
@@ -90,11 +93,11 @@ public class Connection extends Observable {
 		new Thread() {
 			public void run() {
 				try {
+					/*
 					if(activeMsg == 0) {
 						socketConfirmation = new DatagramSocket(ports[2]);
 					}
-					activeMsg++;
-					System.out.println(activeMsg);
+					activeMsg++;*/
 					for (ReceptorData rd : receptors) {
 						if(rd.getFilter().isAccepted(msg)) {
 							try {
@@ -103,10 +106,17 @@ public class Connection extends Observable {
 								output.writeObject(msg);
 								output.close();
 								
-								bufferEmisor = bStream.toByteArray();
-								System.out.println("Se envia el mensaje al puerto: " + rd.getFilter().getPort());
-								DatagramPacket petition = new DatagramPacket(bufferEmisor, bufferEmisor.length, rd.getAddress(), rd.getFilter().getPort());
+								byte[] buffer = bStream.toByteArray();
+								DatagramPacket petition = new DatagramPacket(buffer, buffer.length, rd.getAddress(), rd.getFilter().getPort());
 								socketConfirmation.send(petition);
+								
+								/*
+								// No sirve, da todo el tiempo true porque localhost siempre es alcanzable
+								System.out.println(rd.getAddress().isReachable(2000));
+								if(rd.getAddress().isReachable(2000)) {
+									socketConfirmation.send(petition);									
+								}
+								*/
 								
 								setChanged();
 								notifyObservers("Mensaje enviado al Receptor: " + rd.getAddress().getHostAddress() + ":"+ rd.getFilter().getPort());
@@ -117,64 +127,61 @@ public class Connection extends Observable {
 							}
 						}
 					}
-					DatagramPacket petition = new DatagramPacket(bufferEmisor, bufferEmisor.length);
-					
-					socketConfirmation.receive(petition);
-					activeMsg--;
-					if(activeMsg == 0)
-						socketConfirmation.close();
-					
-					System.out.println(activeMsg);
-					
-					System.out.println("Se recibe la confirmación del puerto: " + petition.getPort());
-					
-					ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
-					String response = (String) iStream.readObject();
-					iStream.close();
-					System.out.println("Servidor: Respuesta Recibida = " + response);
-					
-					setChanged();
-					notifyObservers("Respuesta del Receptor: "
-							+ "(De: " + petition.getAddress().getHostAddress() + ":" + petition.getPort() + ") "
-							+ "(Para: " + msg.getInetAddress().getHostAddress() + ":" + msg.getPort() + ") "
-							+ "Respuesta: " + response);
-					
-					bufferEmisor = petition.getData();
-					System.out.println("Se envia la confimarción al puerto: " + msg.getPort());
-					petition = new DatagramPacket(bufferEmisor, bufferEmisor.length, msg.getInetAddress(), msg.getPort());
-					socketEmisor.send(petition);
-					
 				} catch (Exception e) {
-					System.out.println("A ver q onda");
+					System.out.println("Error al conectar con la Confirmación");
 					e.printStackTrace();
 				}
-				
-				
 			}
 		}.start();
 	}
 	
-	
-	public boolean existReceptor(Message msg) {
-		boolean res = false;
-		for (ReceptorData rd : receptors) {
-			if(rd.getFilter().isAccepted(msg)) {
-				res = true;
-				break;
+	public void listenConfirmations(DatagramSocket socketMessage, DatagramSocket socketConfirmation) {
+		new Thread() {
+			public void run() {
+				System.out.println("Servidor: Esperando Confirmaciones");
+				while (true) {
+					try {
+						byte[] buffer = new byte[2048];
+						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
+						socketConfirmation.receive(petition);
+						ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
+						
+						System.out.println(iStream.getClass());
+						Confirmation c = (Confirmation) iStream.readObject();
+						iStream.close();
+						
+						ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+						ObjectOutput output = new ObjectOutputStream(bStream);
+						output.writeObject(new String(c.getValue()));
+						output.close();
+						buffer = bStream.toByteArray();
+						
+						setChanged();
+						notifyObservers("Respuesta del Receptor: "
+								+ "(De: " + petition.getAddress().getHostAddress() + ":" + petition.getPort() + ") "
+								+ "(Para: " + c.getAddress().getHostAddress() + ":" + c.getPort() + ") "
+								+ "Respuesta: " + c.getValue());
+						
+						petition = new DatagramPacket(buffer, buffer.length, c.getAddress(), c.getPort());
+						socketMessage.send(petition);
+					} catch(Exception e) {
+						System.out.println("Error al recibir una Confirmación");
+						e.printStackTrace();
+					}
+				}
 			}
-		}
-		return res;
+		}.start();
 	}
 	
-	public void listenReceptores() {
+	public void listenSuscriptions(DatagramSocket socket, ArrayList<ReceptorData> receptors) {
 		new Thread() {
 			public void run() {
 				System.out.println("Servidor: Escuchando a Receptores");
 				while (true) {
 					try {
-						bufferReceptor = new byte[2048];
-						DatagramPacket petition = new DatagramPacket(bufferReceptor, bufferReceptor.length);
-						socketReceptor.receive(petition);
+						byte[] buffer = new byte[2048];
+						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
+						socket.receive(petition);
 						
 						ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
 						Filter f = (Filter) iStream.readObject();
@@ -192,6 +199,17 @@ public class Connection extends Observable {
 				}
 			}
 		}.start();
+	}
+	
+	public boolean existReceptor(Message msg) {
+		boolean res = false;
+		for (ReceptorData rd : receptors) {
+			if(rd.getFilter().isAccepted(msg)) {
+				res = true;
+				break;
+			}
+		}
+		return res;
 	}
 	
 	public ArrayList<ReceptorData> getReceptors() {

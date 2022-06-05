@@ -48,7 +48,7 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 		if (o.getClass().getName().equalsIgnoreCase("connection.Connection")) {
 			Message msg = (Message) arg;
 			msg.setState("Expirado");
-			connection.response(false, msg.getInetAddress(), msg.getPort());
+			connection.response(false, msg);
 		}
 		refreshList();
 	}
@@ -62,7 +62,7 @@ public class ControllerReceptor implements ActionListener, WindowListener, Mouse
 			refreshList();
 			this.viewReceptor.disableBtn();
 			connection.getTimeOuts().get(index).stopTimer();
-			connection.response(true, msg.getInetAddress(), msg.getPort());
+			connection.response(true, msg);
 		}
 	}
 

@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import model.Confirmation;
+import model.ConfirmationFactory;
 import model.Filter;
 import model.Message;
 import model.Receptor;
@@ -45,15 +47,14 @@ public class Connection extends Observable implements Observer {
 						buffer = new byte[2048];
 						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
 						socketUDP.receive(petition);
-						//InetAddress adress = petition.getAddress();
-						//int port = petition.getPort();
 						
 						ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
 						Message msg = (Message) iStream.readObject();
 						iStream.close();
-						msg.setInetAddress(petition.getAddress());
-						msg.setPort(petition.getPort());
-						System.out.println("Receptor: Mensaje Recibido = " + msg.toString() + " (" + msg.getPort() + ")");
+						msg.setServerInetAddress(petition.getAddress()); //Del Sevidor
+						msg.setServerPort(petition.getPort()); //Del Servidor
+
+						System.out.println("Receptor: Mensaje Recibido = " + msg.toString() + " (Puerto: " + msg.getPort() + ")");
 
 						TimeOut t = new TimeOut();
 						addObservable(t);
@@ -71,25 +72,28 @@ public class Connection extends Observable implements Observer {
 		}.start();
 	}
 
-	public void response(boolean isConfirmed, InetAddress address, int port) {
+	public void response(boolean isConfirmed, Message msg) {
 		try {
-			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-			ObjectOutput output = new ObjectOutputStream(bStream);
-
+			Confirmation c = null;
+			
 			// Depende si el método es invocado por el jButton o el Timer.
 			if (isConfirmed)
-				output.writeObject(new String("OK"));
+				c = ConfirmationFactory.getConfirmation(msg.getInetAddress(), msg.getPort(), "OK");
 			else
-				output.writeObject(new String("KO"));
+				c = ConfirmationFactory.getConfirmation(msg.getInetAddress(), msg.getPort(), "KO");
+			
+			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+			ObjectOutput output = new ObjectOutputStream(bStream); 
+			output.writeObject(c);
 			output.close();
+			
 			buffer = bStream.toByteArray();
-			DatagramPacket petition = new DatagramPacket(buffer, buffer.length, address, port);
+			
+			DatagramPacket petition = new DatagramPacket(buffer, buffer.length, msg.getServerInetAddress(), msg.getServerPort());
 			socketUDP.send(petition);
-			System.out.println("Respuesta enviada al Puerto: " + petition.getPort());
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-
 	}
 
 	public void suscribe(InetAddress address, int port) {

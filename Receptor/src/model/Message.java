@@ -10,7 +10,9 @@ public class Message implements Serializable{
 	private LocalDateTime date;
 	private String state;
 	private int port;
+	private int serverPort;
 	private InetAddress inetAddress;
+	private InetAddress serverInetAddress;
 	
 	public Message(String name, Event e) {
 		this.locationName = name;
@@ -53,6 +55,22 @@ public class Message implements Serializable{
 	
 	public void setPort(int port) {
 		this.port = port;
+	}
+	
+	public void setServerPort(int serverPort) {
+		this.serverPort = serverPort;
+	}
+
+	public void setServerInetAddress(InetAddress serverInetAddress) {
+		this.serverInetAddress = serverInetAddress;
+	}
+	
+	public int getServerPort() {
+		return serverPort;
+	}
+
+	public InetAddress getServerInetAddress() {
+		return serverInetAddress;
 	}
 	
 	@Override
