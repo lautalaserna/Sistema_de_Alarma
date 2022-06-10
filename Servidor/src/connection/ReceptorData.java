@@ -1,5 +1,6 @@
 package connection;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -7,7 +8,7 @@ import java.util.Date;
 
 import model.Filter;
 
-public class ReceptorData {
+public class ReceptorData implements Serializable{
 	private Filter f;
 	private InetAddress address;
 	

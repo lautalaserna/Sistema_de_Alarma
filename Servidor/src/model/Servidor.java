@@ -8,8 +8,7 @@ public class Servidor {
 
 	public static void main(String[] args) {
 		try {
-			Connection c = new Connection();
-			new ControllerSelection(c);
+			new ControllerSelection();
 		} catch (Exception e) {
 			System.out.println("Error al conectar");
 			e.printStackTrace();

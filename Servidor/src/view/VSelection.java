@@ -52,7 +52,7 @@ public class VSelection extends JFrame implements MouseListener{
 	 * Create the frame.
 	 */
 	public VSelection() {
-		setTitle("Rol del servidor");
+		setTitle("Servidor");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(800, 400, 300, 150);
 		setResizable(false);
@@ -61,20 +61,20 @@ public class VSelection extends JFrame implements MouseListener{
 		setContentPane(this.contentPane);
 		this.contentPane.setLayout(null);
 		
-		this.lblSelection = new JLabel("Seleccione el rol del servidor:");
+		this.lblSelection = new JLabel("Seleccione el Rol del Servidor:");
 		this.lblSelection.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		this.lblSelection.setBounds(20, 10, 219, 29);
+		this.lblSelection.setBounds(20, 10, 219, 18);
 		this.contentPane.add(this.lblSelection);
 		
 		this.rdbtnPrimario = new JRadioButton("Primario");
 		this.rdbtnPrimario.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		this.rdbtnPrimario.setBounds(20, 45, 87, 21);
+		this.rdbtnPrimario.setBounds(20, 35, 87, 21);
 		this.contentPane.add(this.rdbtnPrimario);
 		rdbtnPrimario.addMouseListener(this);
 		
 		this.rdbtnSecundario = new JRadioButton("Secundario");
 		this.rdbtnSecundario.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		this.rdbtnSecundario.setBounds(20, 69, 110, 21);
+		this.rdbtnSecundario.setBounds(20, 59, 110, 21);
 		this.contentPane.add(this.rdbtnSecundario);
 		rdbtnSecundario.addMouseListener(this);
 		
@@ -82,7 +82,7 @@ public class VSelection extends JFrame implements MouseListener{
 		btnConfirmar.setEnabled(false);
 		btnConfirmar.setActionCommand("Confirmar");
 		this.btnConfirmar.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		this.btnConfirmar.setBounds(154, 67, 110, 25);
+		this.btnConfirmar.setBounds(164, 75, 110, 25);
 		this.contentPane.add(this.btnConfirmar);
 		
 		ButtonGroup group = new ButtonGroup();

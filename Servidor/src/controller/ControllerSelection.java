@@ -4,30 +4,37 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import connection.Connection;
+import connection.ConnectionAux;
+import connection.ConnectionMain;
 import view.VSelection;
-import view.VServer;
 
 public class ControllerSelection implements ActionListener{
 	private VSelection viewSelection = null;
-	private Connection connection;
 	
-	public ControllerSelection(Connection connection) {
+	public ControllerSelection() {
 		this.viewSelection = new VSelection();
 		this.viewSelection.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("Confirmar")) {
-			if (this.viewSelection.getRdbtnPrimario().isSelected()) {
-				//Si fue seleccionado como Servidor primario.
+		Connection conn = null;
+		try {
+			if (e.getActionCommand().equals("Confirmar")) {
+				if (this.viewSelection.getRdbtnPrimario().isSelected()) {
+					conn = new Connection(new ConnectionMain());
+				}
+				else if (this.viewSelection.getRdbtnSecundario().isSelected()) {
+					conn = new Connection(new ConnectionAux());
+				}
 			}
-			else if (this.viewSelection.getRdbtnSecundario().isSelected()) {
-				//Si fue seleccionado como Servidor secundario.
-			}
+			this.viewSelection.setVisible(false);
+		} catch (Exception ex) {
+			System.out.println("Error al crear las conexiones");
 		}
-		this.viewSelection.setVisible(false);
-		new ControllerServer(connection);
+		new ControllerServer(conn);
 	}
-
+	
+	
+	
 }

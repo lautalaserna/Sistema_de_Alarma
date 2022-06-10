@@ -40,68 +40,55 @@ public class VMonitor extends JFrame {
 	 */
 	public VMonitor() {
 		setTitle("Monitor");
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 370, 247);
+		setBounds(800, 400, 350, 200);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JPanel panel_Encabezado = new JPanel();
-		panel_Encabezado.setBounds(0, 0, 354, 42);
+		panel_Encabezado.setBounds(0, 0, 334, 161);
 		contentPane.add(panel_Encabezado);
-		panel_Encabezado.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
+		panel_Encabezado.setLayout(null);
 		
 		JLabel lblEncabezado = new JLabel("Estados de los Servidores");
+		lblEncabezado.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEncabezado.setBounds(19, 11, 300, 31);
 		lblEncabezado.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		panel_Encabezado.add(lblEncabezado);
 		
-		JPanel panel_Cuerpo = new JPanel();
-		panel_Cuerpo.setBounds(0, 42, 354, 128);
-		contentPane.add(panel_Cuerpo);
-		panel_Cuerpo.setLayout(null);
-		
-		JPanel panel_ServerPrincipal = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panel_ServerPrincipal.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEFT);
-		flowLayout.setHgap(20);
-		flowLayout.setVgap(20);
-		panel_ServerPrincipal.setBounds(0, 0, 354, 61);
-		panel_Cuerpo.add(panel_ServerPrincipal);
-		
 		JLabel lblServidorPrincipal = new JLabel("Servidor Principal:");
+		lblServidorPrincipal.setBounds(19, 53, 126, 18);
+		panel_Encabezado.add(lblServidorPrincipal);
 		lblServidorPrincipal.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		panel_ServerPrincipal.add(lblServidorPrincipal);
-		
-		JLabel lblEstadoPrincipal = new JLabel("Activo");
-		lblEstadoPrincipal.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 12));
-		lblEstadoPrincipal.setBackground(Color.WHITE);
-		lblEstadoPrincipal.setForeground(Color.BLACK);
-		panel_ServerPrincipal.add(lblEstadoPrincipal);
-		
-		JPanel panel_ServerSecundario = new JPanel();
-		FlowLayout flowLayout_1 = (FlowLayout) panel_ServerSecundario.getLayout();
-		flowLayout_1.setHgap(20);
-		flowLayout_1.setVgap(20);
-		flowLayout_1.setAlignment(FlowLayout.LEFT);
-		panel_ServerSecundario.setBounds(0, 61, 354, 67);
-		panel_Cuerpo.add(panel_ServerSecundario);
-		
-		JLabel lblServidorSecundario = new JLabel("Servidor Secundario:");
-		lblServidorSecundario.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		panel_ServerSecundario.add(lblServidorSecundario);
-		
-		JLabel lblEstadoSecundario = new JLabel("Activo");
-		lblEstadoSecundario.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 12));
-		panel_ServerSecundario.add(lblEstadoSecundario);
-		
-		JPanel panel_Aviso = new JPanel();
-		panel_Aviso.setBounds(0, 170, 354, 27);
-		contentPane.add(panel_Aviso);
 		
 		JLabel lblAviso = new JLabel("Inicie un Servidor...");
-		lblAviso.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 12));
+		lblAviso.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAviso.setBounds(19, 110, 300, 40);
+		panel_Encabezado.add(lblAviso);
+		lblAviso.setFont(new Font("MS Reference Sans Serif", Font.ITALIC, 12));
 		lblAviso.setForeground(Color.GRAY);
-		panel_Aviso.add(lblAviso);
+		
+		JLabel lblEstadoSecundario = new JLabel("Offline");
+		lblEstadoSecundario.setForeground(new Color(220, 20, 60));
+		lblEstadoSecundario.setBounds(190, 83, 80, 16);
+		panel_Encabezado.add(lblEstadoSecundario);
+		lblEstadoSecundario.setFont(new Font("MS Reference Sans Serif", Font.BOLD, 14));
+		
+		JLabel lblServidorSecundario = new JLabel("Servidor Secundario:");
+		lblServidorSecundario.setBounds(19, 82, 148, 18);
+		panel_Encabezado.add(lblServidorSecundario);
+		lblServidorSecundario.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		
+		JLabel lblEstadoPrincipal = new JLabel("Online");
+		lblEstadoPrincipal.setBounds(190, 53, 80, 16);
+		panel_Encabezado.add(lblEstadoPrincipal);
+		lblEstadoPrincipal.setFont(new Font("MS Reference Sans Serif", Font.BOLD, 14));
+		lblEstadoPrincipal.setBackground(Color.WHITE);
+		lblEstadoPrincipal.setForeground(new Color(46, 139, 87));
+		
+		this.setVisible(true);
 	}
 }

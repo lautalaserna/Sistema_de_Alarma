@@ -109,13 +109,13 @@ public class VEmisor extends JFrame {
 	
 	public void setLblConfirm(String str) {
 		if("WAIT".equals(str)) {
-			this.lblConfirm.setText("Esperando Confirmación...");
+			this.lblConfirm.setText("Su Mensaje fue recebido. Esperando confirmación...");
 		} else if("OK".equals(str)) {
-			this.lblConfirm.setText("Mensaje recibido exitosamente!");
+			this.lblConfirm.setText("El Mensaje fue confirmado!");
 		} else if("KO".equals(str)) {
-			this.lblConfirm.setText("Mensaje no recibido.");
+			this.lblConfirm.setText("Su mensaje no fue recibido.");
 		} else if("IGNORED".equals(str)) {
-			this.lblConfirm.setText("No hay Receptores activos para esta Emergencia.");
+			this.lblConfirm.setText("Ningún Receptor confirmó su mensaje.");
 		}
 	}
 

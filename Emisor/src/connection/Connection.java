@@ -15,7 +15,7 @@ import java.util.Observable;
 import model.Emisor;
 import model.Message;
 
-public class Connection extends Observable{
+public class Connection extends Observable {
 	private TimeOut timeOut;
 	private DatagramSocket socketUDP;
 	private InetAddress inetAdress;
