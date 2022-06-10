@@ -80,6 +80,12 @@ public class ConnectionMain extends Observable implements IConnection{
 						msg.setPort(petition.getPort()); // Puerto del Emisor
 						
 						System.out.println("Servidor: Mensaje recibido: " + msg + " (Puerto: " + msg.getPort() + ")");
+						
+						//String log = "Nuevo Mensaje: "+ 
+						//				"(Desde: " + msg.getInetAddress().getHostAddress() + ":" + msg.getPort() + 
+						//				") " + msg.toString()
+						
+						// Servidor.getInstance().addLog(log)
 						setChanged();
 						notifyObservers(msg); // Log
 						
