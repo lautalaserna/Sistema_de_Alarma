@@ -58,7 +58,7 @@ public class Connection extends Observable implements Observer{
 						notifyObservers("MAIN ONLINE");
 						
 						System.out.println("Servidor Main: Alive");
-						timerMain.starTimer(5); 
+						timerMain.starTimer(3); 
 					} catch(Exception e) {
 						System.out.println("Error al escuchar el Servidor Principal");
 						e.printStackTrace();
@@ -81,7 +81,9 @@ public class Connection extends Observable implements Observer{
 						if(isAliveAux) {
 							timerAux.stopTimer();							
 						} else {
-							// Avisar al primera que hay un secundario
+							// Sincronización del Servidor Primario cuando se inicia un Servidor Secundario
+							System.out.println("Sincronizando...");
+							socketMain.send(ConnectionUtils.buildPetition(new String("SYNC"), InetAddress.getByName("localhost"), 7373));
 						}
 						
 						isAliveAux = true;
@@ -89,7 +91,7 @@ public class Connection extends Observable implements Observer{
 						notifyObservers("AUX ONLINE");
 						
 						System.out.println("Servidor Aux: Alive");
-						timerAux.starTimer(5);
+						timerAux.starTimer(3);
 						sleep(2000);
 						
 					} catch(Exception e) {

@@ -10,7 +10,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.util.ArrayList;
 
 import model.Confirmation;
 import model.Filter;
@@ -21,23 +20,26 @@ public class ConnectionMain implements IConnection{
 	private DatagramSocket socketMessage;
 	private DatagramSocket socketSuscription;
 	private DatagramSocket socketConfirmation;
+	private DatagramSocket socketMonitor;
 	private DatagramSocket socketRedundancy;
 	private DatagramSocket socketHeartbeat;
 	private int[] ports;
 		
 	@Override	
 	public void listen() {
-		this.ports = FileUtil.readPorts(FileUtil.PATH);		
+		this.ports = ConnectionUtils.readPorts(ConnectionUtils.PATH);		
 		try {
 			socketMessage = new DatagramSocket(ports[0]);
 			socketSuscription = new DatagramSocket(ports[1]);
 			socketConfirmation = new DatagramSocket(ports[2]);
+			socketMonitor = new DatagramSocket(7373);
 			socketRedundancy = new DatagramSocket();
 			socketHeartbeat = new DatagramSocket();
 			
 			listenMessages(socketMessage);
 			listenSuscriptions(socketSuscription);
 			listenConfirmations(socketMessage, socketConfirmation);
+			listenMonitor();
 			//pingEchoCheck();
 		} catch (SocketException e) {
 			System.out.println("Error al escuchar");
@@ -88,12 +90,16 @@ public class ConnectionMain implements IConnection{
 						
 						Servidor.getInstance().addLog(log);
 						
+						/*
 						ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 						ObjectOutput output = new ObjectOutputStream(bStream); 
 						output.writeObject(Servidor.getInstance().getLogs());
 						output.close();
 						buffer = bStream.toByteArray();
 						petition = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 4040);
+						*/
+						
+						petition = ConnectionUtils.buildPetition(Servidor.getInstance().getLogs(),InetAddress.getByName("localhost"), 4040);
 						socketRedundancy.send(petition);
 						
 						if(existReceptor(msg)) {
@@ -102,13 +108,15 @@ public class ConnectionMain implements IConnection{
 							String response = "KO";
 							
 							System.out.println("Servidor: No se recibió ninguna respuesta. Rta = " + response);
-														
+							/*						
 							bStream = new ByteArrayOutputStream();
 							output = new ObjectOutputStream(bStream);
 							output.writeObject(new String(response));
 							output.close();
 							buffer = bStream.toByteArray();
 							petition = new DatagramPacket(buffer, buffer.length, msg.getInetAddress(), msg.getPort());
+							*/
+							petition = ConnectionUtils.buildPetition(new String(response), msg.getInetAddress(), msg.getPort());
 							socket.send(petition);
 						}
 						
@@ -128,26 +136,14 @@ public class ConnectionMain implements IConnection{
 					for (ReceptorData rd : Servidor.getInstance().getReceptors()) {
 						if(rd.getFilter().isAccepted(msg)) {
 							try {
-								ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-								ObjectOutput output = new ObjectOutputStream(bStream); 
-								output.writeObject(msg);
-								output.close();
-								
-								byte[] buffer = bStream.toByteArray();
-								DatagramPacket petition = new DatagramPacket(buffer, buffer.length, rd.getAddress(), rd.getFilter().getPort());
+								DatagramPacket petition = ConnectionUtils.buildPetition(msg, rd.getAddress(), rd.getFilter().getPort());
 								socketConfirmation.send(petition);
 								
 								String log = "Mensaje enviado al Receptor: " + rd.getAddress().getHostAddress() + ":"+ rd.getFilter().getPort();
 								
 								Servidor.getInstance().addLog(log);
 								
-								bStream = new ByteArrayOutputStream();
-								output = new ObjectOutputStream(bStream);
-								output.writeObject(Servidor.getInstance().getLogs());
-								output.close();
-								buffer = bStream.toByteArray();
-								
-								petition = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 4040);
+								petition = ConnectionUtils.buildPetition(Servidor.getInstance().getLogs(), InetAddress.getByName("localhost"), 4040);
 								socketMessage.send(petition);
 								
 							} catch (IOException e) {
@@ -270,6 +266,27 @@ public class ConnectionMain implements IConnection{
 		return res;
 	}
 	
+	public void listenMonitor() {
+		new Thread() {
+			public void run() {
+				while(true) {
+					try {
+						byte[] buffer = new byte[2048];
+						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
+						socketMonitor.receive(petition);
+						petition = ConnectionUtils.buildPetition(Servidor.getInstance().getLogs(), InetAddress.getByName("localhost"), 4040);
+						socketRedundancy.send(petition);
+						System.out.println("Logs Sincronizados");
+						petition = ConnectionUtils.buildPetition(Servidor.getInstance().getReceptors(), InetAddress.getByName("localhost"), 4141);
+						socketHeartbeat.send(petition);
+						System.out.println("Receptores Sincronizados");
+					} catch (Exception e) {
+						System.out.println("Error al escuchar el Monitor");
+					}
+				}
+			}
+		}.start();
+	}
 	
 	@Override
 	public void heartbeat() {
@@ -287,7 +304,7 @@ public class ConnectionMain implements IConnection{
 						
 						DatagramPacket petition = new DatagramPacket(buffer, buffer.length,InetAddress.getByName("localhost"),1111);
 						socketHeartbeat.send(petition);
-						Thread.sleep(2000);
+						Thread.sleep(1000);
 
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -306,9 +323,4 @@ public class ConnectionMain implements IConnection{
 		socketHeartbeat.close();
 	}
 
-	@Override
-	public boolean switchConnection() {
-		return false;
-	}
-	
 }

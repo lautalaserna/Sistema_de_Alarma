@@ -46,7 +46,7 @@ public class ConnectionAux implements IConnection {
 		new Thread() {
 			public void run() {
 				while (true) {
-					System.out.println("Servidor: Escuchando Mensajes");
+					System.out.println("Servidor: Escuchando Logs");
 					try {
 						byte[] buffer = new byte[2048];
 						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
@@ -55,7 +55,7 @@ public class ConnectionAux implements IConnection {
 						ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
 						ArrayList<String> logs = (ArrayList<String>) iStream.readObject();
 						iStream.close();
-						
+						System.out.println("Logs actualizados recibidos");
 						Servidor.getInstance().setLogs(logs);
 					} catch(Exception e) {
 						System.out.println("Servidor: SocketLogs cerrado");
@@ -69,7 +69,7 @@ public class ConnectionAux implements IConnection {
 	public void listenSuscriptions(DatagramSocket socket) {
 		new Thread() {
 			public void run() {
-				System.out.println("Servidor: Escuchando a Receptores");
+				System.out.println("Servidor: Escuchando Receptores");
 				while (true) {
 					try {
 						byte[] buffer = new byte[2048];
@@ -82,7 +82,7 @@ public class ConnectionAux implements IConnection {
 						
 						Servidor.getInstance().setReceptors(receptors);
 						
-						System.out.println("Servidor: LLegó la lista del Primario.");
+						System.out.println("Receptores actualizados recibidos");
 					} catch(Exception e) {
 						System.out.println("Servidor: SocketSuscription cerrado");
 						break;
@@ -141,12 +141,6 @@ public class ConnectionAux implements IConnection {
 		socketSuscription.close();
 		socketMonitor.close();
 		socketHeartbeat.close();
-	}
-
-	@Override
-	public boolean switchConnection() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 	
 }

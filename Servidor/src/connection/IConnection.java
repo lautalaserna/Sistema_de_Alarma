@@ -1,7 +1,5 @@
 package connection;
 
-import java.util.ArrayList;
-
 public interface IConnection {
 	
 	public void listen();
@@ -10,5 +8,4 @@ public interface IConnection {
 	
 	public void closeConnections();
 	
-	public boolean switchConnection();
 }

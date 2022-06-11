@@ -24,7 +24,13 @@ public class ControllerServer implements Observer{
 		System.out.println("LLegó al update!");
 		ArrayList<?>a = (ArrayList<?>)arg;
 		if(!a.isEmpty() && a.get(0).getClass().getName().equals("java.lang.String")) {
-			this.viewServer.refreshList((ArrayList<String>)arg);
+			System.out.println("Entra al if de Logs");
+			try {
+				Thread.sleep(200);
+				this.viewServer.refreshList((ArrayList<String>)arg);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 //		if(arg.getClass().arrayType().getClass().getName().equals("java.lang.String")) {
 //			for(String log : (ArrayList<String>)arg)
@@ -32,6 +38,11 @@ public class ControllerServer implements Observer{
 //			this.viewServer.refreshList((ArrayList<String>)arg);
 //		}
 		if(!a.isEmpty() && a.get(0).getClass().getName().equals("connection.ReceptorData")) {
+			try {
+				Thread.sleep(0);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			for(ReceptorData receptor : Servidor.getInstance().getReceptors()) {
 				System.out.println("Receptor:" + receptor.toString());
 			}

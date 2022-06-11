@@ -1,19 +1,14 @@
 package views;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JSplitPane;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import java.awt.FlowLayout;
-import javax.swing.JTextPane;
-import javax.swing.DropMode;
-import java.awt.Color;
+import javax.swing.border.EmptyBorder;
 
 public class VMonitor extends JFrame {
 	private JPanel contentPane;
@@ -92,30 +87,44 @@ public class VMonitor extends JFrame {
 		lblEstadoPrincipal.setForeground(new Color(220, 20, 60));
 		
 		this.setVisible(true);
+		updateLabelAviso();
 	}
 	
 	public void setPrincipalOnline() {
 		lblEstadoPrincipal.setForeground(new Color(46, 139, 87));
 		lblEstadoPrincipal.setFont(new Font("MS Reference Sans Serif", Font.BOLD, 14));
 		lblEstadoPrincipal.setText("Online");
+		updateLabelAviso();
 	}
 	
 	public void setPrincipalOffline() {
 		lblEstadoPrincipal.setForeground(new Color(220, 20, 60));
 		lblEstadoPrincipal.setFont(new Font("MS Reference Sans Serif", Font.BOLD, 14));
 		lblEstadoPrincipal.setText("Offline");
+		updateLabelAviso();
 	}
 	
 	public void setSecundarioOnline() {
 		lblEstadoSecundario.setForeground(new Color(46, 139, 87));
 		lblEstadoSecundario.setFont(new Font("MS Reference Sans Serif", Font.BOLD, 14));
 		lblEstadoSecundario.setText("Online");
+		updateLabelAviso();
 	}
 	
 	public void setSecundarioOffline() {
 		lblEstadoSecundario.setForeground(new Color(220, 20, 60));
 		lblEstadoSecundario.setFont(new Font("MS Reference Sans Serif", Font.BOLD, 14));
 		lblEstadoSecundario.setText("Offline");
+		updateLabelAviso();
 	}
+	
+	public void updateLabelAviso() {
+        if (this.lblEstadoPrincipal.getText().equals("Online") && this.lblEstadoSecundario.getText().equals("Online"))
+            this.lblAviso.setText("Ambos Servidores están funcionando");
+        if (this.lblEstadoPrincipal.getText().equals("Online") && this.lblEstadoSecundario.getText().equals("Offline"))
+            this.lblAviso.setText("Inicie un Servidor Secundario");
+        if (this.lblEstadoPrincipal.getText().equals("Offline") && this.lblEstadoSecundario.getText().equals("Offline"))
+            this.lblAviso.setText("Debe iniciar un Servidor Principal");
+    }
 
 }

@@ -86,9 +86,11 @@ public class VServer extends JFrame {
 		this.setVisible(true);
 	}
 	
-	public void refreshList(ArrayList<String> logs) {
-		this.modelEvent.removeAllElements();
-		for (String log : logs)
+	public synchronized void refreshList(ArrayList<String> logs) {
+		System.out.println("Refresh list");
+		this.modelEvent.clear();
+		for (String log : logs) {
 			this.modelEvent.addElement(log);
+		}
 	}
 }
