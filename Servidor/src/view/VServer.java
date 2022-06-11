@@ -17,12 +17,16 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import model.Servidor;
+
+import javax.swing.JTextPane;
+
 public class VServer extends JFrame {
 	private JPanel contentPane;
 	private JLabel lblRegistro;
 	private JScrollPane scrollPane;
-	private JList<String> list;
 	private DefaultListModel<String> modelEvent = new DefaultListModel<String>();
+	private JTextPane list;
 
 	/**
 	 * Launch the application.
@@ -55,9 +59,9 @@ public class VServer extends JFrame {
 		setContentPane(this.contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[] {890};
-		gbl_contentPane.rowHeights = new int[] {40, 410, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowHeights = new int[] {40, 410, 0, 0};
+		gbl_contentPane.columnWeights = new double[]{1.0};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		this.contentPane.setLayout(gbl_contentPane);
 		
 		this.lblRegistro = new JLabel("Registro de eventos");
@@ -73,24 +77,26 @@ public class VServer extends JFrame {
 		this.scrollPane = new JScrollPane();
 		this.scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 0;
 		gbc_scrollPane.gridy = 1;
 		this.contentPane.add(this.scrollPane, gbc_scrollPane);
 		
-		this.list = new JList<String>();
-		this.list.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		this.list.setModel(modelEvent);
-		this.scrollPane.setViewportView(this.list);
+		list = new JTextPane();
+		list.setEditable(false);
+		list.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		scrollPane.setViewportView(list);
 		
 		this.setVisible(true);
+		refreshList(Servidor.getInstance().getLogs());
 	}
-	
-	public synchronized void refreshList(ArrayList<String> logs) {
-		System.out.println("Refresh list");
-		this.modelEvent.clear();
+
+	public void refreshList(ArrayList<String> logs) {
+		String str = "";
 		for (String log : logs) {
-			this.modelEvent.addElement(log);
+			str += log + "\n";
 		}
+		list.setText(str);
 	}
 }

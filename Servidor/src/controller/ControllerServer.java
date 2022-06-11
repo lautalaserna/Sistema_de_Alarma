@@ -21,22 +21,15 @@ public class ControllerServer implements Observer{
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("LLegó al update!");
-		ArrayList<?>a = (ArrayList<?>)arg;
+		ArrayList<?> a = (ArrayList<?>) arg;		
+		System.out.println("UPDATE DEL SERVER CONTROLLER:");
+		System.out.println("- " + a.get(0));
+		System.out.println("- " + a.get(0).getClass().getName());
 		if(!a.isEmpty() && a.get(0).getClass().getName().equals("java.lang.String")) {
 			System.out.println("Entra al if de Logs");
-			try {
-				Thread.sleep(200);
-				this.viewServer.refreshList((ArrayList<String>)arg);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			this.viewServer.refreshList((ArrayList<String>)arg);
 		}
-//		if(arg.getClass().arrayType().getClass().getName().equals("java.lang.String")) {
-//			for(String log : (ArrayList<String>)arg)
-//				System.out.println("Controlador:" + log);
-//			this.viewServer.refreshList((ArrayList<String>)arg);
-//		}
+
 		if(!a.isEmpty() && a.get(0).getClass().getName().equals("connection.ReceptorData")) {
 			try {
 				Thread.sleep(0);
@@ -48,6 +41,13 @@ public class ControllerServer implements Observer{
 			}
 				
 		}
+		
+//		if(arg.getClass().arrayType().getClass().getName().equals("java.lang.String")) {
+//		for(String log : (ArrayList<String>)arg)
+//			System.out.println("Controlador:" + log);
+//		this.viewServer.refreshList((ArrayList<String>)arg);
+//		}
+		
 		//}
 //		if(arg.getClass().arrayType().getName().equals("connection.ReceptorData")) {
 //			//Actualizar lista de receptores.

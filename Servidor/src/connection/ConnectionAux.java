@@ -55,7 +55,8 @@ public class ConnectionAux implements IConnection {
 						ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
 						ArrayList<String> logs = (ArrayList<String>) iStream.readObject();
 						iStream.close();
-						System.out.println("Logs actualizados recibidos");
+						
+						System.out.println("Servidor Aux: Logs Actualizados recibidos");
 						Servidor.getInstance().setLogs(logs);
 					} catch(Exception e) {
 						System.out.println("Servidor: SocketLogs cerrado");

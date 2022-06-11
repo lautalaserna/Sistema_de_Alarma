@@ -82,7 +82,7 @@ public class Connection extends Observable implements Observer{
 							timerAux.stopTimer();							
 						} else {
 							// Sincronización del Servidor Primario cuando se inicia un Servidor Secundario
-							System.out.println("Sincronizando...");
+							System.out.println("Monitor: Sincronizando...");
 							socketMain.send(ConnectionUtils.buildPetition(new String("SYNC"), InetAddress.getByName("localhost"), 7373));
 						}
 						

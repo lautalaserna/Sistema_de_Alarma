@@ -58,6 +58,10 @@ public class Servidor extends Observable{
 	
 	public void setLogs(ArrayList<String> logs) {
 		this.logs = logs;
+		System.out.println("LOGS DEL SERVIDOR:");
+		for(String log: this.logs) {
+			System.out.println("- " + log);
+		}
 		setChanged();
 		notifyObservers(this.logs);
 	}

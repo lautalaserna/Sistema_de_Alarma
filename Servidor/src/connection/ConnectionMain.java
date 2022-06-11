@@ -276,10 +276,10 @@ public class ConnectionMain implements IConnection{
 						socketMonitor.receive(petition);
 						petition = ConnectionUtils.buildPetition(Servidor.getInstance().getLogs(), InetAddress.getByName("localhost"), 4040);
 						socketRedundancy.send(petition);
-						System.out.println("Logs Sincronizados");
+						System.out.println("Servidor Main: Logs Sincronizados");
 						petition = ConnectionUtils.buildPetition(Servidor.getInstance().getReceptors(), InetAddress.getByName("localhost"), 4141);
 						socketHeartbeat.send(petition);
-						System.out.println("Receptores Sincronizados");
+						System.out.println("Servidor Main: Receptores Sincronizados");
 					} catch (Exception e) {
 						System.out.println("Error al escuchar el Monitor");
 					}
