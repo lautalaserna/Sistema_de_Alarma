@@ -16,9 +16,11 @@ import javax.swing.DropMode;
 import java.awt.Color;
 
 public class VMonitor extends JFrame {
-
 	private JPanel contentPane;
-
+	private JLabel lblEstadoPrincipal;
+	private JLabel lblEstadoSecundario;
+	private JLabel lblAviso;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -29,7 +31,7 @@ public class VMonitor extends JFrame {
 					VMonitor frame = new VMonitor();
 					frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					e.printStackTrace(); 
 				}
 			}
 		});
@@ -64,14 +66,14 @@ public class VMonitor extends JFrame {
 		panel_Encabezado.add(lblServidorPrincipal);
 		lblServidorPrincipal.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		
-		JLabel lblAviso = new JLabel("Inicie un Servidor...");
+		lblAviso = new JLabel("Inicie un Servidor...");
 		lblAviso.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAviso.setBounds(19, 110, 300, 40);
 		panel_Encabezado.add(lblAviso);
 		lblAviso.setFont(new Font("MS Reference Sans Serif", Font.ITALIC, 12));
 		lblAviso.setForeground(Color.GRAY);
 		
-		JLabel lblEstadoSecundario = new JLabel("Offline");
+		lblEstadoSecundario = new JLabel("Offline");
 		lblEstadoSecundario.setForeground(new Color(220, 20, 60));
 		lblEstadoSecundario.setBounds(190, 83, 80, 16);
 		panel_Encabezado.add(lblEstadoSecundario);
@@ -82,13 +84,38 @@ public class VMonitor extends JFrame {
 		panel_Encabezado.add(lblServidorSecundario);
 		lblServidorSecundario.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
 		
-		JLabel lblEstadoPrincipal = new JLabel("Online");
+		lblEstadoPrincipal = new JLabel("Offline");
 		lblEstadoPrincipal.setBounds(190, 53, 80, 16);
 		panel_Encabezado.add(lblEstadoPrincipal);
 		lblEstadoPrincipal.setFont(new Font("MS Reference Sans Serif", Font.BOLD, 14));
 		lblEstadoPrincipal.setBackground(Color.WHITE);
-		lblEstadoPrincipal.setForeground(new Color(46, 139, 87));
+		lblEstadoPrincipal.setForeground(new Color(220, 20, 60));
 		
 		this.setVisible(true);
 	}
+	
+	public void setPrincipalOnline() {
+		lblEstadoPrincipal.setForeground(new Color(46, 139, 87));
+		lblEstadoPrincipal.setFont(new Font("MS Reference Sans Serif", Font.BOLD, 14));
+		lblEstadoPrincipal.setText("Online");
+	}
+	
+	public void setPrincipalOffline() {
+		lblEstadoPrincipal.setForeground(new Color(220, 20, 60));
+		lblEstadoPrincipal.setFont(new Font("MS Reference Sans Serif", Font.BOLD, 14));
+		lblEstadoPrincipal.setText("Offline");
+	}
+	
+	public void setSecundarioOnline() {
+		lblEstadoSecundario.setForeground(new Color(46, 139, 87));
+		lblEstadoSecundario.setFont(new Font("MS Reference Sans Serif", Font.BOLD, 14));
+		lblEstadoSecundario.setText("Online");
+	}
+	
+	public void setSecundarioOffline() {
+		lblEstadoSecundario.setForeground(new Color(220, 20, 60));
+		lblEstadoSecundario.setFont(new Font("MS Reference Sans Serif", Font.BOLD, 14));
+		lblEstadoSecundario.setText("Offline");
+	}
+
 }

@@ -23,7 +23,7 @@ public class ControllerServer implements Observer{
 	public void update(Observable o, Object arg) {
 		System.out.println("LLegó al update!");
 		ArrayList<?>a = (ArrayList<?>)arg;
-		if(a.get(0).getClass().getName().equals("java.lang.String")) {
+		if(!a.isEmpty() && a.get(0).getClass().getName().equals("java.lang.String")) {
 			this.viewServer.refreshList((ArrayList<String>)arg);
 		}
 //		if(arg.getClass().arrayType().getClass().getName().equals("java.lang.String")) {
@@ -31,7 +31,7 @@ public class ControllerServer implements Observer{
 //				System.out.println("Controlador:" + log);
 //			this.viewServer.refreshList((ArrayList<String>)arg);
 //		}
-		if(a.get(0).getClass().getName().equals("connection.ReceptorData")) {
+		if(!a.isEmpty() && a.get(0).getClass().getName().equals("connection.ReceptorData")) {
 			for(ReceptorData receptor : Servidor.getInstance().getReceptors()) {
 				System.out.println("Receptor:" + receptor.toString());
 			}

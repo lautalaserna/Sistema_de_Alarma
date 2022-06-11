@@ -18,14 +18,14 @@ public class ControllerSelection implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Connection conn = null;
+		Connection conn = new Connection();
 		try {
 			if (e.getActionCommand().equals("Confirmar")) {
 				if (this.viewSelection.getRdbtnPrimario().isSelected()) {
-					conn = new Connection(new ConnectionMain());
+					conn.setConnection(new ConnectionMain());
 				}
 				else if (this.viewSelection.getRdbtnSecundario().isSelected()) {
-					conn = new Connection(new ConnectionAux());
+					conn.setConnection(new ConnectionAux(conn));
 				}
 			}
 			this.viewSelection.setVisible(false);

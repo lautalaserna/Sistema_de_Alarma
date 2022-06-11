@@ -1,31 +1,41 @@
 package connection;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.Observable;
 
-import model.Message;
 import model.Servidor;
 
 public class ConnectionAux implements IConnection {
-	private DatagramSocket socketMessage;
+	private Connection conn;
+	private DatagramSocket socketLogs;
 	private DatagramSocket socketSuscription;
-	private DatagramSocket socketRedundancy;
-		
+	private DatagramSocket socketMonitor;
+	private DatagramSocket socketHeartbeat;
+	
+	public ConnectionAux(Connection conn) {
+		this.conn = conn;
+	}
+	
 	@Override
 	public void listen() {
 		try {
-			socketMessage = new DatagramSocket(4040);
+			socketLogs = new DatagramSocket(4040);
 			socketSuscription = new DatagramSocket(4141);
-			socketRedundancy = new DatagramSocket(4242);
+			socketMonitor = new DatagramSocket(4242);
+			socketHeartbeat = new DatagramSocket();
 			
-			listenLogs(socketMessage);
+			listenLogs(socketLogs);
 			listenSuscriptions(socketSuscription);
-			listenRedundancy(socketRedundancy);
+			listenMonitor(socketMonitor);
 		} catch (SocketException e) {
 			System.out.println("Error en la Redundancia");
 			e.printStackTrace();
@@ -48,8 +58,8 @@ public class ConnectionAux implements IConnection {
 						
 						Servidor.getInstance().setLogs(logs);
 					} catch(Exception e) {
-						System.out.println("Error al recibir un Mensaje");
-						e.printStackTrace();
+						System.out.println("Servidor: SocketLogs cerrado");
+						break;
 					}
 				}
 			}
@@ -72,35 +82,27 @@ public class ConnectionAux implements IConnection {
 						
 						Servidor.getInstance().setReceptors(receptors);
 						
-						System.out.println("Servidor Secundario: LLegó la lista del Primario.");
+						System.out.println("Servidor: LLegó la lista del Primario.");
 					} catch(Exception e) {
-						System.out.println("Error al recibir una Suscripción");
-						e.printStackTrace();
+						System.out.println("Servidor: SocketSuscription cerrado");
+						break;
 					}
 				}
 			}
 		}.start();
 	}
 	
-	public void listenRedundancy(DatagramSocket socket) {
+	public void listenMonitor(DatagramSocket socket) {
 		new Thread() {
 			public void run() {
-				System.out.println("Servidor: Escuchando Redundancia");
-				while (true) {
-					try {
-						byte[] buffer = new byte[2048];
-						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
-						socket.receive(petition);
-						
-						ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
-						ArrayList<String> logs = (ArrayList<String>) iStream.readObject();
-						iStream.close();
-						Servidor.getInstance().setLogs(logs);
-						
-					} catch(Exception e) {
-						System.out.println("Error al suscribirse un Receptor");
-						e.printStackTrace();
-					}
+				System.out.println("Servidor: Escuchando Monitor");
+				try {
+					byte[] buffer = new byte[2048];
+					DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
+					socket.receive(petition);
+					conn.changeToMain();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
 		}.start();
@@ -108,14 +110,43 @@ public class ConnectionAux implements IConnection {
 	
 	@Override
 	public void heartbeat() {
-		// TODO Auto-generated method stub
+		new Thread() {
+			public void run() {
+				while(true) {
+					try {
+						byte[] buffer = new byte[2048];
+						
+						ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+						ObjectOutput output = new ObjectOutputStream(bStream);
+						output.writeObject(new String("AUX"));
+						output.close();
+						buffer = bStream.toByteArray();
+						
+						DatagramPacket petition = new DatagramPacket(buffer, buffer.length,InetAddress.getByName("localhost"),2222);
+						socketHeartbeat.send(petition);
+						Thread.sleep(2000);
+
+					} catch (Exception e) {
+						System.out.println("Servidor: SocketHeartbeat cerrado.");
+						break;
+					}
+				}
+			}
+		}.start();
+	}
+	
+	@Override
+	public void closeConnections() {
+		socketLogs.close();
+		socketSuscription.close();
+		socketMonitor.close();
+		socketHeartbeat.close();
 	}
 
 	@Override
-	public void closeConnections() {
-		socketMessage.close();
-		socketSuscription.close();
-		socketRedundancy.close();
+	public boolean switchConnection() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

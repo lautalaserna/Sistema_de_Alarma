@@ -5,22 +5,28 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class TimeOut extends Observable{
+	private String value;
 	private Timer timer;
 	
-	public void starTimer() {
+	public TimeOut(String value) {
+		this.value = value;
+	}
+	
+	public void starTimer(int seg) {
 		new Thread() {
 			public void run() {
 				timer = new Timer();
 				timer.scheduleAtFixedRate(new TimerTask() {
-					int i = 40;
+					int i = seg;
 
 					public void run() {
 						System.out.println(i);
 						i--;
 						if (i < 0) {
 							timer.cancel();
+							System.out.println("Timer Terminado: "+ value);
 							setChanged();
-							notifyObservers();
+							notifyObservers(value + " OFFLINE"); 
 						}
 					}
 				}, 0, 1000);
@@ -31,4 +37,5 @@ public class TimeOut extends Observable{
 	public void stopTimer() {
 		timer.cancel();
 	}
+	
 }

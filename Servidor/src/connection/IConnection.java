@@ -8,5 +8,7 @@ public interface IConnection {
 	
 	public void heartbeat();
 	
-	public void closeConnections();	
+	public void closeConnections();
+	
+	public boolean switchConnection();
 }

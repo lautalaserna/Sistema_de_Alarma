@@ -22,6 +22,7 @@ public class ConnectionMain implements IConnection{
 	private DatagramSocket socketSuscription;
 	private DatagramSocket socketConfirmation;
 	private DatagramSocket socketRedundancy;
+	private DatagramSocket socketHeartbeat;
 	private int[] ports;
 		
 	@Override	
@@ -32,6 +33,7 @@ public class ConnectionMain implements IConnection{
 			socketSuscription = new DatagramSocket(ports[1]);
 			socketConfirmation = new DatagramSocket(ports[2]);
 			socketRedundancy = new DatagramSocket();
+			socketHeartbeat = new DatagramSocket();
 			
 			listenMessages(socketMessage);
 			listenSuscriptions(socketSuscription);
@@ -145,7 +147,7 @@ public class ConnectionMain implements IConnection{
 								output.close();
 								buffer = bStream.toByteArray();
 								
-								petition = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 4242);
+								petition = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 4040);
 								socketMessage.send(petition);
 								
 							} catch (IOException e) {
@@ -200,7 +202,7 @@ public class ConnectionMain implements IConnection{
 						output.close();
 						buffer = bStream.toByteArray();
 						
-						petition = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 4242);
+						petition = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 4040);
 						socketMessage.send(petition);
 					} catch(Exception e) {
 						System.out.println("Error al recibir una Confirmación");
@@ -271,8 +273,28 @@ public class ConnectionMain implements IConnection{
 	
 	@Override
 	public void heartbeat() {
-		// TODO Auto-generated method stub
-		
+		new Thread() {
+			public void run() {
+				while(true) {
+					try {
+						byte[] buffer = new byte[2048];
+						
+						ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+						ObjectOutput output = new ObjectOutputStream(bStream);
+						output.writeObject(new String("MAIN"));
+						output.close();
+						buffer = bStream.toByteArray();
+						
+						DatagramPacket petition = new DatagramPacket(buffer, buffer.length,InetAddress.getByName("localhost"),1111);
+						socketHeartbeat.send(petition);
+						Thread.sleep(2000);
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
 	}
 
 	@Override
@@ -281,6 +303,12 @@ public class ConnectionMain implements IConnection{
 		socketSuscription.close();
 		socketConfirmation.close();
 		socketRedundancy.close();
+		socketHeartbeat.close();
+	}
+
+	@Override
+	public boolean switchConnection() {
+		return false;
 	}
 	
 }
