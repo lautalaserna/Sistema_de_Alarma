@@ -8,8 +8,5 @@ public interface IConnection {
 	
 	public void heartbeat();
 	
-	public void closeConnections();
-
-	public ArrayList<ReceptorData> getReceptors();
-	
+	public void closeConnections();	
 }

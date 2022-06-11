@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 import model.Message;
+import model.Servidor;
 
-public class ConnectionAux extends Observable implements IConnection {
-	private ArrayList<ReceptorData> receptors = new ArrayList<ReceptorData>();
+public class ConnectionAux implements IConnection {
 	private DatagramSocket socketMessage;
 	private DatagramSocket socketSuscription;
 	private DatagramSocket socketRedundancy;
@@ -23,7 +23,7 @@ public class ConnectionAux extends Observable implements IConnection {
 			socketSuscription = new DatagramSocket(4141);
 			socketRedundancy = new DatagramSocket(4242);
 			
-			listenMessages(socketMessage);
+			listenLogs(socketMessage);
 			listenSuscriptions(socketSuscription);
 			listenRedundancy(socketRedundancy);
 		} catch (SocketException e) {
@@ -32,7 +32,7 @@ public class ConnectionAux extends Observable implements IConnection {
 		}
 	}
 	
-	public void listenMessages(DatagramSocket socket) {
+	public void listenLogs(DatagramSocket socket) {
 		new Thread() {
 			public void run() {
 				while (true) {
@@ -43,13 +43,10 @@ public class ConnectionAux extends Observable implements IConnection {
 						socket.receive(petition);
 						
 						ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
-						Message msg = (Message) iStream.readObject();
+						ArrayList<String> logs = (ArrayList<String>) iStream.readObject();
 						iStream.close();
 						
-						System.out.println(msg.toString());
-						
-						setChanged();
-						notifyObservers(msg);
+						Servidor.getInstance().setLogs(logs);
 					} catch(Exception e) {
 						System.out.println("Error al recibir un Mensaje");
 						e.printStackTrace();
@@ -70,13 +67,12 @@ public class ConnectionAux extends Observable implements IConnection {
 						socket.receive(petition);
 						
 						ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
-						ReceptorData rd = (ReceptorData) iStream.readObject();
+						ArrayList<ReceptorData> receptors = (ArrayList<ReceptorData>) iStream.readObject();
 						iStream.close();
 						
-						receptors.add(rd);
+						Servidor.getInstance().setReceptors(receptors);
 						
-						setChanged();
-						notifyObservers(rd);
+						System.out.println("Servidor Secundario: LLegó la lista del Primario.");
 					} catch(Exception e) {
 						System.out.println("Error al recibir una Suscripción");
 						e.printStackTrace();
@@ -97,11 +93,10 @@ public class ConnectionAux extends Observable implements IConnection {
 						socket.receive(petition);
 						
 						ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
-						String str = (String) iStream.readObject();
+						ArrayList<String> logs = (ArrayList<String>) iStream.readObject();
 						iStream.close();
+						Servidor.getInstance().setLogs(logs);
 						
-						setChanged();
-						notifyObservers(str);						
 					} catch(Exception e) {
 						System.out.println("Error al suscribirse un Receptor");
 						e.printStackTrace();
@@ -121,11 +116,6 @@ public class ConnectionAux extends Observable implements IConnection {
 		socketMessage.close();
 		socketSuscription.close();
 		socketRedundancy.close();
-	}
-	
-	@Override
-	public ArrayList<ReceptorData> getReceptors() {
-		return receptors;
 	}
 	
 }

@@ -32,7 +32,7 @@ public class ControllerSelection implements ActionListener{
 		} catch (Exception ex) {
 			System.out.println("Error al crear las conexiones");
 		}
-		new ControllerServer(conn);
+		new ControllerServer();
 	}
 	
 	

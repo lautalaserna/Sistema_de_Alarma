@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
@@ -85,7 +86,9 @@ public class VServer extends JFrame {
 		this.setVisible(true);
 	}
 	
-	public void addLog(String log) {
-		this.modelEvent.addElement(log);
+	public void refreshList(ArrayList<String> logs) {
+		this.modelEvent.removeAllElements();
+		for (String log : logs)
+			this.modelEvent.addElement(log);
 	}
 }

@@ -11,14 +11,13 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.Observable;
 
 import model.Confirmation;
 import model.Filter;
 import model.Message;
+import model.Servidor;
 
-public class ConnectionMain extends Observable implements IConnection{
-	private ArrayList<ReceptorData> receptors = new ArrayList<ReceptorData>();
+public class ConnectionMain implements IConnection{
 	private DatagramSocket socketMessage;
 	private DatagramSocket socketSuscription;
 	private DatagramSocket socketConfirmation;
@@ -35,9 +34,9 @@ public class ConnectionMain extends Observable implements IConnection{
 			socketRedundancy = new DatagramSocket();
 			
 			listenMessages(socketMessage);
-			listenSuscriptions(socketSuscription, receptors);
+			listenSuscriptions(socketSuscription);
 			listenConfirmations(socketMessage, socketConfirmation);
-			pingEchoChek();
+			//pingEchoCheck();
 		} catch (SocketException e) {
 			System.out.println("Error al escuchar");
 			e.printStackTrace();
@@ -45,22 +44,22 @@ public class ConnectionMain extends Observable implements IConnection{
 		
 	}
 	
-	public void pingEchoChek() {
-		new Thread() {
-			public void run() {
-				while(true) {
-					for(ReceptorData rd : receptors) {
-						System.out.println(rd.getFilter().getPort());
-					}
-					try {
-						Thread.sleep(5000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}.start();
-	}
+//	public void pingEchoCheck() {
+//		new Thread() {
+//			public void run() {
+//				while(true) {
+//					for(ReceptorData rd : Servidor.getInstance().getReceptors()) {
+//						System.out.println(rd.getFilter().getPort());
+//					}
+//					try {
+//						Thread.sleep(5000);
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					}
+//				}
+//			}
+//		}.start();
+//	}
 	
 	public void listenMessages(DatagramSocket socket) {
 		new Thread() {
@@ -81,18 +80,15 @@ public class ConnectionMain extends Observable implements IConnection{
 						
 						System.out.println("Servidor: Mensaje recibido: " + msg + " (Puerto: " + msg.getPort() + ")");
 						
-						//String log = "Nuevo Mensaje: "+ 
-						//				"(Desde: " + msg.getInetAddress().getHostAddress() + ":" + msg.getPort() + 
-						//				") " + msg.toString()
+						String log = "Nuevo Mensaje: "+ 
+										"(Desde: " + msg.getInetAddress().getHostAddress() + ":" + msg.getPort() + 
+										") " + msg.toString();
 						
-						// Servidor.getInstance().addLog(log)
-						setChanged();
-						notifyObservers(msg); // Log
+						Servidor.getInstance().addLog(log);
 						
-						// Temporal
 						ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 						ObjectOutput output = new ObjectOutputStream(bStream); 
-						output.writeObject(msg);
+						output.writeObject(Servidor.getInstance().getLogs());
 						output.close();
 						buffer = bStream.toByteArray();
 						petition = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 4040);
@@ -127,7 +123,7 @@ public class ConnectionMain extends Observable implements IConnection{
 		new Thread() {
 			public void run() {
 				try {
-					for (ReceptorData rd : receptors) {
+					for (ReceptorData rd : Servidor.getInstance().getReceptors()) {
 						if(rd.getFilter().isAccepted(msg)) {
 							try {
 								ByteArrayOutputStream bStream = new ByteArrayOutputStream();
@@ -141,12 +137,11 @@ public class ConnectionMain extends Observable implements IConnection{
 								
 								String log = "Mensaje enviado al Receptor: " + rd.getAddress().getHostAddress() + ":"+ rd.getFilter().getPort();
 								
-								setChanged();
-								notifyObservers(log);
+								Servidor.getInstance().addLog(log);
 								
 								bStream = new ByteArrayOutputStream();
 								output = new ObjectOutputStream(bStream);
-								output.writeObject(new String(log));
+								output.writeObject(Servidor.getInstance().getLogs());
 								output.close();
 								buffer = bStream.toByteArray();
 								
@@ -193,15 +188,15 @@ public class ConnectionMain extends Observable implements IConnection{
 									+ "(Para: " + c.getAddress().getHostAddress() + ":" + c.getPort() + ") "
 									+ "Respuesta: " + c.getValue();
 						
-						setChanged();
-						notifyObservers(log);
+						
+						Servidor.getInstance().addLog(log);
 						
 						petition = new DatagramPacket(buffer, buffer.length, c.getAddress(), c.getPort());
 						socketMessage.send(petition);
 						
 						bStream = new ByteArrayOutputStream();
 						output = new ObjectOutputStream(bStream);
-						output.writeObject(new String(log));
+						output.writeObject(Servidor.getInstance().getLogs());
 						output.close();
 						buffer = bStream.toByteArray();
 						
@@ -216,7 +211,7 @@ public class ConnectionMain extends Observable implements IConnection{
 		}.start();
 	}
 	
-	public void listenSuscriptions(DatagramSocket socket, ArrayList<ReceptorData> receptors) {
+	public void listenSuscriptions(DatagramSocket socket) {
 		new Thread() {
 			public void run() {
 				System.out.println("Servidor: Escuchando a Receptores");
@@ -231,19 +226,28 @@ public class ConnectionMain extends Observable implements IConnection{
 						iStream.close();
 						
 						ReceptorData rd = new ReceptorData(f,petition.getAddress());
-						setChanged();
-						notifyObservers(rd);
+						Servidor.getInstance().addReceptor(rd);
 						
 						ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 						ObjectOutput output = new ObjectOutputStream(bStream); 
-						output.writeObject(rd);
+						output.writeObject(Servidor.getInstance().getReceptors());
 						output.close();
 						buffer = bStream.toByteArray();
 						petition = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 4141);
 						socketRedundancy.send(petition);
 						
+						String log = "Receptor Suscripto: " + rd.toString();
+						Servidor.getInstance().addLog(log);
+						
+						bStream = new ByteArrayOutputStream();
+						output = new ObjectOutputStream(bStream); 
+						output.writeObject(Servidor.getInstance().getLogs());
+						output.close();
+						buffer = bStream.toByteArray();
+						petition = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 4040);
+						socketRedundancy.send(petition);
+						
 						System.out.println("Servidor: Receptor suscripto: " + rd.toString());						
-						receptors.add(rd);	
 					} catch(Exception e) {
 						System.out.println("Error al suscribirse un Receptor");
 						e.printStackTrace();
@@ -255,7 +259,7 @@ public class ConnectionMain extends Observable implements IConnection{
 	
 	public boolean existReceptor(Message msg) {
 		boolean res = false;
-		for (ReceptorData rd : receptors) {
+		for (ReceptorData rd : Servidor.getInstance().getReceptors()) {
 			if(rd.getFilter().isAccepted(msg)) {
 				res = true;
 				break;
@@ -264,10 +268,6 @@ public class ConnectionMain extends Observable implements IConnection{
 		return res;
 	}
 	
-	@Override
-	public ArrayList<ReceptorData> getReceptors() {
-		return receptors;
-	}
 	
 	@Override
 	public void heartbeat() {
