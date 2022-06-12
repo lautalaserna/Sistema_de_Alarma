@@ -17,6 +17,21 @@ public class ReceptorData implements Serializable{
 		this.address = address;
 	}
 	
+	public String getInfo() {
+		String response;
+		response = "Dir: " + this.address.getHostAddress() + ":" + this.f.getPort();
+		if(this.f.isAcceptAM()) {
+			response += " AM";
+		}
+		if(this.f.isAcceptPS()) {
+			response += " PS";
+		}
+		if(this.f.isAcceptFI()) {
+			response += " FI";
+		}
+		return response;
+	}
+	
 	@Override
 	public String toString() {
 		String response;

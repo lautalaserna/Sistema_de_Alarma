@@ -23,6 +23,7 @@ public class ConnectionMain implements IConnection{
 	private DatagramSocket socketMonitor;
 	private DatagramSocket socketRedundancy;
 	private DatagramSocket socketHeartbeat;
+	private DatagramSocket socketPingEcho;
 	private int[] ports;
 		
 	@Override	
@@ -35,6 +36,7 @@ public class ConnectionMain implements IConnection{
 			socketMonitor = new DatagramSocket(7373);
 			socketRedundancy = new DatagramSocket();
 			socketHeartbeat = new DatagramSocket();
+			socketPingEcho = new DatagramSocket();
 			
 			listenMessages(socketMessage);
 			listenSuscriptions(socketSuscription);
@@ -48,22 +50,23 @@ public class ConnectionMain implements IConnection{
 		
 	}
 	
-//	public void pingEchoCheck() {
-//		new Thread() {
-//			public void run() {
-//				while(true) {
-//					for(ReceptorData rd : Servidor.getInstance().getReceptors()) {
-//						System.out.println(rd.getFilter().getPort());
-//					}
-//					try {
-//						Thread.sleep(5000);
-//					} catch (InterruptedException e) {
-//						e.printStackTrace();
-//					}
-//				}
-//			}
-//		}.start();
-//	}
+	public void pingEchoCheck() {
+		new Thread() {
+			public void run() {
+				while(true) {
+					if()
+					try {
+						for(ReceptorData rd : Servidor.getInstance().getReceptors()) {
+							System.out.println(rd.getFilter().getPort());
+						}
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
+	}
 	
 	public void listenMessages(DatagramSocket socket) {
 		new Thread() {
