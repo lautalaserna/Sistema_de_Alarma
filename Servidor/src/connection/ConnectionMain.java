@@ -10,6 +10,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 
 import model.Confirmation;
 import model.Filter;
@@ -42,7 +44,7 @@ public class ConnectionMain implements IConnection{
 			listenSuscriptions(socketSuscription);
 			listenConfirmations(socketMessage, socketConfirmation);
 			listenMonitor();
-			//pingEchoCheck();
+			pingEchoCheck();
 		} catch (SocketException e) {
 			System.out.println("Error al escuchar");
 			e.printStackTrace();
@@ -54,12 +56,45 @@ public class ConnectionMain implements IConnection{
 		new Thread() {
 			public void run() {
 				while(true) {
-					if()
 					try {
-						for(ReceptorData rd : Servidor.getInstance().getReceptors()) {
-							System.out.println(rd.getFilter().getPort());
+						int i = 0;
+						while(i < Servidor.getInstance().getReceptors().size()) {
+							try {
+								ReceptorData rd = Servidor.getInstance().getReceptors().get(i);
+								DatagramPacket petition = ConnectionUtils.buildPetition(new String ("PING"), rd.getAddress(), rd.getFilter().getPort() + 1);
+								socketPingEcho.send(petition);
+								System.out.println("Servidor principal: PING enviado.");
+								socketPingEcho.setSoTimeout(500);
+								
+								socketPingEcho.receive(petition);
+								System.out.println("Servidor principal: ECHO recibido.");
+								i++;
+							}catch (SocketTimeoutException e) {
+									// timeout exception.
+									System.out.println("Cortó el timeout!!! " + e);
+									Servidor.getInstance().getReceptors().remove(i);
+									System.out.println("Servidor principal: Receptor removido.");
+									Servidor.getInstance().setReceptors(Servidor.getInstance().getReceptors());
+									try {
+										byte[] buffer = new byte[2048];
+										DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
+										ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+										ObjectOutput output;
+										output = new ObjectOutputStream(bStream);
+										output.writeObject(Servidor.getInstance().getReceptors());
+										output.close();
+										buffer = bStream.toByteArray();
+										petition = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 4141);
+										socketRedundancy.send(petition);
+									} catch (IOException e1) {
+										e1.printStackTrace();
+									} 
+							}
+							catch (Exception e) {
+								e.printStackTrace();
+							}
 						}
-						Thread.sleep(5000);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}

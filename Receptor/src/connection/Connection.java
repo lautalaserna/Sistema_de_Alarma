@@ -23,6 +23,7 @@ import model.Receptor;
 public class Connection extends Observable implements Observer {
 	private ArrayList<Observable> obs = new ArrayList<Observable>();
 	private DatagramSocket socketUDP;
+	private DatagramSocket socketEcho;
 	private byte[] buffer = new byte[2048];
 	private Filter filter;
 	private ArrayList<TimeOut> timeOuts;
@@ -31,11 +32,29 @@ public class Connection extends Observable implements Observer {
 		try {
 			this.filter = filter;
 			this.socketUDP = new DatagramSocket(port);
+			this.socketEcho = new DatagramSocket(port+1);
 			this.timeOuts = new ArrayList<TimeOut>();
-
+			listenEcho();
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void listenEcho() {
+		new Thread() {
+			public void run() {
+				while(true) {
+					try {
+						byte[] buffer = new byte[2048];
+						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
+						socketEcho.receive(petition);
+						socketEcho.send(petition);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
 	}
 
 	public void listen() {

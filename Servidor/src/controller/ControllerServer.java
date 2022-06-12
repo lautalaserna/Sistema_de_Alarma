@@ -21,16 +21,15 @@ public class ControllerServer implements Observer{
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		ArrayList<?> a = (ArrayList<?>) arg;		
-		System.out.println("UPDATE DEL SERVER CONTROLLER:");
-		System.out.println("- " + a.get(0));
-		System.out.println("- " + a.get(0).getClass().getName());
+		ArrayList<?> a = (ArrayList<?>) arg;
 		if(!a.isEmpty() && a.get(0).getClass().getName().equals("java.lang.String")) {
 			System.out.println("Entra al if de Logs");
 			this.viewServer.refreshLogs((ArrayList<String>) arg);
 		} else if(!a.isEmpty() && a.get(0).getClass().getName().equals("connection.ReceptorData")) {
 			this.viewServer.refreshReceptores((ArrayList<ReceptorData>) arg);
-				
+		} else if(a.isEmpty()) {
+			this.viewServer.refreshReceptores((ArrayList<ReceptorData>) arg);
+			
 		}
 	}
 	

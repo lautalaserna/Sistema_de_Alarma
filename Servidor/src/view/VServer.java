@@ -54,7 +54,7 @@ public class VServer extends JFrame {
 	public VServer() {
 		setTitle("Servidor");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(400, 300, 1300, 500);
+		setBounds(200, 300, 1300, 500);
 		
 		setResizable(false);
 		this.contentPane = new JPanel();
