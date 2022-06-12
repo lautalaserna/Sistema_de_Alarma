@@ -15,6 +15,8 @@ public class ConnectionAux implements IConnection {
 	private DatagramSocket socketSuscription;
 	private DatagramSocket socketMonitor;
 	private DatagramSocket socketHeartbeat;
+	private int[] ports;
+	private String[] ips;
 	
 	public ConnectionAux(Connection conn) {
 		this.conn = conn;
@@ -23,10 +25,11 @@ public class ConnectionAux implements IConnection {
 	@Override
 	public void listen() {
 		try {
-			// Acomodar
-			socketLogs = new DatagramSocket(4040);
-			socketSuscription = new DatagramSocket(4141);
-			socketMonitor = new DatagramSocket(4242);
+			this.ports = ConnUtils.readPorts(ConnUtils.PATH_SECUNDARIO);
+			this.ips = ConnUtils.readIPs(ConnUtils.PATH_SECUNDARIO);
+			socketLogs = new DatagramSocket(ports[1]);
+			socketSuscription = new DatagramSocket(ports[2]);
+			socketMonitor = new DatagramSocket(ports[3]);
 			socketHeartbeat = new DatagramSocket();
 			
 			listenLogs();
@@ -96,8 +99,7 @@ public class ConnectionAux implements IConnection {
 			public void run() {
 				while(true) {
 					try {
-						// Acomodar
-						socketHeartbeat.send(ConnUtils.buildPetition(new String("AUX"), InetAddress.getByName("localhost"), 2222));
+						socketHeartbeat.send(ConnUtils.buildPetition(new String("AUX"), InetAddress.getByName(ips[0]), ports[0]));
 						Thread.sleep(2000);
 					} catch (Exception e) {
 						System.out.println("Servidor: SocketHeartbeat cerrado.");

@@ -19,15 +19,34 @@ public class ConnUtils {
 		int[] res = null;
 		
 		try(Scanner sc = new Scanner(file)){
-	       int portE = sc.nextInt();
-	       int portR = sc.nextInt();
-	       int portC = sc.nextInt();
-	       res = new int[]{portE,portR,portC};
+	       int portPri = sc.nextInt();
+	       int portSec = sc.nextInt();
+	       int portSync = sc.nextInt();
+	       int portChange = sc.nextInt();
+	       res = new int[]{portPri,portSec,portSync,portChange};
 		}
 		catch(Exception e){
 			e.printStackTrace();
 		}
+		return res;
+	}
+	
+	public static String[] readIPs(String filename) {
+		File file = new File(filename);
+		String[] res = null;
 		
+		try(Scanner sc = new Scanner(file)){
+	       sc.nextInt();
+	       sc.nextInt();
+	       sc.nextInt();
+	       sc.nextInt();
+	       String priIP = sc.nextLine();
+	       String auxIP = sc.nextLine();
+	       res = new String[]{priIP,auxIP};
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 		return res;
 	}
 	

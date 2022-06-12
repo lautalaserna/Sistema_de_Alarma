@@ -16,8 +16,12 @@ public class Connection extends Observable implements Observer{
 	private TimeOut timerAux;
 	private boolean isAliveMain;
 	private boolean isAliveAux;
+	private int[] ports;
+	private String[] ips;
 	
 	public Connection(TimeOut timerMain, TimeOut timerAux) {
+		this.ports = ConnUtils.readPorts(ConnUtils.PATH);
+		this.ips = ConnUtils.readIPs(ConnUtils.PATH);
 		this.timerMain = timerMain;
 		this.timerMain.addObserver(this);
 		this.timerAux = timerAux;
@@ -25,8 +29,8 @@ public class Connection extends Observable implements Observer{
 		this.isAliveMain = false;
 		this.isAliveAux = false;
 		try {
-			socketMain = new DatagramSocket(1111); //Acomodar
-			socketAux = new DatagramSocket(2222); //Acomodar
+			socketMain = new DatagramSocket(ports[0]);
+			socketAux = new DatagramSocket(ports[1]);
 			
 			listenMain(socketMain);
 			listenAux(socketAux);
@@ -70,7 +74,7 @@ public class Connection extends Observable implements Observer{
 							timerAux.stopTimer();							
 						} else {
 							System.out.println("Monitor: Sincronizando...");
-							socketMain.send(ConnUtils.buildPetition(new String("SYNC"), InetAddress.getByName("localhost"), 7373)); // Acomodar
+							socketMain.send(ConnUtils.buildPetition(new String("SYNC"), InetAddress.getByName(ips[0]), ports[2]));
 						}
 						isAliveAux = true;
 						setChanged();
@@ -92,7 +96,7 @@ public class Connection extends Observable implements Observer{
 				this.isAliveMain = false;
 				if(isAliveAux) {
 					try {
-						socketAux.send(ConnUtils.buildPetition(new String("SWITCH"), InetAddress.getByName("localhost"), 4242)); // Acomodar
+						socketAux.send(ConnUtils.buildPetition(new String("SWITCH"), InetAddress.getByName(ips[1]), ports[3]));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

@@ -11,7 +11,7 @@ public class ServerData implements Serializable {
 	public ServerData() {
 		try {
 			this.address = InetAddress.getByName(InetAddress.getLocalHost().getHostAddress());
-			this.port = 2020;
+			this.port = 2002;
 		} catch (UnknownHostException e) {
 			System.out.println("Error al obtener la IP");
 			e.printStackTrace();

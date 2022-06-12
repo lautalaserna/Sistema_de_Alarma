@@ -11,7 +11,7 @@ public class Location implements Serializable {
 
 	public Location() throws IOException {
 		this.ip = InetAddress.getLocalHost().getHostAddress();
-		this.port = 1010;
+		this.port = 2001;
 		this.name = "Puesto";
 	}
 

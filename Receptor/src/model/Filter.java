@@ -6,7 +6,7 @@ public class Filter implements Serializable {
 	private boolean acceptAM;
 	private boolean acceptFI;
 	private boolean acceptPS;
-	private int port = 8080;
+	private int port = 4000;
 	
 	public Filter(boolean acceptAM, boolean acceptFI, boolean acceptPS, int port) {
 		this.acceptAM = acceptAM;
