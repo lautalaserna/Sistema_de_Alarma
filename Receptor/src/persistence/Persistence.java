@@ -65,9 +65,8 @@ public class Persistence {
 		} catch (Exception e) {
 			File f = new File(FILTER_PATH);
 			try {
-				System.out.println("Crea un filtro por defecto");
 				f.createNewFile();
-				filter = new Filter(false, false, false, 8080);
+				filter = new Filter(false, false, false, 4000);
 			} catch (IOException e1) {
 				e.printStackTrace();
 			}
