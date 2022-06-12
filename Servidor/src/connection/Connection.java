@@ -1,6 +1,8 @@
 package connection;
 
-public class Connection{
+import java.util.Observable;
+
+public class Connection extends Observable{
 	private IConnection conn;
 	
 	public void setConnection(IConnection conn) {
@@ -17,7 +19,9 @@ public class Connection{
 		this.conn.closeConnections();
 		this.conn = new ConnectionMain();
 		this.conn.listen();
-		this.conn.heartbeat();		
+		this.conn.heartbeat();	
+		setChanged();
+		notifyObservers("Servidor Primario");
 	}
 	
 }

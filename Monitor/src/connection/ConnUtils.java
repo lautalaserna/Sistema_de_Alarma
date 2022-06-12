@@ -1,23 +1,24 @@
 package connection;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.util.Scanner;
 
-public class ConnectionUtils {
-	public static final String PATH = "data/dir.txt";
+public class ConnUtils {
+	public static final String PATH = "data/dirMonitor.txt";
 
 	public static int[] readPorts(String filename) {
 		File file = new File(filename);
 		int[] res = null;
 		
-		try{
-	       Scanner sc = new Scanner(file);
+		try(Scanner sc = new Scanner(file)){
 	       int portE = sc.nextInt();
 	       int portR = sc.nextInt();
 	       int portC = sc.nextInt();
@@ -42,5 +43,22 @@ public class ConnectionUtils {
 		} catch (IOException e) {
 		}
 		return new DatagramPacket(buffer, buffer.length,address,port);
+	}
+	
+	public static DatagramPacket buildPetition() {
+		byte[] buffer = new byte[2048];
+		return new DatagramPacket(buffer, buffer.length);
+	}
+	
+	public static Object openPetition(DatagramPacket petition) {
+		Object obj = null;
+		try {
+			ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
+			obj = iStream.readObject();
+			iStream.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return obj;
 	}
 }

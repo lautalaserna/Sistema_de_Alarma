@@ -11,7 +11,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 public class VMonitor extends JFrame {
-	private JPanel contentPane;
 	private JLabel lblEstadoPrincipal;
 	private JLabel lblEstadoSecundario;
 	private JLabel lblAviso;
@@ -40,7 +39,7 @@ public class VMonitor extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(800, 400, 350, 200);
-		contentPane = new JPanel();
+		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);

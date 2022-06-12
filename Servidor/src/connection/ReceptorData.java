@@ -19,7 +19,7 @@ public class ReceptorData implements Serializable{
 	
 	public String getInfo() {
 		String response;
-		response = "Dir: " + this.address.getHostAddress() + ":" + this.f.getPort();
+		response = this.address.getHostAddress() + ":" + this.f.getPort();
 		if(this.f.isAcceptAM()) {
 			response += " AM";
 		}

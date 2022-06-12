@@ -19,19 +19,14 @@ import javax.swing.border.EmptyBorder;
 
 import connection.ReceptorData;
 import model.Servidor;
+import java.awt.Color;
 
 public class VServer extends JFrame {
-	private JPanel contentPane;
-	private JLabel lblRegistro;
-	private JScrollPane scrollPane;
 	private DefaultListModel<String> modelEvent = new DefaultListModel<String>();
 	private JTextPane listReceptores;
-	private JScrollPane scrollPane_1;
-	private JLabel lblReceptores;
-	private JPanel panel;
-	private JPanel panel_1;
-	private JTextPane list;
-
+	private JTextPane listLogs;
+	private JLabel lblServidor;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -57,28 +52,40 @@ public class VServer extends JFrame {
 		setBounds(200, 300, 1300, 500);
 		
 		setResizable(false);
-		this.contentPane = new JPanel();
-		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		this.contentPane.setSize(900, 600);
-		setContentPane(this.contentPane);
+		JPanel contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setSize(900, 600);
+		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[] {950, 10, 300};
-		gbl_contentPane.rowHeights = new int[] {50, 400};
+		gbl_contentPane.columnWidths = new int[] {990, 10, 250};
+		gbl_contentPane.rowHeights = new int[] {40, 400};
 		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0};
 		contentPane.setLayout(gbl_contentPane);
 		
-		this.lblRegistro = new JLabel("Registro de eventos");
-		this.lblRegistro.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		this.lblRegistro.setHorizontalAlignment(SwingConstants.CENTER);
-		GridBagConstraints gbc_lblRegistro = new GridBagConstraints();
-		gbc_lblRegistro.fill = GridBagConstraints.BOTH;
-		gbc_lblRegistro.insets = new Insets(0, 0, 5, 5);
-		gbc_lblRegistro.gridx = 0;
-		gbc_lblRegistro.gridy = 0;
-		this.contentPane.add(this.lblRegistro, gbc_lblRegistro);
+		JPanel panel_2 = new JPanel();
+		panel_2.setLayout(null);
+		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
+		gbc_panel_2.fill = GridBagConstraints.BOTH;
+		gbc_panel_2.insets = new Insets(0, 0, 5, 5);
+		gbc_panel_2.gridx = 0;
+		gbc_panel_2.gridy = 0;
+		contentPane.add(panel_2, gbc_panel_2);
 		
-		panel = new JPanel();
+		JLabel lblRegistro = new JLabel("Registro de Eventos");
+		lblRegistro.setBounds(277, -1, 254, 35);
+		panel_2.add(lblRegistro);
+		lblRegistro.setFont(new Font("MS Reference Sans Serif", Font.BOLD, 14));
+		lblRegistro.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		lblServidor = new JLabel("");
+		lblServidor.setForeground(Color.GRAY);
+		lblServidor.setHorizontalAlignment(SwingConstants.LEFT);
+		lblServidor.setFont(new Font("MS Reference Sans Serif", Font.ITALIC, 12));
+		lblServidor.setBounds(0, 0, 130, 35);
+		panel_2.add(lblServidor);
+		
+		JPanel panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.insets = new Insets(0, 0, 5, 5);
@@ -86,9 +93,9 @@ public class VServer extends JFrame {
 		gbc_panel.gridy = 0;
 		contentPane.add(panel, gbc_panel);
 		
-		lblReceptores = new JLabel("Receptores Disponibles");
+		JLabel lblReceptores = new JLabel("Receptores");
 		lblReceptores.setHorizontalAlignment(SwingConstants.CENTER);
-		lblReceptores.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		lblReceptores.setFont(new Font("MS Reference Sans Serif", Font.BOLD, 14));
 		GridBagConstraints gbc_lblReceptores = new GridBagConstraints();
 		gbc_lblReceptores.fill = GridBagConstraints.BOTH;
 		gbc_lblReceptores.insets = new Insets(0, 0, 5, 0);
@@ -96,7 +103,7 @@ public class VServer extends JFrame {
 		gbc_lblReceptores.gridy = 0;
 		contentPane.add(lblReceptores, gbc_lblReceptores);
 		
-		scrollPane_1 = new JScrollPane();
+		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
 		gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
@@ -105,11 +112,12 @@ public class VServer extends JFrame {
 		gbc_scrollPane_1.gridy = 1;
 		contentPane.add(scrollPane_1, gbc_scrollPane_1);
 		
-		list = new JTextPane();
-		list.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
-		scrollPane_1.setViewportView(list);
+		listLogs = new JTextPane();
+		listLogs.setEditable(false);
+		listLogs.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 14));
+		scrollPane_1.setViewportView(listLogs);
 		
-		panel_1 = new JPanel();
+		JPanel panel_1 = new JPanel();
 		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
 		gbc_panel_1.fill = GridBagConstraints.BOTH;
 		gbc_panel_1.insets = new Insets(0, 0, 0, 5);
@@ -117,13 +125,13 @@ public class VServer extends JFrame {
 		gbc_panel_1.gridy = 1;
 		contentPane.add(panel_1, gbc_panel_1);
 		
-		this.scrollPane = new JScrollPane();
-		this.scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 2;
 		gbc_scrollPane.gridy = 1;
-		this.contentPane.add(this.scrollPane, gbc_scrollPane);
+		contentPane.add(scrollPane, gbc_scrollPane);
 		
 		listReceptores = new JTextPane();
 		listReceptores.setEditable(false);
@@ -140,7 +148,7 @@ public class VServer extends JFrame {
 		for (String log : logs) {
 			str += log + "\n";
 		}
-		list.setText(str);
+		listLogs.setText(str);
 	}
 	
 	public void refreshReceptores(ArrayList<ReceptorData> receptores) {
@@ -149,5 +157,9 @@ public class VServer extends JFrame {
 			str += rd.getInfo() + "\n";
 		}
 		listReceptores.setText(str);
+	}
+	
+	public void setLblServidor(String str) {
+		this.lblServidor.setText(str);
 	}
 }

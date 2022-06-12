@@ -1,11 +1,6 @@
 package connection;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -28,35 +23,30 @@ public class ConnectionAux implements IConnection {
 	@Override
 	public void listen() {
 		try {
+			// Acomodar
 			socketLogs = new DatagramSocket(4040);
 			socketSuscription = new DatagramSocket(4141);
 			socketMonitor = new DatagramSocket(4242);
 			socketHeartbeat = new DatagramSocket();
 			
-			listenLogs(socketLogs);
-			listenSuscriptions(socketSuscription);
-			listenMonitor(socketMonitor);
+			listenLogs();
+			listenSuscriptions();
+			listenMonitor();
 		} catch (SocketException e) {
 			System.out.println("Error en la Redundancia");
 			e.printStackTrace();
 		}
 	}
 	
-	public void listenLogs(DatagramSocket socket) {
+	public void listenLogs() {
 		new Thread() {
 			public void run() {
 				while (true) {
 					System.out.println("Servidor: Escuchando Logs");
 					try {
-						byte[] buffer = new byte[2048];
-						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
-						socket.receive(petition);
-						
-						ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
-						ArrayList<String> logs = (ArrayList<String>) iStream.readObject();
-						iStream.close();
-						
-						System.out.println("Servidor Aux: Logs Actualizados recibidos");
+						DatagramPacket petition = ConnUtils.buildPetition();
+						socketLogs.receive(petition);
+						ArrayList<String> logs = (ArrayList<String>) ConnUtils.openPetition(petition);
 						Servidor.getInstance().setLogs(logs);
 					} catch(Exception e) {
 						System.out.println("Servidor: SocketLogs cerrado");
@@ -67,23 +57,16 @@ public class ConnectionAux implements IConnection {
 		}.start();
 	}
 	
-	public void listenSuscriptions(DatagramSocket socket) {
+	public void listenSuscriptions() {
 		new Thread() {
 			public void run() {
 				System.out.println("Servidor: Escuchando Receptores");
 				while (true) {
 					try {
-						byte[] buffer = new byte[2048];
-						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
-						socket.receive(petition);
-						
-						ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
-						ArrayList<ReceptorData> receptors = (ArrayList<ReceptorData>) iStream.readObject();
-						iStream.close();
-						
+						DatagramPacket petition = ConnUtils.buildPetition();
+						socketSuscription.receive(petition);
+						ArrayList<ReceptorData> receptors = (ArrayList<ReceptorData>) ConnUtils.openPetition(petition);
 						Servidor.getInstance().setReceptors(receptors);
-						
-						System.out.println("Receptores actualizados recibidos");
 					} catch(Exception e) {
 						System.out.println("Servidor: SocketSuscription cerrado");
 						break;
@@ -93,14 +76,12 @@ public class ConnectionAux implements IConnection {
 		}.start();
 	}
 	
-	public void listenMonitor(DatagramSocket socket) {
+	public void listenMonitor() {
 		new Thread() {
 			public void run() {
 				System.out.println("Servidor: Escuchando Monitor");
 				try {
-					byte[] buffer = new byte[2048];
-					DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
-					socket.receive(petition);
+					socketMonitor.receive(ConnUtils.buildPetition());
 					conn.changeToMain();
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -115,18 +96,9 @@ public class ConnectionAux implements IConnection {
 			public void run() {
 				while(true) {
 					try {
-						byte[] buffer = new byte[2048];
-						
-						ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-						ObjectOutput output = new ObjectOutputStream(bStream);
-						output.writeObject(new String("AUX"));
-						output.close();
-						buffer = bStream.toByteArray();
-						
-						DatagramPacket petition = new DatagramPacket(buffer, buffer.length,InetAddress.getByName("localhost"),2222);
-						socketHeartbeat.send(petition);
+						// Acomodar
+						socketHeartbeat.send(ConnUtils.buildPetition(new String("AUX"), InetAddress.getByName("localhost"), 2222));
 						Thread.sleep(2000);
-
 					} catch (Exception e) {
 						System.out.println("Servidor: SocketHeartbeat cerrado.");
 						break;

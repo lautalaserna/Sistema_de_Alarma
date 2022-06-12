@@ -23,18 +23,17 @@ public class ControllerSelection implements ActionListener{
 			if (e.getActionCommand().equals("Confirmar")) {
 				if (this.viewSelection.getRdbtnPrimario().isSelected()) {
 					conn.setConnection(new ConnectionMain());
+					new ControllerServer("Servidor Primario");
 				}
 				else if (this.viewSelection.getRdbtnSecundario().isSelected()) {
 					conn.setConnection(new ConnectionAux(conn));
+					ControllerServer cs = new ControllerServer("Servidor Secundario");
+					conn.addObserver(cs);
 				}
 			}
 			this.viewSelection.setVisible(false);
 		} catch (Exception ex) {
 			System.out.println("Error al crear las conexiones");
 		}
-		new ControllerServer();
 	}
-	
-	
-	
 }

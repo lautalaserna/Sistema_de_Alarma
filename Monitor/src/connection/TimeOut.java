@@ -20,7 +20,6 @@ public class TimeOut extends Observable{
 					int i = seg;
 
 					public void run() {
-						// System.out.println(i);
 						i--;
 						if (i < 0) {
 							timer.cancel();

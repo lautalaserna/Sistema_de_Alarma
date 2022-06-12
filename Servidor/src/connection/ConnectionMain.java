@@ -1,17 +1,11 @@
 package connection;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
 
 import model.Confirmation;
 import model.Filter;
@@ -27,22 +21,22 @@ public class ConnectionMain implements IConnection{
 	private DatagramSocket socketHeartbeat;
 	private DatagramSocket socketPingEcho;
 	private int[] ports;
-		
+	
 	@Override	
 	public void listen() {
-		this.ports = ConnectionUtils.readPorts(ConnectionUtils.PATH);		
+		this.ports = ConnUtils.readPorts(ConnUtils.PATH);		
 		try {
 			socketMessage = new DatagramSocket(ports[0]);
 			socketSuscription = new DatagramSocket(ports[1]);
 			socketConfirmation = new DatagramSocket(ports[2]);
-			socketMonitor = new DatagramSocket(7373);
+			socketMonitor = new DatagramSocket(7373); // Acomodar
 			socketRedundancy = new DatagramSocket();
 			socketHeartbeat = new DatagramSocket();
 			socketPingEcho = new DatagramSocket();
 			
-			listenMessages(socketMessage);
-			listenSuscriptions(socketSuscription);
-			listenConfirmations(socketMessage, socketConfirmation);
+			listenMessages();
+			listenSuscriptions();
+			listenConfirmations();
 			listenMonitor();
 			pingEchoCheck();
 		} catch (SocketException e) {
@@ -50,6 +44,153 @@ public class ConnectionMain implements IConnection{
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void listenMessages() {
+		new Thread() {
+			public void run() {
+				System.out.println("Servidor: Escuchando Emisores");
+				while (true) {
+					try {
+						DatagramPacket petition = ConnUtils.buildPetition();
+						socketMessage.receive(petition);
+						Message msg = (Message) ConnUtils.openPetition(petition);
+						msg.setInetAddress(petition.getAddress()); // Address del Emisor
+						msg.setPort(petition.getPort()); // Puerto del Emisor
+						System.out.println("Servidor: Mensaje recibido: " + msg + " (Puerto: " + msg.getPort() + ")");
+						String log = "Nuevo Mensaje: (Desde: " + msg.getInetAddress().getHostAddress() + ":" + msg.getPort() + ") " + msg.toString();
+						Servidor.getInstance().addLog(log);
+						socketRedundancy.send(ConnUtils.buildPetition(Servidor.getInstance().getLogs(),InetAddress.getByName("localhost"), 4040));
+						if(existReceptor(msg)) {
+							sendMsgToReceptors(msg);	
+						} else {
+							String response = "KO";
+							System.out.println("Servidor: No se recibió ninguna respuesta. Rta = " + response);
+							socketRedundancy.send(ConnUtils.buildPetition(new String(response), msg.getInetAddress(), msg.getPort()));
+						}
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
+	}
+	
+	public void sendMsgToReceptors(Message msg) {
+		new Thread() {
+			public void run() {
+				try {
+					for (ReceptorData rd : Servidor.getInstance().getReceptors()) {
+						if(rd.getFilter().isAccepted(msg)) {
+							try {
+								socketConfirmation.send(ConnUtils.buildPetition(msg, rd.getAddress(), rd.getFilter().getPort()));
+								String log = "Mensaje enviado al Receptor: " + rd.getAddress().getHostAddress() + ":"+ rd.getFilter().getPort();
+								Servidor.getInstance().addLog(log);
+								socketRedundancy.send(ConnUtils.buildPetition(Servidor.getInstance().getLogs(), InetAddress.getByName("localhost"), 4040));
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}.start();
+	}
+	
+	public void listenSuscriptions() {
+		new Thread() {
+			public void run() {
+				System.out.println("Servidor: Escuchando a Receptores");
+				while (true) {
+					try {
+						DatagramPacket petition = ConnUtils.buildPetition();
+						socketSuscription.receive(petition);
+						Filter f = (Filter) ConnUtils.openPetition(petition);
+						ReceptorData rd = new ReceptorData(f,petition.getAddress());
+						Servidor.getInstance().addReceptor(rd);
+						String log = "Receptor Suscripto: " + rd.toString();
+						Servidor.getInstance().addLog(log);
+						socketRedundancy.send(ConnUtils.buildPetition(Servidor.getInstance().getLogs(), InetAddress.getByName("localhost"), 4040)); //Acomodar
+						socketRedundancy.send(ConnUtils.buildPetition(Servidor.getInstance().getReceptors(), InetAddress.getByName("localhost"), 4141)); //Acomodar
+						System.out.println("Servidor: Receptor suscripto: " + rd.toString());						
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
+	}
+	
+	public void listenConfirmations() {
+		new Thread() {
+			public void run() {
+				System.out.println("Servidor: Escuchando Confirmaciones");
+				while (true) {
+					try {
+						DatagramPacket petition = ConnUtils.buildPetition();
+						socketConfirmation.receive(petition);			
+						Confirmation c = (Confirmation) ConnUtils.openPetition(petition);
+						String log = "Respuesta del Receptor: "
+									+ "(De: " + petition.getAddress().getHostAddress() + ":" + petition.getPort() + ") "
+									+ "(Para: " + c.getAddress().getHostAddress() + ":" + c.getPort() + ") "
+									+ "Respuesta: " + c.getValue();
+						Servidor.getInstance().addLog(log);
+						socketRedundancy.send(ConnUtils.buildPetition(new String(c.getValue()), c.getAddress(), c.getPort()));
+						socketRedundancy.send(ConnUtils.buildPetition(Servidor.getInstance().getLogs(), InetAddress.getByName("localhost"), 4040)); // Acomodar
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
+	}
+	
+	public void listenMonitor() {
+		new Thread() {
+			public void run() {
+				System.out.println("Servidor: Escuchando Monitor");
+				while(true) {
+					try {
+						DatagramPacket petition = ConnUtils.buildPetition();
+						socketMonitor.receive(petition);
+						socketRedundancy.send(ConnUtils.buildPetition(Servidor.getInstance().getLogs(), InetAddress.getByName("localhost"), 4040));
+						socketRedundancy.send(ConnUtils.buildPetition(Servidor.getInstance().getReceptors(), InetAddress.getByName("localhost"), 4141));
+						System.out.println("Servidor Main: Receptores Sincronizados");
+					} catch (Exception e) {
+						System.out.println("Error al escuchar el Monitor");
+					}
+				}
+			}
+		}.start();
+	}
+	
+	@Override
+	public void heartbeat() {
+		new Thread() {
+			public void run() {
+				while(true) {
+					try {
+						
+						socketHeartbeat.send(ConnUtils.buildPetition(new String("MAIN"), InetAddress.getByName("localhost"), 1111));
+						Thread.sleep(1000);
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
+	}
+	
+	@Override
+	public void closeConnections() {
+		socketMessage.close();
+		socketSuscription.close();
+		socketConfirmation.close();
+		socketRedundancy.close();
+		socketHeartbeat.close();
 	}
 	
 	public void pingEchoCheck() {
@@ -61,31 +202,16 @@ public class ConnectionMain implements IConnection{
 						while(i < Servidor.getInstance().getReceptors().size()) {
 							try {
 								ReceptorData rd = Servidor.getInstance().getReceptors().get(i);
-								DatagramPacket petition = ConnectionUtils.buildPetition(new String ("PING"), rd.getAddress(), rd.getFilter().getPort() + 1);
+								DatagramPacket petition = ConnUtils.buildPetition(new String ("PING"), rd.getAddress(), rd.getFilter().getPort() + 1);
 								socketPingEcho.send(petition);
-								System.out.println("Servidor principal: PING enviado.");
 								socketPingEcho.setSoTimeout(500);
-								
 								socketPingEcho.receive(petition);
-								System.out.println("Servidor principal: ECHO recibido.");
 								i++;
 							}catch (SocketTimeoutException e) {
-									// timeout exception.
-									System.out.println("Cortó el timeout!!! " + e);
 									Servidor.getInstance().getReceptors().remove(i);
-									System.out.println("Servidor principal: Receptor removido.");
 									Servidor.getInstance().setReceptors(Servidor.getInstance().getReceptors());
 									try {
-										byte[] buffer = new byte[2048];
-										DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
-										ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-										ObjectOutput output;
-										output = new ObjectOutputStream(bStream);
-										output.writeObject(Servidor.getInstance().getReceptors());
-										output.close();
-										buffer = bStream.toByteArray();
-										petition = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 4141);
-										socketRedundancy.send(petition);
+										socketRedundancy.send(ConnUtils.buildPetition(Servidor.getInstance().getReceptors(), InetAddress.getByName("localhost"), 4141)); // Acomodar
 									} catch (IOException e1) {
 										e1.printStackTrace();
 									} 
@@ -103,196 +229,6 @@ public class ConnectionMain implements IConnection{
 		}.start();
 	}
 	
-	public void listenMessages(DatagramSocket socket) {
-		new Thread() {
-			public void run() {
-				while (true) {
-					try {
-						System.out.println("Servidor: Escuchando a Emisores");
-						byte[] buffer = new byte[2048];
-						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
-						socket.receive(petition);
-						
-						ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
-						Message msg = (Message) iStream.readObject();
-						iStream.close();
-										
-						msg.setInetAddress(petition.getAddress()); // Address del Emisor
-						msg.setPort(petition.getPort()); // Puerto del Emisor
-						
-						System.out.println("Servidor: Mensaje recibido: " + msg + " (Puerto: " + msg.getPort() + ")");
-						
-						String log = "Nuevo Mensaje: "+ 
-										"(Desde: " + msg.getInetAddress().getHostAddress() + ":" + msg.getPort() + 
-										") " + msg.toString();
-						
-						Servidor.getInstance().addLog(log);
-						
-						/*
-						ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-						ObjectOutput output = new ObjectOutputStream(bStream); 
-						output.writeObject(Servidor.getInstance().getLogs());
-						output.close();
-						buffer = bStream.toByteArray();
-						petition = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 4040);
-						*/
-						
-						petition = ConnectionUtils.buildPetition(Servidor.getInstance().getLogs(),InetAddress.getByName("localhost"), 4040);
-						socketRedundancy.send(petition);
-						
-						if(existReceptor(msg)) {
-							sendMsgToReceptors(msg);	
-						} else {
-							String response = "KO";
-							
-							System.out.println("Servidor: No se recibió ninguna respuesta. Rta = " + response);
-							/*						
-							bStream = new ByteArrayOutputStream();
-							output = new ObjectOutputStream(bStream);
-							output.writeObject(new String(response));
-							output.close();
-							buffer = bStream.toByteArray();
-							petition = new DatagramPacket(buffer, buffer.length, msg.getInetAddress(), msg.getPort());
-							*/
-							petition = ConnectionUtils.buildPetition(new String(response), msg.getInetAddress(), msg.getPort());
-							socket.send(petition);
-						}
-						
-					} catch(Exception e) {
-						System.out.println("Error al conectar con el Emisor");
-						e.printStackTrace();
-					}
-				}
-			}
-		}.start();
-	}
-	
-	public void sendMsgToReceptors(Message msg) {
-		new Thread() {
-			public void run() {
-				try {
-					for (ReceptorData rd : Servidor.getInstance().getReceptors()) {
-						if(rd.getFilter().isAccepted(msg)) {
-							try {
-								DatagramPacket petition = ConnectionUtils.buildPetition(msg, rd.getAddress(), rd.getFilter().getPort());
-								socketConfirmation.send(petition);
-								
-								String log = "Mensaje enviado al Receptor: " + rd.getAddress().getHostAddress() + ":"+ rd.getFilter().getPort();
-								
-								Servidor.getInstance().addLog(log);
-								
-								petition = ConnectionUtils.buildPetition(Servidor.getInstance().getLogs(), InetAddress.getByName("localhost"), 4040);
-								socketMessage.send(petition);
-								
-							} catch (IOException e) {
-								System.out.println("Error enviar un mensaje a los Receptores");
-								e.printStackTrace();
-							}
-						}
-					}
-				} catch (Exception e) {
-					System.out.println("Error al conectar con la Confirmación");
-					e.printStackTrace();
-				}
-			}
-		}.start();
-	}
-	
-	public void listenConfirmations(DatagramSocket socketMessage, DatagramSocket socketConfirmation) {
-		new Thread() {
-			public void run() {
-				System.out.println("Servidor: Esperando Confirmaciones");
-				while (true) {
-					try {
-						byte[] buffer = new byte[2048];
-						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
-						socketConfirmation.receive(petition);
-						ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
-						
-						System.out.println(iStream.getClass());
-						Confirmation c = (Confirmation) iStream.readObject();
-						iStream.close();
-						
-						ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-						ObjectOutput output = new ObjectOutputStream(bStream);
-						output.writeObject(new String(c.getValue()));
-						output.close();
-						buffer = bStream.toByteArray();
-						
-						String log = "Respuesta del Receptor: "
-									+ "(De: " + petition.getAddress().getHostAddress() + ":" + petition.getPort() + ") "
-									+ "(Para: " + c.getAddress().getHostAddress() + ":" + c.getPort() + ") "
-									+ "Respuesta: " + c.getValue();
-						
-						
-						Servidor.getInstance().addLog(log);
-						
-						petition = new DatagramPacket(buffer, buffer.length, c.getAddress(), c.getPort());
-						socketMessage.send(petition);
-						
-						bStream = new ByteArrayOutputStream();
-						output = new ObjectOutputStream(bStream);
-						output.writeObject(Servidor.getInstance().getLogs());
-						output.close();
-						buffer = bStream.toByteArray();
-						
-						petition = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 4040);
-						socketMessage.send(petition);
-					} catch(Exception e) {
-						System.out.println("Error al recibir una Confirmación");
-						e.printStackTrace();
-					}
-				}
-			}
-		}.start();
-	}
-	
-	public void listenSuscriptions(DatagramSocket socket) {
-		new Thread() {
-			public void run() {
-				System.out.println("Servidor: Escuchando a Receptores");
-				while (true) {
-					try {
-						byte[] buffer = new byte[2048];
-						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
-						socket.receive(petition);
-						
-						ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(petition.getData()));
-						Filter f = (Filter) iStream.readObject();
-						iStream.close();
-						
-						ReceptorData rd = new ReceptorData(f,petition.getAddress());
-						Servidor.getInstance().addReceptor(rd);
-						
-						ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-						ObjectOutput output = new ObjectOutputStream(bStream); 
-						output.writeObject(Servidor.getInstance().getReceptors());
-						output.close();
-						buffer = bStream.toByteArray();
-						petition = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 4141);
-						socketRedundancy.send(petition);
-						
-						String log = "Receptor Suscripto: " + rd.toString();
-						Servidor.getInstance().addLog(log);
-						
-						bStream = new ByteArrayOutputStream();
-						output = new ObjectOutputStream(bStream); 
-						output.writeObject(Servidor.getInstance().getLogs());
-						output.close();
-						buffer = bStream.toByteArray();
-						petition = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 4040);
-						socketRedundancy.send(petition);
-						
-						System.out.println("Servidor: Receptor suscripto: " + rd.toString());						
-					} catch(Exception e) {
-						System.out.println("Error al suscribirse un Receptor");
-						e.printStackTrace();
-					}
-				}
-			}
-		}.start();
-	}
-	
 	public boolean existReceptor(Message msg) {
 		boolean res = false;
 		for (ReceptorData rd : Servidor.getInstance().getReceptors()) {
@@ -302,63 +238,6 @@ public class ConnectionMain implements IConnection{
 			}
 		}
 		return res;
-	}
-	
-	public void listenMonitor() {
-		new Thread() {
-			public void run() {
-				while(true) {
-					try {
-						byte[] buffer = new byte[2048];
-						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
-						socketMonitor.receive(petition);
-						petition = ConnectionUtils.buildPetition(Servidor.getInstance().getLogs(), InetAddress.getByName("localhost"), 4040);
-						socketRedundancy.send(petition);
-						System.out.println("Servidor Main: Logs Sincronizados");
-						petition = ConnectionUtils.buildPetition(Servidor.getInstance().getReceptors(), InetAddress.getByName("localhost"), 4141);
-						socketHeartbeat.send(petition);
-						System.out.println("Servidor Main: Receptores Sincronizados");
-					} catch (Exception e) {
-						System.out.println("Error al escuchar el Monitor");
-					}
-				}
-			}
-		}.start();
-	}
-	
-	@Override
-	public void heartbeat() {
-		new Thread() {
-			public void run() {
-				while(true) {
-					try {
-						byte[] buffer = new byte[2048];
-						
-						ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-						ObjectOutput output = new ObjectOutputStream(bStream);
-						output.writeObject(new String("MAIN"));
-						output.close();
-						buffer = bStream.toByteArray();
-						
-						DatagramPacket petition = new DatagramPacket(buffer, buffer.length,InetAddress.getByName("localhost"),1111);
-						socketHeartbeat.send(petition);
-						Thread.sleep(1000);
-
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}.start();
-	}
-
-	@Override
-	public void closeConnections() {
-		socketMessage.close();
-		socketSuscription.close();
-		socketConfirmation.close();
-		socketRedundancy.close();
-		socketHeartbeat.close();
 	}
 
 }

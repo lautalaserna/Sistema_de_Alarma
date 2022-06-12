@@ -1,9 +1,6 @@
 package connection;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -28,13 +25,12 @@ public class Connection extends Observable implements Observer{
 		this.isAliveMain = false;
 		this.isAliveAux = false;
 		try {
-			socketMain = new DatagramSocket(1111);
-			socketAux = new DatagramSocket(2222);
+			socketMain = new DatagramSocket(1111); //Acomodar
+			socketAux = new DatagramSocket(2222); //Acomodar
 			
 			listenMain(socketMain);
 			listenAux(socketAux);
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -42,25 +38,19 @@ public class Connection extends Observable implements Observer{
 	public void listenMain(DatagramSocket socket) {
 		new Thread() {
 			public void run() {
-				System.out.println("Monitor: Escuchando un Servidor Principal");
+				System.out.println("Monitor: Escuchando Servidor Principal");
 				while (true) {
 					try {
-						byte[] buffer = new byte[2048];
-						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
-						socket.receive(petition);
-						
+						DatagramPacket petition = ConnUtils.buildPetition();
+						socket.receive(petition);						
 						if(isAliveMain) {
 							timerMain.stopTimer();							
 						} 
-						
 						isAliveMain = true;
 						setChanged();
 						notifyObservers("MAIN ONLINE");
-						
-						System.out.println("Servidor Main: Alive");
 						timerMain.starTimer(3); 
 					} catch(Exception e) {
-						System.out.println("Error al escuchar el Servidor Principal");
 						e.printStackTrace();
 					}
 				}
@@ -71,31 +61,23 @@ public class Connection extends Observable implements Observer{
 	public void listenAux(DatagramSocket socket) {
 		new Thread() {
 			public void run() {
-				System.out.println("Monitor: Escuchando un Servidor Secundario");
+				System.out.println("Monitor: Escuchando Servidor Secundario");
 				while (true) {
 					try {
-						byte[] buffer = new byte[2048];
-						DatagramPacket petition = new DatagramPacket(buffer, buffer.length);
-						socket.receive(petition);
-						
+						DatagramPacket petition = ConnUtils.buildPetition();
+						socket.receive(petition);						
 						if(isAliveAux) {
 							timerAux.stopTimer();							
 						} else {
-							// Sincronización del Servidor Primario cuando se inicia un Servidor Secundario
 							System.out.println("Monitor: Sincronizando...");
-							socketMain.send(ConnectionUtils.buildPetition(new String("SYNC"), InetAddress.getByName("localhost"), 7373));
+							socketMain.send(ConnUtils.buildPetition(new String("SYNC"), InetAddress.getByName("localhost"), 7373)); // Acomodar
 						}
-						
 						isAliveAux = true;
 						setChanged();
-						notifyObservers("AUX ONLINE");
-						
-						System.out.println("Servidor Aux: Alive");
+						notifyObservers("AUX ONLINE");						
 						timerAux.starTimer(3);
 						sleep(2000);
-						
 					} catch(Exception e) {
-						System.out.println("Error al escuchar el Servidor Principal");
 						e.printStackTrace();
 					}
 				}
@@ -110,18 +92,8 @@ public class Connection extends Observable implements Observer{
 				this.isAliveMain = false;
 				if(isAliveAux) {
 					try {
-						ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-						ObjectOutput output = new ObjectOutputStream(bStream); 
-						output.writeObject(new String("SWITCH"));
-						output.close();
-						
-						System.out.println("Se envia algo");
-						
-						byte[] buffer = bStream.toByteArray();
-						DatagramPacket petition = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), 4242);
-						socketAux.send(petition);
+						socketAux.send(ConnUtils.buildPetition(new String("SWITCH"), InetAddress.getByName("localhost"), 4242)); // Acomodar
 					} catch (IOException e) {
-						System.out.println("Error al hacer el Switch");
 						e.printStackTrace();
 					}
 				}
